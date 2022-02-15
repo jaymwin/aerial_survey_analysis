@@ -8,7 +8,7 @@ library(tmap)
 
 select <- dplyr::select
 
-# analysis_year <- lubridate::today() %>% lubridate::year() - 1
+analysis_year <- lubridate::today() %>% lubridate::year() - 1
 
 
 # climate normals ---------------------------------------------------------
@@ -172,6 +172,9 @@ anom_ras_spring <- raster::overlay(
 
 # summarize data ----------------------------------------------------------
 
+# decide on color palette
+tmaptools::palette_explorer()
+
 # plot anomalies; winter
 p1 <- tm_shape(anom_ras_winter) +
   tm_raster(title = "Precip. \nanom. (mm):", style = "cont", palette = "RdYlGn", legend.reverse = TRUE) +
@@ -191,17 +194,4 @@ tm
 
 # save
 tmap_save(tm, str_c(here::here('output'), '/', analysis_year, '/', 'prism/precip_anomalies.png'), width = 7.5, height = 4, dpi = 600, units = 'in')
-
-tibble(
-  statewide_winter_analysis_year_mean = mean(values(ppt_winter_analysis_year_ras), na.rm = TRUE),
-  statewide_spring_analysis_year_mean = mean(values(ppt_spring_analysis_year_ras), na.rm = TRUE)
-)
-
-tmaptools::palette_explorer()
-
-mean(values(ppt_winter_analysis_year_ras), na.rm = TRUE)
-mean(values(ppt_spring_analysis_year_ras), na.rm = TRUE)
-
-mean(values(ppt_winter_normal_ras), na.rm = TRUE)
-mean(values(ppt_spring_normal_ras), na.rm = TRUE)
 
