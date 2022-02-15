@@ -1,0 +1,130 @@
+---
+title: "Instructions for Wisconsin Spring Waterfowl Survey – Aerial Crews"
+# author: Jay Winiarski, WI DNR Office of Applied Science (jason.winiarski@wisconsin.gov)
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+geometry: margin = 1in
+urlcolor: blue
+graphics: yes
+header-includes:
+ header-includes:
+ - \usepackage{booktabs}
+ - \usepackage{colortbl}
+ - \usepackage{tabu}
+ - \usepackage{threeparttable}
+ - \usepackage{makecell}
+ - \usepackage{fancyhdr}
+ - \pagestyle{fancy}
+ - \fancypagestyle{plain}
+ - \fancyhf{}
+ - \renewcommand{\headrulewidth}{0pt}
+ - \renewcommand{\footrulewidth}{0pt}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+\fontsize{12}{14}
+\selectfont
+
+*Note: these instructions were written by Wildlife Management*
+
+Monitoring the populations of breeding waterfowl in Wisconsin is important for making informed decisions on waterfowl management and annual waterfowl hunting regulations. The data collected from the survey conducted by the Wisconsin Department of Natural Resources is reported annually to the USFWS for use in the Waterfowl Population Status Report and the annual Adaptive Harvest Management (AHM) Report. The AHM report is the guide for setting the national waterfowl hunting season frameworks each year. The AHM analysis is based, in part, on the population change for the mid-continent mallard population which includes breeding mallards in Wisconsin. The annual state waterfowl regulation setting process also uses the status of Wisconsin’s breeding waterfowl populations as a foundation for the decision making process. It is particularly important for Wisconsin to have annual state level population data available for setting regulations since the much of our fall waterfowl harvest is derived from Wisconsin breeding waterfowl. In addition, annual monitoring of waterfowl populations and wetland habitat in Wisconsin allows us to evaluate the investment of millions of dollars in wetland preservation and development, habitat changes, the impact of hunting regulations and other waterfowl management. 
+
+The Migratory Game Bird Ecologist and Assistant Migratory Game Bird Ecologist (Bureau of Wildlife Management) will manage the survey, coordinate the observers and aircraft, provide survey funding, initiate the survey, and produce an annual report. The Wildlife and Forestry Research Section (Bureau of Integrated Science Service) will input and analyze data, evaluate survey sampling and design, interpret results, and assist in report writing. 
+
+The survey design is a stratified double sampling scheme within four strata (regions) of the state: the SE/Central, the northern high density, the northern low density, and the southwest driftless. Transects 30 miles long will be censused by air for breeding ducks, geese, coots, cranes, and swans. Segments of selected air transects will also be censused by ground crews to obtain visibility (air ground) correction factors for birds not seen during the aerial counts.
+
+### Procedures
+
+1. **Aerial Census**
+
+	a. SURVEY DATES. The survey will normally be run between May 1--20. Starting dates may be adjusted each year to accommodate unusually early or late springs. Surveys should not be initiated if large flocks of migrant ducks (usually noticeable for diving duck flocks) are still present. The survey will start with transects in the southern part of the state and work northward. A brief reconnaissance flight should be conducted the day before the survey is to start; the reconnaissance flight will check on the suitability of the starting date, and refresh observer skills in identification of ducks and estimation of transect width.
+
+	b. SURVEY TIMES AND CONDITIONS. The survey should be flown from 2 hours after sunrise (approximately 7:25--7:45 a.m.) to 12 noon, CDT. Do not conduct surveys when winds exceed 25 mph or if other adverse weather conditions exist (e.g., snow, rain, fog, and smoke).
+
+	c. SURVEY SPEED AND ALTITUDE. Each transect should be flown at a ground speed of 90--100 miles per hour. Normally, flights should be made at an altitude of 100 150 feet above ground level for best counting and identification. Censuses should not be made when conditions require flights at 250 feet or more.
+
+	d. SURVEY FLIGHT PATH. The flight path is altered only to avoid flying directly over cities, towns, game farms, or penned livestock. The aircraft flight path is NOT altered to facilitate waterfowl species identification. Transects are flown in the same direction each year as much as practical to minimize variance associated with observability.
+
+	e. PERSONNEL. Two crews of two observers each, experienced in waterfowl identification, waterfowl census procedures, and aerial surveys shall be arranged by the Migratory Game Bird Ecologist (Bureau of Wildlife Management) to act as observers on all flights.  One crew will survey the south half of the state and when complete, the second crew will survey the north half of the state. In order to maintain consistency and reduce bias, observers agree to 5 year time periods to serve on an aerial crew and rotation of observers is staggered so that there is always at least 1 experienced observer on a crew. The observers are responsible for recording all data, submission of data for analysis to the Assistant Migratory Game Bird Ecologist (Bureau of Wildlife Management). In addition, the aerial observers are to notify the ground crew and the Assistant Migratory Game Bird Ecologist when the aerial survey of each transect is complete. It would be most desirable if one pilot is assigned to fly all transects. The designated pilot should be selected on the basis of past experience with aerial waterfowl censuses. The pilot is responsible for maintaining proper altitude, flight speed, and transect course.
+
+	f. DATA COLLECTION. All ducks, geese, coots, cranes, and swans seen by the observer or pilot within a 1/8-mile strip on either side of the aircraft should be counted and identified to species. Waterfowl should be classified as pairs, lone drakes, flocked drakes (males in groups of 2-4), or groups (groups of 5 or more drakes, or mixed flocks that cannot be separated into pairs or sexes). Record the number of birds in a group under the “group” category. Only those ducks within the transect boundaries on water bodies cut by the transect boundary should be recorded. Lone hens and ducks which cannot be identified by species should not be recorded. Count waterfowl in flight over the transect only if they are suspected of flushing from within the transect. Singles of species with monochromatic sexes should be recorded under the “lone drake” category and 2 together as 1 under the “pair” category. For groups of three (3) or more Canada geese, these should be recorded under the “group” category.
+	
+	On the north half of each transect, all wetlands having surface water, lying within the 1/8-mile strip from the plane, and unoccupied by waterfowl will be counted and classified to "wetland type" by the observer using criteria furnished by the Wildlife and Forestry Research Section. Do NOT count wetlands without surface water. All wetlands within the 1/4-mile transect width (both sides of the plane) on which breeding waterfowl are observed (i.e., occupied wetlands) should also be recorded by "wetland type". When wetlands are joined because of high water levels, record only 1 wetland basin. Count streams and ditches as separate water bodies each time they occur within the transect boundary. Where waterfowl are observed in uplands, record “upland” as the wetland type.
+
+	g. DATA RECORDING. Aerial survey waterfowl and habitat data plus all other pertinent information (observer, survey date, transect number, flight direction, weather conditions, starting and ending times) will be recorded for individual transects on a portable tape recorder. Waterfowl should be recorded in summary by species for each wetland basin (i.e., the wetland basin is the sampling unit). Data should be transcribed from tape recordings to data sheets at the end of each day's flight. When the entire survey is completed, the data sheets should be forwarded to the Assistant Migratory Game Bird Ecologist (Bureau of Wildlife Management).
+
+1. **Ground Censuses of Air Ground Segments**
+
+	a. SURVEY TIMING AND CONDITIONS. The ground survey should be run 0--2 days after the aerial census (the day immediately after the air survey is preferred), after notification from the air crew. If the ground and aerial surveys are conducted on the same day, the ground survey crew should wait at least 1/2 hour after the aerial survey to minimize disturbance. The ground survey should be conducted under the same restrictions on conditions as the air survey (i.e., 2 hours after sunrise, or when light conditions seem favorable, to 12 noon, and not in heavy wind, snow, rain, fog, or smoke). Exact timing of ground counts of each transect must be coordinated between the aerial observers and the designated ground crew leader. Daily reports of the aerial transect completion and notice to ground observers will be made to the Assistant Migratory Game Bird Ecologist.
+
+	b. SURVEY LOGISTICS. The purpose of the ground survey is to obtain a complete count of all waterfowl present within the air ground segment to obtain visibility (air ground) correction factors for birds not seen during the aerial counts. Ground crews will search all wetlands on designated segments of selected aerial transects and record all waterfowl. Only those wetlands, or portions thereof, that lie within the 1/4-mile strip surveyed by air should be included in ground counts. A thorough walking or boat search of each wetland will be necessary to obtain this goal. When searching each area, personnel should be alert for "wild" flushing birds, and all birds should be marked down or watched until out of sight to reduce "roll up" and duplicate counts. Note that birds in flight over the segment should be counted only when they are suspected of flushing from inside the segment. Conduct ground surveys from east to west along each segment to minimize visibility problems associated with sun glare. Ground crews should contact landowners prior to entry upon their land. Ground crews should identify and record ALL waterfowl present on the segment even if it involves additional effort outside the segment to confirm identification.
+
+	c. PERSONNEL.  Multiple crews of 2--4 persons each will conduct ground counts along air-ground segments. Personnel will be arranged by the Migratory Game Bird Ecologist to act as ground crew observers for consecutive years. Two person crews should plan on spending about 4 hours in the morning to complete their segments for 1-2 days. Ground crews consist of personnel from Wildlife Program staff in the regions and the bureau, the Bureau of Integrated Science Services, and external partners (US Fish and Wildlife Service, and the Great Lakes Indian Fish and Wildlife Commission). 
+
+	d. DATA COLLECTION. Ground crews will record all observations of ducks, geese, coots, cranes, and swans according to the same instructions for the aerial survey (section 1.f). Waterfowl should be recorded in summary by species for each wetland basin (i.e., the wetland basin is the sampling unit).
+	
+	Ground crews will record ALL wetland basins within the 1/4-mile segment width according to the same instructions and classification system for the aerial survey (section 1.f), except that basins will be recorded whether wet or dry. Ground crews will number wetland basins consecutively as they are observed along the air-ground segment, from east to west, and record any if they are "occupied" by waterfowl, and are holding surface water. Data from ground surveys should be forwarded to the Assistant Migratory Game Bird Ecologist in Madison within 2 days following completion of the segment. 
+
+### Recording Waterfowl
+
+Count ducks by species separately for each wetland basin. Record ducks under the categories:
+	
+**Pr** – pairs  
+**LD** – lone drakes  
+**FD** – flocked drakes (males in groups of 2--4)  
+**Gr** – groups of 5 or more drakes, or mixed flocks that cannot be separated into pairs or sexes  
+
+Do not record lone hens. Record only groups of hens under Gr category.  
+
+We are also counting geese, cranes, coots, and swans. Singles of these species are recorded under the LD category, and 2 together as 1 under the Pr category. 
+
+Record the number of birds in a group under the Gr category. For example 9 geese should be recorded as 9 Gr, NOT as 1 Gr.   
+
+Groups of identified mixed sexes should be separated into PR and LD or Gr. For example:
+  - 1 hen and 2 drakes should be recorded as 1 Pr and 1 LD  
+  - 1 hen and 5 drakes should be recorded as 1 Pr and 4 FD but 1 hen and 6 drakes should be recorded as 1 Pr and 5 Gr  
+
+### Recording Wetlands
+
+Record ALL wetland basins within the 1/4-mile segment. Number the wetland basins consecutively as you move along the segment, east to west, and record whether they are “occupied” by waterfowl or not, and whether they are holding surface water or dry. When wetlands are joined because of high water levels, record only 1 wetland basin. Count streams and ditches as separate water bodies each time they occur within the segment boundary (if they meander out of the segment and then back in, count them a second time).
+	
+Use the following classification system for wetland basins (adapted from the current federal waterfowl survey):
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+df <- tibble(
+ Type = c(1:9, 0),
+ Name = c('Temporary', 'Wet Meadow', 'Seasonal', 'Semi-permanent', 'Permanent/Open', 'Shrub Swamps', 'Wooded Swamps', 'Bogs', 'Stream', 'Ditch'),
+ Description = c(
+  'Sheet water, small wet areas in crop fields, pastures, or bare ground without wetland vegetation; standing water lasts <3 weeks and <6 inches deep.',
+  'Fens and basins with non-woody aquatic vegetation (e.g. sedge, canarygrass); standing water lasts <3 weeks and <6 inches deep.',
+  'Fens and basins with flooded non-woody aquatic vegetation (e.g., cattail); standing water lasts >3 weeks and >6 inches deep but dries out mid-summer.',
+  'Basins with clumps of emergent non-woody aquatic vegetation (e.g., cattail, bulrush) interspersed with open water; standing water lasts through the brood season in 7 to 10 years, but may dry out in late summer or early fall.',
+  'Ponds, deep marshes, or lakes with a peripheral rim of emergent herbaceous vegetation bordering open water; standing water lasts through summer and fall.',
+  'Flooded basins with little or no open water, dominated by shrubs such as willow, alder, dogwood.',
+  'Flooded basins with little or no open water, dominated by trees and non-acidic.',
+  'Shrub or forested basins with acid-adapted plants such as cranberry, sphagnum, leatherleaf, Labrador tea.',
+  'Natural linear basin.',
+  'Man-made linear basin.'
+  )
+)
+
+df %>%
+ kbl(
+ # align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
+ booktabs = TRUE, # table formatting
+ linesep = "" # prevent spaces every 5th row
+  ) %>%
+  kableExtra::kable_styling(latex_options = c('striped', "hold_position")) %>%
+  kableExtra::row_spec(0, bold = TRUE) %>%
+  column_spec(1, width = '2em') %>%
+  column_spec(3, width = '36em')
+
+```
+

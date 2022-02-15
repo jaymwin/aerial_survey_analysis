@@ -1,0 +1,113 @@
+---
+title: "Instructions for Wisconsin Spring Waterfowl Survey – Ground Crews"
+# author: Jay Winiarski, WI DNR Office of Applied Science (jason.winiarski@wisconsin.gov)
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+geometry: margin = 1in
+urlcolor: blue
+graphics: yes
+header-includes:
+  header-includes:
+  - \usepackage{booktabs}
+  - \usepackage{colortbl}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{makecell}
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancypagestyle{plain}
+  - \fancyhf{}
+  - \renewcommand{\headrulewidth}{0pt}
+  - \renewcommand{\footrulewidth}{0pt}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+\fontsize{12}{14}
+\selectfont
+
+*Note: these instructions were written by Wildlife Management*
+
+Ground counts are complete counts of all waterfowl in the air transect segment and are used to calculate visibility rates of waterfowl from the air. As such, it is important to cover every wetland basin on foot or by boat.  In 1989, we began conducting our Wisconsin Spring Waterfowl Survey according to the methods used in the USFWS/CWS annual Waterfowl Breeding Ground Population and Habitat Survey in North America. The following are adapted from the Standard Operating Procedures of the federal survey.
+
+### Crews	
+
+The ground crew should consist of no less than 2 and no more than 4 individuals. 
+
+### Timing	
+
+Conduct ground counts on the same day or within 2 days after the air count.  The day immediately after the air count is preferred. Conduct ground counts between 2 hours after sunrise to noon CDT. If the ground count is conducted on the same day as the air count, you should wait at least 30 minutes after the air count to minimize disturbance.
+
+### Weather	
+
+Do not conduct ground counts when winds are over 25 mph or if other adverse weather conditions exist (e.g., snow, rain, smoke, fog).
+
+### Logistics	
+
+It is emphasized that the primary objective of the ground crew is to get a complete count of all waterfowl present on the air-ground comparison segment.  Conduct ground counts from east to west along each segment to minimize visibility problems associated with sun glare.  Contact landowners prior to entry upon their land.  Whenever there is any doubt regarding the ability to see the entire surface of a water body and all waterfowl that might be resting on its shore, the ground crew should walk around the pothole or stream segment to the extent necessary to ensure sighting and identifying all waterfowl.  In instances where there are large potholes with open shorelines and large numbers of waterfowl, the ground crew should refrain from flushing the waterfowl because this may result in counting error due to “roll-up” (i.e., counting the same birds at 2 or more locations), inability to identify all the birds in flight due to poor positioning, or dealing with too many birds at one time (mass flights).  Record and watch all waterfowl that are flushed to the extent necessary to rule out duplicate counting further along the segment (i.e., watch where they land).
+
+When a wetland falls on the segment boundary, count only the waterfowl within the segment at the time of crew arrival.  Count waterfowl in flight over the segment only when they are suspected of flushing from within the segment.  Identify and record all waterfowl present on the segment even if it involves additional effort outside the segment to confirm identification; this differs from the air count, which does not record a bird if identification is not confirmed.
+
+Transect: 1/4-mile width = 400 meters = 220 yards on each side of a center road.
+
+### Recording Waterfowl
+
+Count ducks by species separately for each wetland basin. Record ducks under the categories:
+	
+**Pr** – pairs  
+**LD** – lone drakes  
+**FD** – flocked drakes (males in groups of 2--4)  
+**Gr** – groups of 5 or more drakes, or mixed flocks that cannot be separated into pairs or sexes  
+
+Do not record lone hens. Record only groups of hens under Gr category.  
+
+We are also counting geese, cranes, coots, and swans. Singles of these species are recorded under the LD category, and 2 together as 1 under the Pr category.  
+
+Record the number of birds in a group under the Gr category. For example 9 geese should be recorded as 9 Gr, NOT as 1 Gr.
+
+Groups of identified mixed sexes should be separated into PR and LD or Gr. For example:
+		1 hen and 2 drakes should be recorded as 1 Pr and 1 LD
+		1 hen and 5 drakes should be recorded as 1 Pr and 4 FD but 1 hen and 6 drakes should be recorded as 1 Pr and 5 Gr
+
+### Recording Wetlands
+
+Record ALL wetland basins within the 1/4-mile segment. Number the wetland basins consecutively as you move along the segment, east to west, and record whether they are “occupied” by waterfowl or not, and whether they are holding surface water or dry.  When wetlands are joined because of high water levels, record only 1 wetland basin.  Count streams and ditches as separate water bodies each time they occur within the segment boundary (if they meander out of the segment and then back in, count them a second time).
+	
+Use the following classification system for wetland basins (adapted from the current federal waterfowl survey):
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+df <- tibble(
+  Type = c(1:9, 0),
+  Name = c('Temporary', 'Wet Meadow', 'Seasonal', 'Semi-permanent', 'Permanent/Open', 'Shrub Swamps', 'Wooded Swamps', 'Bogs', 'Stream', 'Ditch'),
+  Description = c(
+    'Sheet water, small wet areas in crop fields, pastures, or bare ground without wetland vegetation; standing water lasts <3 weeks and <6 inches deep.',
+    'Fens and basins with non-woody aquatic vegetation (e.g. sedge, canarygrass); standing water lasts <3 weeks and <6 inches deep.',
+    'Fens and basins with flooded non-woody aquatic vegetation (e.g., cattail); standing water lasts >3 weeks and >6 inches deep but dries out mid-summer.',
+    'Basins with clumps of emergent non-woody aquatic vegetation (e.g., cattail, bulrush) interspersed with open water; standing water lasts through the brood season in 7 to 10 years, but may dry out in late summer or early fall.',
+    'Ponds, deep marshes, or lakes with a peripheral rim of emergent herbaceous vegetation bordering open water; standing water lasts through summer and fall.',
+    'Flooded basins with little or no open water, dominated by shrubs such as willow, alder, dogwood.',
+    'Flooded basins with little or no open water, dominated by trees and non-acidic.',
+    'Shrub or forested basins with acid-adapted plants such as cranberry, sphagnum, leatherleaf, Labrador tea.',
+    'Natural linear basin.',
+    'Man-made linear basin.'
+    )
+)
+
+df %>%
+  kbl(
+      # align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
+      booktabs = TRUE, # table formatting
+      linesep = "" # prevent spaces every 5th row
+    ) %>%
+    kableExtra::kable_styling(latex_options = c('striped', "hold_position")) %>%
+    kableExtra::row_spec(0, bold = TRUE) %>%
+    column_spec(1, width = '2em') %>%
+    column_spec(3, width = '36em')
+
+```

@@ -1,0 +1,118 @@
+---
+output: 
+  pdf_document:
+    fig_caption: yes
+params: 
+  year: 
+---
+
+<!-- ```{r source_figs, message = FALSE, warning = FALSE, echo = FALSE} -->
+<!-- source(here::here('functions/waterfowl_survey_functions.R')) -->
+<!-- ``` -->
+
+```{r parameters, echo = FALSE}
+library(knitr)
+opts_knit$set(eval.after = "fig.cap")
+survey_year <- params$year
+```
+
+
+```{r wetland_abundance_sec, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "\\label{fig:wetland_abundance_sec}Annual variability in total non-linear and linear wetlands surveyed in the South-East Central region during the Wisconsin Spring Duck Survey."}
+plot_wetland_abundance(region_code = 1)
+```
+
+\newpage
+
+```{r wetland_abundance_nhi, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "\\label{fig:wetland_abundance_nhi}Annual variability in total non-linear and linear wetlands surveyed in the Northern High Density region during the Wisconsin Spring Duck Survey."}
+plot_wetland_abundance(region_code = 2)
+```
+
+\newpage
+
+```{r wetland_abundance_nlo, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "\\label{fig:wetland_abundance_nlo}Annual variability in total non-linear and linear wetlands surveyed in the Northern Low Density region during the Wisconsin Spring Duck Survey."}
+plot_wetland_abundance(region_code = 3)
+```
+
+\newpage
+
+```{r wetland_abundance_swd, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "\\label{fig:wetland_abundance_swd}Annual variability in total non-linear and linear wetlands surveyed in the South-West Driftless region during the Wisconsin Spring Duck Survey."}
+plot_wetland_abundance(region_code = 4)
+```
+
+\newpage
+
+```{r ssm_total_ducks, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:ssm_total_ducks}", "Annual statewide estimates of total breeding duck abundance in Wisconsin, 1973--", survey_year, ". Black line and gray shaded region are the mean and 95% credible interval estimates for the state-space population trend, and blue points and dashed line show the annual survey counts. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.")}
+plot_state_space_abundance(spp = 'total ducks')
+```
+
+\newpage
+
+```{r ssm_mall, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:ssm_mall}", "Annual statewide estimates of breeding mallard abundance in Wisconsin, 1973--", survey_year, ". Black line and gray shaded region are the mean and 95% credible interval estimates for the state-space population trend, and blue points and dashed line show the annual survey counts. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.")}
+plot_state_space_abundance(spp = 'mallard')
+```
+
+\newpage
+
+```{r ssm_bwte, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:ssm_bwte}", "Annual statewide estimates of breeding blue-winged teal abundance in Wisconsin, 1973--", survey_year, ". Black line and gray shaded region are the mean and 95% credible interval estimates for the state-space population trend, and blue points and dashed line show the annual survey counts. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.")}
+plot_state_space_abundance(spp = 'blue-winged teal')
+```
+
+\newpage
+
+```{r ssm_wodu, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:ssm_wodu}", "Annual statewide estimates of breeding wood duck abundance in Wisconsin, 1973--", survey_year, ". Black line and gray shaded region are the mean and 95% credible interval estimates for the state-space population trend, and blue points and dashed line show the annual survey counts. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.")}
+plot_state_space_abundance(spp = 'wood duck')
+```
+
+\newpage
+
+```{r ssm_cago, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:ssm_cago}", "Annual statewide estimates of breeding Canada goose abundance in Wisconsin, 1986--", survey_year, ". Black line and gray shaded region are the mean and 95% credible interval estimates for the state-space population trend, and blue points and dashed line show the annual survey counts. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.")}
+plot_state_space_abundance(spp = 'canada goose')
+```
+
+\newpage
+
+```{r ssm_other_ducks, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:ssm_other_ducks}", "Annual statewide estimates of breeding 'other duck' abundance in Wisconsin, 1973--", survey_year, ". Black line and gray shaded region are the mean and 95% credible interval estimates for the state-space population trend, and blue points and dashed line show the annual survey counts. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.")}
+plot_state_space_abundance(spp = 'other ducks')
+```
+
+\newpage
+
+```{r annual_crane_counts, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:annual_crane_counts}", "Annual counts of sandhill cranes observed from the air during the Wisconsin Aerial Spring Waterfowl Survey, 1973--", survey_year, ".")}
+plot_crane_counts()
+```
+
+\newpage
+
+```{r ssm_trsw, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:ssm_trsw}", "Annual statewide estimates of trumpeter swan abundance in Wisconsin, 2005--", survey_year, ". Black line and gray shaded region are the mean and 95% credible interval estimates for the state-space population trend, and blue points and dashed line show the annual survey counts. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.")}
+plot_state_space_abundance(spp = 'trumpeter swan') # this should be swans
+```
+
+\newpage
+
+```{r mall_air_ground, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:mall_air_ground}", "Annual relationship between mallard counts by air observers (red line) and ground observers (blue line) during the Wisconsin Aerial Spring Waterfowl Survey, 1973--", survey_year, ".")}
+plot_air_ground(spp = 1) # mall
+```
+
+\newpage
+
+```{r bwte_air_ground, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:bwte_air_ground}", "Annual relationship between blue-winged teal counts by air observers (red line) and ground observers (blue line) during the Wisconsin Aerial Spring Waterfowl Survey, 1973--", survey_year, ".")}
+plot_air_ground(spp = 2) # bwte
+```
+
+\newpage
+
+```{r wodu_air_ground, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:wodu_air_ground}", "Annual relationship between wood duck counts by air observers (red line) and ground observers (blue line) during the Wisconsin Aerial Spring Waterfowl Survey, 1973--", survey_year, ".")}
+plot_air_ground(spp = 3) # wodu
+```
+
+\newpage
+
+```{r cago_air_ground, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:cago_air_ground}", "Annual relationship between Canada goose counts by air observers (red line) and ground observers (blue line) during the Wisconsin Aerial Spring Waterfowl Survey, 1973--", survey_year, ".")}
+plot_air_ground(spp = 4) # cago
+```
+
+\newpage
+
+```{r other_air_ground, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:other_air_ground}", "Annual relationship between 'other duck' counts by air observers (red line) and ground observers (blue line) during the Wisconsin Aerial Spring Waterfowl Survey, 1973--", survey_year, ".")}
+plot_air_ground(spp = 5) # other ducks
+```

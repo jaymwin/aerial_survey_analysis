@@ -1,0 +1,49 @@
+---
+title: "Automated data analysis and report writing for the WI Spring Waterfowl Survey"
+# author: Jay Winiarski, WI DNR Office of Applied Science (jason.winiarski@wisconsin.gov)
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+geometry: margin=0.75in
+urlcolor: blue
+graphics: yes
+header-includes:
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancypagestyle{plain}
+  - \fancyhf{}
+  - \renewcommand{\headrulewidth}{0pt}
+  - \renewcommand{\footrulewidth}{0pt}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+\fontsize{12}{14}
+\selectfont
+
+Finish adding workflow instructions here...
+
+```{r echo = FALSE}
+library(DiagrammeR)
+
+DiagrammeR::grViz("digraph {
+
+graph [layout = dot, rankdir = TB, label = '   Spring Waterfowl Survey\n\n', labelloc = t, fontname = arial] # LR
+node [shape = rectangle, style = filled, fillcolor = Grey, fontname = arial]
+
+survey_data [label = 'Current year survey data', shape = rectangle, fillcolor = Grey]
+sql [label = 'Update SQLite database', shape = rectangle, fillcolor = Grey]
+summary [label =  'Summarize/analyze data']
+annual_outputs [label = 'Annual model outputs']
+dashboard [label= 'Data dashboard']
+rmarkdown [label= 'RMarkdown reports']
+
+survey_data -> sql -> summary
+summary -> annual_outputs
+summary -> dashboard
+summary -> rmarkdown
+
+}")
+```
+
