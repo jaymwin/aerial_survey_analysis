@@ -5,6 +5,7 @@ library(tidyverse)
 library(rnaturalearth)
 library(raster)
 library(tmap)
+library(fs)
 
 select <- dplyr::select
 
@@ -195,3 +196,9 @@ tm
 # save
 tmap_save(tm, str_c(here::here('output'), '/', analysis_year, '/', 'prism/precip_anomalies.png'), width = 7.5, height = 4, dpi = 600, units = 'in')
 
+
+# clean out prism folder --------------------------------------------------
+
+dir_ls(str_c(here::here('output'), '/', analysis_year, '/', 'prism'), glob = '*bil') %>%
+  file_delete()
+  
