@@ -243,7 +243,7 @@ create_trumpeter_table <- function(start_year) {
     mutate(across(survey_estimate:model_estimate, ~scales::number(.x, big.mark = ",", accuracy = 1))) %>%
     rename(Year = year, `Survey estimate` = survey_estimate, `Modeled estimate` = model_estimate) %>%
     kbl(
-      caption = str_glue('Annual statewide estimates of breeding Trumpeter swan abundance in Wisconsin, {start_year}--{analysis_year}. Data include abundance estimates from the Aerial Spring Breeding Duck Survey as well model predicated abundance estimates from a Bayesian state-space model. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.'),
+      caption = str_glue('Annual statewide estimates of breeding Trumpeter swan abundance in Wisconsin, {start_year}--{analysis_year}. Raw survey estimates and model-predicted estimates from a Bayesian state-space model are shown. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.'),
       align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
       # align = 'ccc',
       booktabs = TRUE,
@@ -341,7 +341,7 @@ create_current_breeding_estimate_table <- function() {
   # create table
   df %>%
     kbl(
-      caption = str_glue("{analysis_year} Wisconsin Spring Duck Survey waterfowl breeding population estimates."),
+      caption = str_glue("Statewide and stratum-specific population estimates for the {analysis_year} Waterfowl Breeding Population Survey population estimates."),
       # align = 'cccccc', # center cell values
       align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
       escape = FALSE, # needed for latex expressions
@@ -370,7 +370,7 @@ create_current_breeding_estimate_table <- function() {
           "Aerial Visibility Correction Factor = ratio of number of species-specific individuals seen from the ground divided by the number seen from the air on air-ground segments, pooled across strata. To achieve a desirable coefficient of variation (CV) value in the aerial visibility correction factor, previous years of air-ground data were iteratively added until CV was <20\\\\%. In {analysis_year}, aerial visibility correction factors for mallards, blue-winged teal, wood ducks, Canada geese, and \"other ducks\" were derived using {vcfs[1]}, {vcfs[2]}, {vcfs[3]}, {vcfs[4]}, and {vcfs[5]} years of air ground data, respectively."
         )
       ),
-      alphabet = "\\\\footnotesize{Lesser Scaup, Buffleheads, and all non-duck/goose waterbirds are excluded from analysis. Common duck species included as \"other ducks\" include: Ring-necked duck, Common Goldeneye, Northern Shoveler, Hooded Merganser, Common Merganser, Gadwall, Green-winged teal, and Canvasback.}",
+      alphabet = "\\\\footnotesize{Lesser scaup, bufflehead, and all non-duck/goose waterbirds are excluded from analysis. Common duck species categorized as \"other ducks\" include: ring-necked duck, common goldeneye, northern shoveler, hooded merganser, common merganser, gadwall, green-winged teal, and canvasback.}",
       footnote_as_chunk = FALSE,
       threeparttable = TRUE,
       escape = FALSE,
