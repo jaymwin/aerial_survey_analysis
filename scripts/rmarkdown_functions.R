@@ -52,7 +52,7 @@ render_report <- function(year, report_type) {
       ),
       output_dir = here::here(str_c('reports', '/', year)), # year-specific output directory
       output_file = str_c("internal_report_", year, ".pdf"), # year-specific report name
-      quiet = FALSE
+      quiet = TRUE
     )
     
   } else { # OAS final report
@@ -64,7 +64,7 @@ render_report <- function(year, report_type) {
       ),
       output_dir = here::here(str_c('reports', '/', analysis_year)), # year-specific output directory
       output_file = str_c("oas_spring_survey_report_", analysis_year, ".pdf"), # year-specific report name
-      quiet = FALSE
+      quiet = TRUE
     )
     
   }

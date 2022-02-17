@@ -2,6 +2,7 @@
 
 # load libraries ----------------------------------------------------------
 
+options(warn = -1) # turn off warnings for now
 library(lubridate)
 library(tidyverse)
 library(rmarkdown)
@@ -20,13 +21,7 @@ analysis_year <- lubridate::today() %>%
 analyze_survey_data(analysis_year)
 
 
-# now write year-appropriate reports ----------------------------------
-
-# # generate internal report (for Taylor)
-# render_report(
-#   year = analysis_year,
-#   report_type = 'wildlife_mgt'
-#   )
+# now write year-appropriate report -----------------------------------
 
 # generate final report (OAS)
 render_report(
