@@ -1,5 +1,5 @@
 ---
-title: "Waterfowl Breeding Population Survey <br> For Wisconsin 1973--`r params$year`"
+title: "Waterfowl Breeding Population Survey For Wisconsin 1973--`r params$year`"
 author:  |
   | Jason Winiarski^1^ and Taylor Finger^2^
   | *^1^Office of Applied Science*
