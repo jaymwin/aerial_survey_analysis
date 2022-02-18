@@ -69,6 +69,10 @@ render_report <- function(year, report_type) {
     
   }
   
+  # clean up any extra files created during this process
+  dir_ls(str_c(here::here('reports'), '/', analysis_year), glob = '*files') %>%
+    file_delete()
+  
 }
 
 
