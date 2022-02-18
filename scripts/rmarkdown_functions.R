@@ -260,7 +260,7 @@ create_trumpeter_table <- function(start_year) {
 create_current_breeding_estimate_table <- function() {
   
   df <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_summary', '.csv'), show_col_types = FALSE) %>%
-    select(species, region, area, b, r, pop_est, pop_se_2) %>%
+    select(species, region, area, b, r, pop_est, pop_se_1) %>%
     mutate(
       region = case_when(
         region == 1 ~ 'SEC',
@@ -285,19 +285,46 @@ create_current_breeding_estimate_table <- function() {
       "Bird density seen from the air (birds/mi$^2$)" = b, 
       `Aerial visibility correction factor` = r, 
       `Survey estimate` = pop_est, 
-      `Standard error` = pop_se_2
+      `Standard error` = pop_se_1 # pop_se_2 was used by Drew in 2021; very small and raised red flag so using ron's se here now
     ) %>%
     mutate(across("Bird density seen from the air (birds/mi$^2$)":`Aerial visibility correction factor`, ~format(round(.x, 3), nsmall = 3)))
+  
+  # calculate statewide SEs according to Ron and Drew
+  statewide_se <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_summary', '.csv'), show_col_types = FALSE) %>%
+    select(species, region, pop_var) %>%
+    mutate(
+      region = case_when(
+        region == 1 ~ 'SEC',
+        region == 2 ~ 'NHI',
+        region == 3 ~ 'NLO',
+        region == 4 ~ 'SWD'
+      ),
+      species = case_when(
+        species == 1 ~ 'Mallard',
+        species == 2 ~ 'Blue-winged teal',
+        species == 3 ~ 'Wood duck',
+        species == 4 ~ 'Canada goose',
+        TRUE ~ 'Other duck species'
+      )
+    ) %>%
+    mutate(species = fct_relevel(species, 'Mallard', 'Blue-winged teal', 'Wood duck', 'Other duck species', 'Canada goose')) %>%
+    arrange(species, region) %>%
+    group_by(species) %>%
+    summarise(pop_se_1 = sqrt(sum(pop_var))) %>%
+    rename(
+      `Standard error` = pop_se_1 # pop_se_2 was used by Drew in 2021; very small and raised red flag so using ron's se here now
+    ) %>%
+    pull(`Standard error`)
 
   # calculate subtotals; not sure if actually necessary or what the subtotal is here
   subtotals <- df %>%
     mutate(Stratum = 'Subtotal') %>%
     group_by(Species, Stratum) %>%
     summarize(
-      `Survey estimate` = sum(`Survey estimate`),
-      `Standard error` = mean(`Standard error`)
+      `Survey estimate` = sum(`Survey estimate`)
     ) %>%
-    ungroup()
+    ungroup() %>%
+    mutate(`Standard error` = statewide_se)
   
   # now add back and order table by species and strata
   df <- df %>%
@@ -336,7 +363,7 @@ create_current_breeding_estimate_table <- function() {
   
   # and need vcfs to update footnote
   vcf_df <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_vcf_estimates', '.csv'), show_col_types = FALSE)
-  vcfs <- vcf_df %>% pull(total_years)
+  vcfs <- vcf_df %>% pull(total_years) # years needed to calculate VCF (CV < 0.20) for each species
   
   # create table
   df %>%
