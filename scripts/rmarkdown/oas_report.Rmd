@@ -212,12 +212,12 @@ Funding, survey crews, pilots here. Ideally we would get a csv from Taylor with 
 
 # Tables
 
-```{r tables,  child = here::here("scripts/rmarkdown/final_report_tables.Rmd"), warning = FALSE, message = FALSE}
+```{r tables,  child = here::here("scripts/rmarkdown/oas_report_tables.Rmd"), warning = FALSE, message = FALSE}
 ```
 
 \newpage
 
 # Figures
 
-```{r figures, child = here::here("scripts/rmarkdown/final_report_figures.Rmd"), warning = FALSE, message = FALSE}
+```{r figures, child = here::here("scripts/rmarkdown/oas_report_figures.Rmd"), warning = FALSE, message = FALSE}
 ```
