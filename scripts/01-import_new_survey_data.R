@@ -8,10 +8,46 @@ library(tidyverse)
 library(DBI)
 library(dbplyr)
 library(RSQLite)
+library(haven)
+library(janitor)
 
 source(here::here('scripts/waterfowl_survey_functions.R')) # functions for summarizing, analyzing data
 
 # analysis_year <- 2021
+
+
+# import data from sas (2022-onward) --------------------------------------
+
+sas_files <- dir_ls(here::here('raw_data/annual_survey_data'), glob = '*sas7bdat') %>%
+  as_tibble() %>%
+  mutate(
+    type = str_extract(value, 'airwet|wsds'),
+    name = str_remove(basename(value), '.sas7bdat'),
+    year = str_sub(name, start = -2, end = -1),
+    year = str_c(20, year)
+  )
+sas_files
+
+# waterfowl
+sas_files %>%
+  filter(type == 'wsds' & year == analysis_year) %>%
+  pull(value) %>%
+  read_sas() %>%
+  filter(YEAR == str_sub(analysis_year, start = 3, end = 4)) %>%
+  clean_names() %>%
+  mutate(across(-c(direct, side), as.numeric)) %>%
+  write_csv(str_c(here::here('raw_data/annual_survey_data'), '/', analysis_year, '_waterfowl.csv'))
+
+# wetlands
+sas_files %>%
+  filter(type == 'airwet' & year == analysis_year) %>%
+  pull(value) %>%
+  read_sas() %>%
+  filter(YEAR == analysis_year) %>%
+  clean_names() %>%
+  # get rid of any NA rows
+  filter(!is.na(month)) %>%
+  write_csv(str_c(here::here('raw_data/annual_survey_data'), '/', analysis_year, '_air_wetlands.csv'))
 
 
 # append new spring survey data (waterfowl) -------------------------------
