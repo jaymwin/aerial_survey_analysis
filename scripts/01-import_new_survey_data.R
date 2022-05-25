@@ -18,6 +18,8 @@ source(here::here('scripts/waterfowl_survey_functions.R')) # functions for summa
 
 # import data from sas (2022-onward) --------------------------------------
 
+if (analysis_year >= 2022) {
+
 sas_files <- dir_ls(here::here('raw_data/annual_survey_data'), glob = '*sas7bdat') %>%
   as_tibble() %>%
   mutate(
@@ -48,6 +50,8 @@ sas_files %>%
   # get rid of any NA rows
   filter(!is.na(month)) %>%
   write_csv(str_c(here::here('raw_data/annual_survey_data'), '/', analysis_year, '_air_wetlands.csv'))
+
+}
 
 
 # append new spring survey data (waterfowl) -------------------------------
