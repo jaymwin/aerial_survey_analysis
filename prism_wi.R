@@ -338,45 +338,45 @@ tm_tmean
 tmap_save(tm_tmean, str_c(here::here('output'), '/', analysis_year, '/', 'prism/temp_anomalies.png'), width = 7.5, height = 4, dpi = 600, units = 'in')
 
 
-# start-of-spring ---------------------------------------------------------
-
-library('rnpn')
-
-layers <- npn_get_layer_details() %>% as_tibble()
-layers %>% print(n=Inf)
-
-layers %>% filter(name == 'si-x:bloom_anomaly_prism') %>% as.data.frame()
-
-bloom_avg <- npn_download_geospatial(
-  coverage_id = 'si-x:bloom_anomaly_prism',
-  date = NULL, 
-  format = 'geotiff',
-  output_path = NULL
-)
-plot(bloom_avg)
-
-bloom_current <- npn_download_geospatial(
-  coverage_id = 'si-x:average_bloom_prism',
-  date = '2021-01-01', 
-  format = 'geotiff',
-  output_path = NULL
-)
-plot(bloom_current)
-
-bloom_avg <- bloom_avg %>%
-  crop(., wi_border) %>%
-  mask(., wi_border)
-
-bloom_current <- bloom_current %>%
-  crop(., wi_border) %>%
-  mask(., wi_border)
-
-anom_ras_start_of_spring <- raster::overlay(
-  bloom_current, 
-  bloom_avg, 
-  fun = calculate_anomalies
-)
-plot(anom_ras_start_spring)
+# # start-of-spring ---------------------------------------------------------
+# 
+# library('rnpn')
+# 
+# layers <- npn_get_layer_details() %>% as_tibble()
+# layers %>% print(n=Inf)
+# 
+# layers %>% filter(name == 'si-x:bloom_anomaly_prism') %>% as.data.frame()
+# 
+# bloom_avg <- npn_download_geospatial(
+#   coverage_id = 'si-x:bloom_anomaly_prism',
+#   date = NULL, 
+#   format = 'geotiff',
+#   output_path = NULL
+# )
+# plot(bloom_avg)
+# 
+# bloom_current <- npn_download_geospatial(
+#   coverage_id = 'si-x:average_bloom_prism',
+#   date = '2021-01-01', 
+#   format = 'geotiff',
+#   output_path = NULL
+# )
+# plot(bloom_current)
+# 
+# bloom_avg <- bloom_avg %>%
+#   crop(., wi_border) %>%
+#   mask(., wi_border)
+# 
+# bloom_current <- bloom_current %>%
+#   crop(., wi_border) %>%
+#   mask(., wi_border)
+# 
+# anom_ras_start_of_spring <- raster::overlay(
+#   bloom_current, 
+#   bloom_avg, 
+#   fun = calculate_anomalies
+# )
+# plot(anom_ras_start_spring)
 
 
 # clean out prism folder --------------------------------------------------
