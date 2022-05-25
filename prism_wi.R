@@ -9,7 +9,8 @@ library(fs)
 
 select <- dplyr::select
 
-analysis_year <- lubridate::today() %>% lubridate::year() - 1
+analysis_year <- lubridate::today() %>% 
+  lubridate::year()
 
 
 # climate normals ---------------------------------------------------------
