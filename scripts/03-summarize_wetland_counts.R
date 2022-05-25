@@ -19,6 +19,7 @@ ws_survey_raw <- read_csv(
     direct = 'c', 
     side = 'c')
 )
+ws_survey_raw
 
 # occupied wetlands only
 occ_wet <- ws_survey_raw %>%

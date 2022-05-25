@@ -44,6 +44,7 @@ ws_survey_raw <- ws_survey_raw %>%
       TRUE ~ year + 2000 # >= 2000
     )
   )
+ws_survey_raw
 
 # replace empty cells (NAs) in grd column with '4'; this way:
 # "4" and "1" = observations from air
@@ -51,6 +52,7 @@ ws_survey_raw <- ws_survey_raw %>%
 # "1" = air count over air-ground portion of transect
 ws_survey_raw <- ws_survey_raw %>%
   mutate(grd = replace_na(grd, 4)) # replace NAs with 4 
+ws_survey_raw
 
 # replace empty cells (NAs) in wetype column with 10 
 # here, "10" represents a "field" sighting rather than a wetland
@@ -72,6 +74,7 @@ ws_survey_raw <- ws_survey_raw %>%
   group_by(transect) %>%
   mutate(basin_no = as.numeric(row_number())) %>%
   ungroup()
+ws_survey_raw
 
 # save for summarizing wetlands in next script
 ws_survey_raw %>%
@@ -87,10 +90,12 @@ ws_structured <- ws_survey_raw %>%
   ) %>%
   select(-set) %>% # not needed
   rename(species = sp, pairs = pr, lonedrake = lm, flockdrake = fm, groups = us)
+ws_structured
 
 # join with transect metadata to add region
 ws_structured <- ws_structured %>%
   left_join(., transect_metadata)
+ws_structured
 
 # create priority species codes from species codes
 ws_structured <- ws_structured %>%
@@ -104,10 +109,12 @@ ws_structured <- ws_structured %>%
       TRUE ~ 5 # all other duck species
     )
   )
+ws_structured
 
 # remove observations where no species was recorded (i.e unoccupied wetland observations)
 ws_structured <- ws_structured %>%
   filter(species != 0)
+ws_structured
 
 # Adjusting for reports of "1" flocked drake - according to R. Gatti analysis
 ws_structured <- ws_structured %>%
@@ -121,6 +128,7 @@ ws_structured <- ws_structured %>%
       TRUE ~ flockdrake
     )
   )
+ws_structured
 
 #Treats groups less than 5 as identifiable pairs, with the exception of CAGO.  
 ws_structured <- ws_structured %>%
@@ -138,6 +146,7 @@ ws_structured <- ws_structured %>%
       TRUE ~ groups
     )
   )
+ws_structured
 
 #check the structure of the ws_structured
 glimpse(ws_structured)
@@ -482,6 +491,7 @@ survey_timing <- tibble(
   ground_total_survey_days = ground_total_survey_days,
   air_ground_overlap = max(abs(air_ground_overlap$diff)) # sometimes done before aerial survey so abs
 )
+survey_timing
 
 # save for reporting
 survey_timing %>%
