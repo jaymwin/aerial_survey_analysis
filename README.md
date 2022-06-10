@@ -5,6 +5,8 @@ Data, analysis, and automated reporting for the Wisconsin Waterfowl Breeding Pop
 
 1. Clean up code/code annotation
 2. Write survey analysis instructions
-3. Incorporate PRISM data
-4. Make sure workflow can be run multiple times without affecting databases
-5. Make sure this will work for new data
+3. Change to OC fonts (?)
+
+## Notes
+
+- For whatever reason, the report will render on my Desktop but not when the project is run from the OAS drive...
