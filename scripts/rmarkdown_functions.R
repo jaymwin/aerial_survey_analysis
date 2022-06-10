@@ -5,6 +5,7 @@ library(formattable)
 library(sf)
 library(rnaturalearth)
 library(ggsflabel)
+library(ggokabeito)
 options(knitr.table.format = "latex")
 options(tidyverse.quiet = TRUE)
 
@@ -211,7 +212,7 @@ create_wetland_summary_table <- function(region_code) {
   # create table
   annual_wetlands %>%
     kbl(
-      caption = str_glue('Numbers of wetlands per square mile observed during the last 10-year period, {summary_start_year}--{analysis_year}, {region_name} region.'),
+      caption = str_glue('Type and number of wetlands per square mile observed during the last 10-year period, {summary_start_year}--{analysis_year}, {region_name} region.'),
       align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
       booktabs = TRUE, # table formatting
       linesep = "" # prevent spaces every 5th row
@@ -222,9 +223,10 @@ create_wetland_summary_table <- function(region_code) {
     column_spec(1, width = '8em', latex_valign = "m") %>%
     footnote(
       general = "",
-      general_title = "Notes: I, II, VI = temporary, wet meadow, and shrub swamp
-    wetlands; III, IV = seasonal and semi-permanent wetlands; V =
-    permanent/open water wetlands; VII, VIII = wooded swamp and bog wetlands",
+      general_title = "Notes: Wetland classification system from March et al. (1973). 
+      I, II, VI = temporary, wet meadow, and and shrub swamps; III = seasonal wetlands, IV, V = semi-permanent 
+      and permanent/open water wetlands; VII, VIII = wooded swamp and bog wetlands. Non-linear wetlands include
+      type I-VIII wetlands, and linear wetlands include streams and ditches.",
       title_format = c("italic"),
       footnote_as_chunk = FALSE,
       threeparttable = TRUE,
@@ -247,13 +249,13 @@ create_trumpeter_table <- function(start_year) {
     mutate(across(survey_estimate:model_estimate, ~scales::number(.x, big.mark = ",", accuracy = 1))) %>%
     rename(Year = year, `Survey estimate` = survey_estimate, `Modeled estimate` = model_estimate) %>%
     kbl(
-      caption = str_glue('Annual statewide estimates of breeding Trumpeter swan abundance in Wisconsin, {start_year}--{analysis_year}. Raw survey estimates and model-predicted estimates from a Bayesian state-space model are shown. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.'),
+      caption = str_glue('Annual statewide estimates of breeding Trumpeter swan abundance in Wisconsin, {start_year}--{analysis_year}. Survey estimates (corrected for bird density and survey region area, but not visibility) and model-predicted estimates from a Bayesian state-space model are shown. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.'),
       align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
       # align = 'ccc',
       booktabs = TRUE,
       linesep = ""
       ) %>%
-    add_header_above(c(" ", "Trumpeter swan statewide annual trends" = 2), bold = TRUE) %>%
+    # add_header_above(c(" ", "Trumpeter swan statewide annual trends" = 2), bold = TRUE) %>%
     kableExtra::kable_styling(latex_options = c('striped', 'hold_position')) %>%
     kableExtra::row_spec(0, bold = TRUE)
   
@@ -583,15 +585,30 @@ plot_wetland_abundance <- function() {
     left_join(., regions, by = 'region') %>%
     mutate(name = fct_reorder(name, region))
   
+  # missing covid year
+  missing_covid_wpsqm <- tribble(
+    ~Year, ~name, ~wetland_type, ~wpsqm,
+    2020, 'Southeast Central region', 'Non-linear', as.numeric(NA),
+    2020, 'Southeast Central region', 'Linear', as.numeric(NA),
+    2020, 'Northern High Density region', 'Non-linear', as.numeric(NA),
+    2020, 'Northern High Density region', 'Linear', as.numeric(NA),
+    2020, 'Northern Low Density region', 'Non-linear', as.numeric(NA),
+    2020, 'Northern Low Density region', 'Linear', as.numeric(NA),
+    2020, 'Southwest Driftless region', 'Non-linear', as.numeric(NA),
+    2020, 'Southwest Driftless region', 'Linear', as.numeric(NA)
+  )
+  
   # plot
   df_wetlands %>%
     select(year, non_linear, linear, name) %>%
     rename(Year = year, `Non-linear` = non_linear, Linear = linear) %>%
     gather(wetland_type, wpsqm, -Year, -name) %>%
+    bind_rows(., missing_covid_wpsqm) %>%
     ggplot() +
     geom_line(aes(Year, wpsqm, color = wetland_type)) +
     geom_point(aes(Year, wpsqm, color = wetland_type)) +
-    scale_color_brewer(palette = 'Dark2') +
+    # scale_color_brewer(palette = 'Dark2') +
+    scale_color_viridis_d(option = 'D', end = 0.8) +
     labs(
       y = 'Wetlands per square mile' # ,
       # title = str_glue('Wetland abundance in Wisconsin {region_name}')
@@ -619,8 +636,8 @@ plot_state_space_abundance <- function(spp) {
     ggplot() +
     geom_ribbon(aes(x = year, ymin = lcl, ymax = ucl, group = species), alpha = 5/10, fill = 'grey40') +
     geom_line(aes(x = year, y = mean, group = species), size = 1) +
-    geom_line(aes(x = year, y = n, group = species), linetype = 2, color = 'steelblue4') +
-    geom_point(aes(x = year, y = n, group = species), color = 'steelblue4') +
+    geom_line(aes(x = year, y = n, group = species), linetype = 2, color = palette_okabe_ito(order = 5)) +
+    geom_point(aes(x = year, y = n, group = species), color = palette_okabe_ito(order = 5)) +
     #geom_hline(aes(yintercept=), linetype="dashed")+
     theme_classic()+
     ylab("Estimated  breeding abundance") +
@@ -649,10 +666,10 @@ plot_transect_map <- function() {
   air_rts <- air_rts %>%
     mutate(
     region = case_when(
-      transect < 30 ~ 'SEC', # SEC
-      transect >= 30 & transect < 43 ~ 'NHI',
-      transect >= 43 & transect < 61 ~ 'NLO',
-      transect >= 61 & transect < 72 ~ 'SWD'
+      transect < 30 ~ 'SEC', # SEC = 1; transects 1-29
+      transect >= 30 & transect < 43 ~ 'NHI', # NHI = 2; transects 30-42
+      transect >= 43 & transect < 61 ~ 'NLO', # NLO = 3; transects 43-60
+      transect >= 61 & transect < 72 ~ 'SWD' # SWD = 4; transects 61-71
     )
   )
   
@@ -684,14 +701,22 @@ plot_crane_counts <- function() {
   # load data
   df_cranes <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'cranes', "_", analysis_year, '.csv'), show_col_types = FALSE)
   
+  # missing covid year
+  missing_covid_cranes <- tribble(
+    ~year, ~cranes_total, ~cranes_no_groups,
+    2020, as.numeric(NA), as.numeric(NA)
+  )
+  
   # plot
   df_cranes %>%
+    bind_rows(., missing_covid_cranes) %>%
     rename(`Excluding groups` = cranes_no_groups, Total = cranes_total) %>%
     gather(count_type, count, -year) %>%
     ggplot() +
     geom_line(aes(year, count, color = count_type)) +
     geom_point(aes(year, count, color = count_type)) +
-    scale_color_brewer(palette = 'Set1', direction = -1) +
+    # scale_color_brewer(palette = 'Set1', direction = -1) +
+    scale_color_viridis_d(option = 'F', end = 0.8) +
     labs(
       y = 'Number of cranes',
       x = 'Year'

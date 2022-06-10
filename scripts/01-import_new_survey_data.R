@@ -49,6 +49,15 @@ sas_files %>%
   clean_names() %>%
   # get rid of any NA rows
   filter(!is.na(month)) %>%
+  mutate(
+    ground = replace_na(ground, 0),
+    region = case_when(
+      transect < 30 ~ 1, # SEC
+      transect >= 30 & transect < 43 ~ 2, # NHI
+      transect >= 43 & transect < 61 ~ 3, # NLO
+      transect >= 61 & transect < 72 ~ 4 # SWD
+    )
+  ) %>%
   write_csv(str_c(here::here('raw_data/annual_survey_data'), '/', analysis_year, '_air_wetlands.csv'))
 
 }

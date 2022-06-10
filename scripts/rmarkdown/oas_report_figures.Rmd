@@ -16,13 +16,13 @@ opts_knit$set(eval.after = "fig.cap")
 survey_year <- params$year
 ```
 
-```{r transect_map, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "\\label{fig:transect_map}Wisconsin Waterfowl Breeding Population Survey aerial transects labeled by transect number and survey region. The four regions surveyed are the Northern High Density region (NHI), Northern Low Density region (NLO), Southeast Central region (SEC), and Southwest Driftless region (SWD)."}
+```{r transect_map, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "\\label{fig:transect_map}Wisconsin Waterfowl Breeding Population Survey aerial transects (*n* = 66) labeled by transect number and survey region. The four regions surveyed are the Northern High Density region (NHI), Northern Low Density region (NLO), Southeast Central region (SEC), and Southwest Driftless region (SWD)."}
 plot_transect_map()
 ```
 
 \newpage
 
-```{r wetland_abundance, message = FALSE, warning = FALSE, echo = FALSE, fig.cap =  paste0("\\label{fig:wetland_abundance}", "Annual variability in total non-linear and linear wetlands per square mile by survey region.")}
+```{r wetland_abundance, message = FALSE, warning = FALSE, echo = FALSE, fig.cap =  paste0("\\label{fig:wetland_abundance}", "Annual variability in total linear and non-linear wetlands per square mile by survey region. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.")}
 plot_wetland_abundance()
 ```
 
@@ -83,7 +83,7 @@ plot_state_space_abundance(spp = 'canada goose')
 
 \newpage
 
-```{r annual_crane_counts, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:annual_crane_counts}", "Annual counts of sandhill cranes observed from the air during the Waterfowl Breeding Population Survey, 1996--", survey_year, ".")}
+```{r annual_crane_counts, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = paste0("\\label{fig:annual_crane_counts}", "Annual counts of sandhill cranes (raw estimates) observed from the air during the Waterfowl Breeding Population Survey, 1996--", survey_year, ". Note that surveys were not conducted in 2020 due to the COVID-19 pandemic.")}
 plot_crane_counts()
 ```
 

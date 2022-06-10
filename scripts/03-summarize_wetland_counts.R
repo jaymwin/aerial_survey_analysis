@@ -32,11 +32,13 @@ occ_wet <- ws_survey_raw %>%
       transect >= 61 & transect < 72 ~ 4
     )
   )
+occ_wet
 
 # read in aerial wetland counts from database
 air_wet <- tbl(hist_db, 'raw_wetland_counts') %>%
   collect() %>%
   mutate(across(everything(), ~replace_na(.x, 0))) # replace na counts with 0s
+air_wet
 
 # disconnect
 dbDisconnect(hist_db)

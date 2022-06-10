@@ -312,7 +312,7 @@ calculate_vcf <- function(df, spp) {
     
     # set number of transects in calculations below
     # this number changes with the number of years considered
-    n_transects <- 26 * i # adjust number of transects
+    n_transects <- 27 * i # adjust number of transects
     
     # perform VCF calculations
     vcf_calc <- tibble(

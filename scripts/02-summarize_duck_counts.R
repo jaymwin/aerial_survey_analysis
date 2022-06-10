@@ -28,6 +28,7 @@ ws_survey_raw <- tbl(hist_db, 'raw_duck_counts') %>%
 # read in species codes
 spp_codes <- tbl(hist_db, 'species_codes') %>%
   collect()
+spp_codes %>% print(n=Inf)
 
 # disconnect
 dbDisconnect(hist_db)
@@ -111,6 +112,7 @@ ws_structured <- ws_structured %>%
   )
 ws_structured
 
+
 # remove observations where no species was recorded (i.e unoccupied wetland observations)
 ws_structured <- ws_structured %>%
   filter(species != 0)
@@ -188,6 +190,8 @@ ws_structured_air <- ws_structured_air %>%
       TRUE ~ (pairs + flockdrake + lonedrake) * 2
     )
   )
+
+ws_structured_air
 
 ###Copy 2 - AIR and GROUND Data (GRD = 1,2,and4) ### 
 
@@ -337,12 +341,21 @@ comp_oducks_state <- ws_structured_air %>%
 
 comp_oducks_state %>%
   mutate(percent = round((ind_birds_Pop / sum(ind_birds_Pop)) * 100), 0) %>%
-  left_join(., spp_codes) %>%
+  full_join(., spp_codes) %>%
   select(common_name, percent) %>%
   mutate(
     common_name = make_clean_names(common_name),
     percent = str_c(percent, '%')
-    ) %>%
+  ) %>%
+  filter(
+    common_name %in% c(
+      'common_merganser', 'hooded_merganser', 'green_winged_teal',
+      'northern_shoveler', 'northern_pintail', 'redhead', 'canvasback', 'ring_necked_duck',
+      'goldeneye', 'ruddy_duck', 'red_breasted_merganser', 'black_duck', 'gadwall',
+      'american_wigeon'
+    )
+  ) %>%
+  mutate(percent = replace_na(percent, '0%')) %>%
   pivot_wider(names_from = common_name, values_from = percent) %>%
   write_csv(str_c(here::here('output'), '/', analysis_year, '/', 'comp_oducks_state', "_", analysis_year, '.csv'))
 
@@ -446,6 +459,9 @@ ground_start_end <- ground_dates %>%
   # filter to first/last date
   filter(row_number() == 1 | row_number() == n())
 
+min_air_ground_survey_date <- min(bind_rows(aerial_start_end, ground_start_end)$date)
+max_air_ground_survey_date <- max(bind_rows(aerial_start_end, ground_start_end)$date)
+
 # ground timing summary
 ground_start_survey_date <- ground_start_end[1, 1] %>% pull()
 ground_end_survey_date <- ground_start_end[2, 1] %>% pull()
@@ -489,7 +505,11 @@ survey_timing <- tibble(
   ground_start_survey_date = ground_start_survey_date,
   ground_end_survey_date = ground_end_survey_date,
   ground_total_survey_days = ground_total_survey_days,
-  air_ground_overlap = max(abs(air_ground_overlap$diff)) # sometimes done before aerial survey so abs
+  air_ground_overlap = max(abs(air_ground_overlap$diff)), # sometimes done before aerial survey so abs
+  min_air_ground_survey_date = min_air_ground_survey_date %>% format(., format = "%B %d") %>%
+    str_replace(., ' 0', ' '),
+  max_air_ground_survey_date = max_air_ground_survey_date %>% format(., format = "%B %d") %>%
+    str_replace(., ' 0', ' ')
 )
 survey_timing
 
