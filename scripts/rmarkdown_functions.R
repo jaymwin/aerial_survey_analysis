@@ -44,6 +44,8 @@ options(tidyverse.quiet = TRUE)
 # function to create report and title by year and type
 render_report <- function(year, report_type) {
   
+  # at one time, an internal report was made for taylor to look at before
+  # creating a final report...really not necessary anymore but still here
   if (report_type == 'wildlife_mgt') { # for Taylor
     
     render(
@@ -58,6 +60,7 @@ render_report <- function(year, report_type) {
     
   } else { # OAS final report
     
+    # this is the report we need to publish each year
     render(
       here::here("scripts/rmarkdown/oas_report.Rmd"), # .rmd file for fancier looking report
       params = list(
@@ -180,13 +183,16 @@ create_wetland_summary_table <- function(region_code) {
     mutate(Year = as.character(Year))
   
   # calculate long-term mean again to calculate % change from long-term mean
+  # just a note here: if current survey year = 2022, then long-term average should
+  # come from 1973 through current survey year - 1 (1973--2021)
   long_term <- df_wetlands %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
     ungroup() %>%
     drop_na() %>% # get rid of any no-survey years like 2020
-    filter(region == region_code) %>%
-    summarise(across(`I, II, VI`:Linear, ~mean(.x, na.rm = TRUE))) %>% # includes current year in long-term mean
+    # filter(region == region_code) %>%  # includes current year in long-term mean (is this ok?)
+    filter(region == region_code & year < analysis_year) %>%  # does not include current year in long-term mean
+    summarise(across(`I, II, VI`:Linear, ~mean(.x, na.rm = TRUE))) %>%
     mutate(Year = 'Long-term mean') %>%
     select(Year, `I, II, VI`, III, `IV, V`, `VII, VIII`, `Non-linear`, Stream, Ditch, Linear)
   
@@ -243,6 +249,7 @@ create_trumpeter_table <- function(start_year) {
   read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'state_space_results_', analysis_year, '.csv'), show_col_types = FALSE) %>%
     filter(
       species == 'trumpeter swan',
+      # seems like a good starting place for trumpeters
       year >= 2010
       ) %>%
     select(year, survey_estimate = n, model_estimate = mean) %>%
