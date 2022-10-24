@@ -472,11 +472,11 @@ create_survey_state_space_estimates_table <- function() {
     mutate(across(2:13, ~recode(.x, `NA%` = ""))) # convert NA% to empty cell
 
   # % change from the mean of 1973 to most recent year - 1 
-  # length_of_df <- dim(df)[1] # from report, sounds like long-term includes current year so commented out
+  length_of_df <- dim(df)[1] # from report, sounds like long-term includes current year so commented out
   
-  # mean of all years
+  # mean of all years (1973 to current year minus one)
   long_term_mean <- df %>%
-    # slice_head(n = length_of_df - 1) %>% 
+    slice_head(n = length_of_df - 1)
     summarize(across(2:13, ~mean(.x, na.rm = TRUE)))
   
   # percent change between long-term mean and current year
