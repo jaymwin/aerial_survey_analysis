@@ -197,19 +197,19 @@ create_wetland_summary_table <- function(region_code) {
     select(Year, `I, II, VI`, III, `IV, V`, `VII, VIII`, `Non-linear`, Stream, Ditch, Linear)
   
   # % change from long-term mean
-  perc_long_term <- long_term %>%
-    bind_rows(., current_year_wetlands) %>%
-    mutate(across(`I, II, VI`:Linear, ~(.x/lag(.x) - 1) * 100)) %>%
-    slice(2) %>%
+  perc_long_term <- long_term %>% # long-term mean
+    bind_rows(., current_year_wetlands) %>% # current year summary
+    mutate(across(`I, II, VI`:Linear, ~(.x/lag(.x) - 1) * 100)) %>% # percent difference between the two
+    slice(2) %>% # pull out differences
     mutate(across(`I, II, VI`:Linear, ~format(round(.x, 1), nsmall = 1))) %>%
     mutate(Year = '% Change from long-term mean') %>%
     mutate(across(`I, II, VI`:Linear, ~str_c(.x, '%')))
   
   # combine dataframes needed for table
-  wetland_summary <- perc_change_last_year %>%
-    bind_rows(., long_term_mean) %>%
-    bind_rows(., perc_long_term) %>%
-    bind_rows(., ten_year_mean)
+  wetland_summary <- perc_change_last_year %>% # percent change from last year
+    bind_rows(., long_term_mean) %>% # long-term average
+    bind_rows(., perc_long_term) %>% # % change from long-term average
+    bind_rows(., ten_year_mean) # and ten year average; these are used at bottom of table
   
   # add annual statistics with percent change summaries
   annual_wetlands <- annual_wetlands %>%
