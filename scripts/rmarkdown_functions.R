@@ -165,7 +165,7 @@ create_wetland_summary_table <- function(region_code) {
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
     ungroup() %>%
     drop_na() %>% # get rid of any no-survey years like 2020
-    filter(region == region_code) %>% # all years included in long-term mean
+    filter(region == region_code & Year < analysis_year) %>% # all years included in long-term mean
     summarise(across(`I, II, VI`:Linear, ~ mean(.x, na.rm = TRUE))) %>%
     mutate(across(everything(), ~format(round(.x, 1), nsmall = 1))) %>%
     mutate(Year = 'Long-term mean') %>%
@@ -191,7 +191,7 @@ create_wetland_summary_table <- function(region_code) {
     ungroup() %>%
     drop_na() %>% # get rid of any no-survey years like 2020
     # filter(region == region_code) %>%  # includes current year in long-term mean (is this ok?)
-    filter(region == region_code & year < analysis_year) %>%  # does not include current year in long-term mean
+    filter(region == region_code & Year < analysis_year) %>%  # does not include current year in long-term mean
     summarise(across(`I, II, VI`:Linear, ~mean(.x, na.rm = TRUE))) %>%
     mutate(Year = 'Long-term mean') %>%
     select(Year, `I, II, VI`, III, `IV, V`, `VII, VIII`, `Non-linear`, Stream, Ditch, Linear)
@@ -251,7 +251,7 @@ create_trumpeter_table <- function(start_year) {
       species == 'trumpeter swan',
       # seems like a good starting place for trumpeters
       year >= 2010
-      ) %>%
+    ) %>%
     select(year, survey_estimate = n, model_estimate = mean) %>%
     mutate(across(survey_estimate:model_estimate, ~scales::number(.x, big.mark = ",", accuracy = 1))) %>%
     rename(Year = year, `Survey estimate` = survey_estimate, `Modeled estimate` = model_estimate) %>%
@@ -261,7 +261,7 @@ create_trumpeter_table <- function(start_year) {
       # align = 'ccc',
       booktabs = TRUE,
       linesep = ""
-      ) %>%
+    ) %>%
     # add_header_above(c(" ", "Trumpeter swan statewide annual trends" = 2), bold = TRUE) %>%
     kableExtra::kable_styling(latex_options = c('striped', 'hold_position')) %>%
     kableExtra::row_spec(0, bold = TRUE)
@@ -328,7 +328,7 @@ create_current_breeding_estimate_table <- function() {
       `Standard error` = pop_se_1 # pop_se_2 was used by Drew in 2021; very small and raised red flag so using ron's se here now
     ) %>%
     pull(`Standard error`)
-
+  
   # calculate subtotals; not sure if actually necessary or what the subtotal is here
   subtotals <- df %>%
     mutate(Stratum = 'Subtotal') %>%
@@ -430,26 +430,27 @@ create_survey_state_space_estimates_table <- function() {
   df <- jags_output_all_species %>%
     filter(species != 'trumpeter swan') %>% # don't need this species for estimates table
     select(year, species, survey_n = n, ssm_n = mean) %>%
-      pivot_wider(
-        names_from = c(species),
-        values_from = c(survey_n, ssm_n),
-      ) %>%
+    pivot_wider(
+      names_from = c(species),
+      values_from = c(survey_n, ssm_n),
+    ) %>%
     select(year, matches(c('mallard', 'blue', 'wood', 'other', 'total', 'canada')))
-
+  
   # mean: 1973-current year (all years)
   mean_all_years <- df %>%
     # select(1:13) %>%
+    filter(year < analysis_year) %>%
     summarize(across(2:13, ~mean(.x, na.rm = TRUE))) %>% # average all years in each column
-    mutate(Year = str_glue('Mean (1973--{analysis_year})')) %>%
+    mutate(Year = str_glue('Mean (1973--{analysis_year - 1})')) %>%
     select(Year, survey_n_mallard:`ssm_n_canada goose`) %>% # re-order with year first
     mutate(across(c(2:13), ~scales::number(.x, big.mark = ",", accuracy = 1))) # round, format with ,
-
+  
   # select last 10 years
   min_ten_year <- df %>%
     slice_tail(n = 10) %>%
     select(year) %>%
     min()
-
+  
   # mean: last 10 years (including current year)
   mean_last_ten_years <- df %>%
     filter(year >= min_ten_year) %>% # grab most recent 10-year period
@@ -458,7 +459,7 @@ create_survey_state_space_estimates_table <- function() {
     mutate(Year = str_glue('Mean ({min_ten_year}--{analysis_year})')) %>%
     select(Year, survey_n_mallard:`ssm_n_canada goose`) %>% # reorder with year first
     mutate(across(c(2:13), ~scales::number(.x, big.mark = ",", accuracy = 1))) # round, format with ,
-
+  
   # % change from previous year
   percent_change_last_year <- df %>%
     slice_tail(n = 2) %>%
@@ -470,13 +471,13 @@ create_survey_state_space_estimates_table <- function() {
     select(Year, survey_n_mallard:`ssm_n_canada goose`) %>%
     mutate(across(2:13, ~str_c(.x, '%'))) %>% # add percent sign to every value except year
     mutate(across(2:13, ~recode(.x, `NA%` = ""))) # convert NA% to empty cell
-
+  
   # % change from the mean of 1973 to most recent year - 1 
   length_of_df <- dim(df)[1] # from report, sounds like long-term includes current year so commented out
   
   # mean of all years (1973 to current year minus one)
   long_term_mean <- df %>%
-    slice_head(n = length_of_df - 1)
+    slice_head(n = length_of_df - 1) %>%
     summarize(across(2:13, ~mean(.x, na.rm = TRUE)))
   
   # percent change between long-term mean and current year
@@ -485,10 +486,10 @@ create_survey_state_space_estimates_table <- function() {
     mutate(across(1:12, ~(.x/lag(.x) - 1) * 100)) %>% # calculate % difference
     slice(2) %>% # slice row containing percent difference
     mutate(across(everything(), ~format(round(.x, 1), nsmall = 1))) %>% # round to 1 decimal place
-    mutate(Year = str_glue('% change from 1973--{analysis_year}')) %>%
+    mutate(Year = str_glue('% change from 1973--{analysis_year - 1}')) %>%
     select(Year, survey_n_mallard:`ssm_n_canada goose`) %>%
     mutate(across(2:13, ~str_c(.x, '%')))
-
+  
   # now combine population estimates and changes
   df <- df %>%
     mutate(across(c(2:13), ~scales::number(.x, big.mark = ",", accuracy = 1))) %>%
@@ -498,7 +499,7 @@ create_survey_state_space_estimates_table <- function() {
     bind_rows(., mean_last_ten_years) %>%
     bind_rows(., percent_change_last_year) %>%
     bind_rows(., percent_change_long_term_mean)
-
+  
   # create full table from these
   df %>%
     kbl(
@@ -625,7 +626,7 @@ plot_wetland_abundance <- function() {
     theme(
       legend.position = 'top',
       panel.grid.minor = element_blank()
-      ) +
+    ) +
     facet_wrap(~name, scales = 'free')
   
 }
@@ -672,13 +673,13 @@ plot_transect_map <- function() {
   # create region variable based off transect number
   air_rts <- air_rts %>%
     mutate(
-    region = case_when(
-      transect < 30 ~ 'SEC', # SEC = 1; transects 1-29
-      transect >= 30 & transect < 43 ~ 'NHI', # NHI = 2; transects 30-42
-      transect >= 43 & transect < 61 ~ 'NLO', # NLO = 3; transects 43-60
-      transect >= 61 & transect < 72 ~ 'SWD' # SWD = 4; transects 61-71
+      region = case_when(
+        transect < 30 ~ 'SEC', # SEC = 1; transects 1-29
+        transect >= 30 & transect < 43 ~ 'NHI', # NHI = 2; transects 30-42
+        transect >= 43 & transect < 61 ~ 'NLO', # NLO = 3; transects 43-60
+        transect >= 61 & transect < 72 ~ 'SWD' # SWD = 4; transects 61-71
+      )
     )
-  )
   
   # plot; this would be better if we could color transects by survey region...
   # should find and add 
@@ -746,7 +747,7 @@ plot_air_ground <- function(spp) {
     filter(p_species == spp & grd >= 1) %>%
     group_by(year, grd) %>%
     summarize(ind_birds_R = sum(ind_birds_R))
-
+  
   # plot
   df_air_ground %>%
     mutate(
@@ -844,7 +845,7 @@ extract_state_space_statistics <- function(spp) {
     deviation_long_term_mean = deviation_long_term_mean, 
     direction_long_term_mean = direction_long_term_mean,
     previous_year_mean = previous_year_mean
-    )
+  )
   return(results)
   
 }
