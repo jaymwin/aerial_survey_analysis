@@ -684,8 +684,8 @@ plot_transect_map <- function() {
   # plot; this would be better if we could color transects by survey region...
   # should find and add 
   ggplot() +
-    geom_sf(data = wi) +
-    geom_sf(data = air_rts, aes(color = region), size = 1, show.legend = "line") +
+    geom_sf(data = wi %>% st_transform(., 3071)) +
+    geom_sf(data = air_rts %>% st_transform(., 3071), aes(color = region), size = 1, show.legend = "line") +
     # geom_sf_text(data = air_rts, aes(label = transect), colour = "black") +
     geom_sf_text_repel(
       data = air_rts,
