@@ -23,7 +23,13 @@ analyze_survey_data(analysis_year)
 
 # now write year-appropriate report -----------------------------------
 
-# generate final report (OAS)
+# create new report template
+# create_new_report_rmd(analysis_year)
+
+# at this point, go in and manually change text in current year report
+
+# then generate final report (OAS)
+# should update this script to use current year template
 render_report(
   year = analysis_year, # appropriate year to dynamically update title, text
   report_type = 'oas'
