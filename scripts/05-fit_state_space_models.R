@@ -7,6 +7,8 @@ library(jagsUI)
 library(MCMCvis)
 library(tidyverse)
 library(fs)
+library(DBI)
+library(dbplyr)
 
 
 # load data ---------------------------------------------------------------
