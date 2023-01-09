@@ -40,6 +40,18 @@ options(tidyverse.quiet = TRUE)
 #   
 # }
 
+# create new report template each year
+create_new_report_rmd <- function(year) {
+  
+  # take template, copy it for new year
+  file_copy(
+    path = here::here("scripts/rmarkdown/oas_report.Rmd"),
+    new_path = str_c(here::here("scripts/rmarkdown/oas_report_"), analysis_year, ".Rmd"),
+    overwrite = FALSE
+  )
+  
+}
+
 
 # function to create report and title by year and type
 render_report <- function(year, report_type) {
