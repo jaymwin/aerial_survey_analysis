@@ -1,11 +1,15 @@
 ---
-title: "Waterfowl Breeding Population Survey For Wisconsin, 1973--`r params$year`"
+title: |
+  | **WISCONSIN DEPARTMENT OF NATURAL RESOURCES**
+  | **Waterfowl Breeding Population Survey For Wisconsin, 1973\textemdash`r params$year`**
+  |
 author:  |
   | Jason Winiarski^1^ and Taylor Finger^2^
   | *^1^Office of Applied Science*
   | *^2^Bureau of Wildlife Management*
   | *Wisconsin Department of Natural Resources*
 date: "`r format(Sys.time(), '%B %Y')`"
+mainfont: Fira Sans
 fontsize: 12pt
 geometry: margin = 1in
 params: 
@@ -18,12 +22,21 @@ header-includes:
   - \usepackage{tabu}
   - \usepackage{threeparttable}
   - \usepackage{makecell}
+  - \usepackage[labelfont=bf]{caption}
+  - \usepackage{fontspec}
+  - \usepackage{titlesec}
+  - \usepackage{titling}
+  - \pretitle{\centering\Huge\fontspec{Anton}}
+  - \posttitle{\vspace{0.5 cm}\centering\Huge\fontspec{Anton}}
+  - \usepackage{sectsty}
+  - \sectionfont{\LARGE\fontspec{Anton}}
   - \renewcommand{\contentsname}{Table of Contents} # change TOC name
 output: 
   pdf_document:
-    toc: true
-    number_sections: true
-    toc_depth: 3
+    latex_engine: xelatex
+    # toc: true
+    # number_sections: true
+    # toc_depth: 3
 urlcolor: blue
 linkcolor: blue
 ---
@@ -96,7 +109,7 @@ air_swan_count <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 
 survey_timing <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'survey_timing', "_", analysis_year, '.csv'), show_col_types = FALSE)
 ```
 
-\newpage
+<!-- \fontspec{Fira Sans} -->
 
 # Abstract
 
@@ -110,7 +123,7 @@ The `r params$year` total breeding duck modeled population estimate of `r all_re
 
 # Introduction
 
-Decisions regarding hunting season structure and harvest limits in waterfowl management are based in part upon spring breeding pair surveys. The U.S. Fish and Wildlife Service's (USFWS) [Waterfowl Breeding Population and Habitat Survey (BPOP)](https://www.fws.gov/project/waterfowl-breeding-population-and-habitat-survey) has been conducted for `r length(seq(1955, params$year, 1))` years across the traditional survey area of the north-central United States, Canada and Alaska. The Wisconsin Waterfowl Breeding Population Survey--which is modeled after the BPOP--has been conducted since 1973 and provides a long-term record of waterfowl breeding trends and wetland counts in Wisconsin. These data are used at the national- and state-level for monitoring waterfowl populations and making management decisions. Wisconsin's breeding waterfowl survey data are included in the [Waterfowl Population Status report](https://www.fws.gov/sites/default/files/documents/WaterfowlPopulationStatusReport21.pdf) published annually by the USFWS on continental waterfowl populations. In addition, mallard data from Wisconsin, Minnesota, and Michigan are combined with data from the traditional survey area as a basis for the USFWS's [Adaptive Harvest Management report](https://www.fws.gov/sites/default/files/documents/adaptive-harvest-management-hunting-season-report-2022.pdf) that is used to establish federal waterfowl season frameworks. At the state-level, waterfowl breeding survey data are used to inform annual hunting season regulations, identify long-term changes in population trends, and evaluate the impacts of habitat changes and management. This report provides a summary and analysis of the `r params$year` survey data in support of these efforts.
+Decisions regarding hunting season structure and harvest limits in waterfowl management are based in part upon spring breeding pair surveys. The U.S. Fish and Wildlife Service's (USFWS) [Waterfowl Breeding Population and Habitat Survey (BPOP)](https://www.fws.gov/project/waterfowl-breeding-population-and-habitat-survey) has been conducted for `r length(seq(1955, params$year, 1))` years across the traditional survey area of the north-central United States, Canada and Alaska. The Wisconsin Waterfowl Breeding Population Survey--which is modeled after the BPOP--has been conducted since 1973 and provides a long-term record of waterfowl breeding trends and wetland counts in Wisconsin. These data are used at the national- and state-level for monitoring waterfowl populations and making management decisions. Wisconsin's breeding waterfowl survey data are included in the [Waterfowl Population Status report](https://www.fws.gov/library/collections/waterfowl-population-status-reports) published annually by the USFWS on continental waterfowl populations. In addition, mallard data from Wisconsin, Minnesota, and Michigan are combined with data from the traditional survey area as a basis for the USFWS's [Adaptive Harvest Management report](https://www.fws.gov/project/adaptive-harvest-management) that is used to establish federal waterfowl season frameworks. At the state-level, waterfowl breeding survey data are used to inform annual hunting season regulations, identify long-term changes in population trends, and evaluate the impacts of habitat changes and management. This report provides a summary and analysis of the `r params$year` survey data in support of these efforts.
 
 # Methods
 

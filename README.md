@@ -5,7 +5,7 @@ Data, analysis, and automated reporting for the Wisconsin Waterfowl Breeding Pop
 
 1. Clean up code/code annotation
 2. Write survey analysis instructions in rmarkdown pdf
-3. Change to OC fonts (?)
+3. ~~Change to OC fonts (?)~~
 4. ~~Fix long-term averages (some or all might use all years; should be all except current year)~~
 5. Should create new report template each year, make changes to text, then create that year's report
 

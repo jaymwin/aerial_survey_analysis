@@ -15,10 +15,10 @@ source(here::here('scripts/waterfowl_survey_functions.R')) # functions for summa
 # what is the current survey year?
 # need minus 1 for now to replicate 2021 report
 analysis_year <- lubridate::today() %>% 
-  lubridate::year() # just needed for this example 2021
+  lubridate::year() - 1 # just needed for this example 2021
 #
 # append new data to database, summarize count data, run state-space analyses
-analyze_survey_data(analysis_year)
+# analyze_survey_data(analysis_year)
 
 
 # now write year-appropriate report -----------------------------------
