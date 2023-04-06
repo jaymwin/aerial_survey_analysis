@@ -74,7 +74,7 @@ render_report <- function(year, report_type) {
     
     # this is the report we need to publish each year
     render(
-      here::here("scripts/rmarkdown/oas_report.Rmd"), # .rmd file for fancier looking report
+      str_c(here::here('scripts/rmarkdown/oas_report'), '_', analysis_year, '.Rmd'), # .rmd file for fancier looking report
       params = list(
         year = year # appropriate year to dynamically update title, text
       ),

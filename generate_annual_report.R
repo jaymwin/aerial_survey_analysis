@@ -13,36 +13,23 @@ source(here::here('scripts/waterfowl_survey_functions.R')) # functions for summa
 # run current year analysis -----------------------------------------------
 
 # what is the current survey year?
-# need minus 1 for now to replicate 2021 report
-analysis_year <- lubridate::today() %>% 
-  lubridate::year() - 1 # just needed for this example 2021
-#
-# append new data to database, summarize count data, run state-space analyses
-# analyze_survey_data(analysis_year)
+analysis_year <- 
+  today() %>% 
+  year()
+
+# append new data to database, summarize count data, and run state-space analyses
+analyze_survey_data(analysis_year)
 
 
-# now write year-appropriate report -----------------------------------
+# now write year-appropriate report ---------------------------------------
 
-# create new report template
-# create_new_report_rmd(analysis_year)
+# create new, year-specific report template
+create_new_report_rmd(analysis_year)
 
-# at this point, go in and manually change text in current year report
+# at this point, go in and manually change text in current year report...
 
-# then generate final report (OAS)
-# should update this script to use current year template
+# then generate final report
 render_report(
-  year = analysis_year, # appropriate year to dynamically update title, text
+  year = analysis_year, # appropriate year to dynamically update title, text, etc.
   report_type = 'oas'
 )
-
-# # final report with fancier formatting
-# render(
-#   here::here("scripts/stylized_rmarkdown/formatted_final_report.Rmd"), # .rmd file for fancier looking report
-#   params = list(
-#     year = analysis_year # appropriate year to dynamically update title, text
-#   ),
-#   output_dir = here::here(str_c('reports', '/', analysis_year)), # year-specific output directory
-#   output_file = str_c("formatted_report_", analysis_year, ".pdf"), # year-specific report name
-#   quiet = TRUE
-# )
-

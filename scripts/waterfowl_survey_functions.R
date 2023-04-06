@@ -541,3 +541,14 @@ analyze_survey_data <- function(analysis_year) {
   usethis::ui_done("{analysis_year} analysis complete!")
   
 }
+
+
+# create a new, year-specific report. manually modify this each year
+create_new_report_rmd <- function(analysis_year) {
+  
+  file_copy(
+    path = here::here('scripts/rmarkdown/oas_report.Rmd'), 
+    new_path = str_c(here::here('scripts/rmarkdown/oas_report'), '_', analysis_year, '.Rmd')
+    )
+  
+}

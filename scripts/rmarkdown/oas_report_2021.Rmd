@@ -1,11 +1,15 @@
 ---
-title: "Waterfowl Breeding Population Survey For Wisconsin, 1973--`r params$year`"
+title: |
+  | **WISCONSIN DEPARTMENT OF NATURAL RESOURCES**
+  | **Waterfowl Breeding Population Survey For Wisconsin, 1973\textemdash`r params$year`**
+  |
 author:  |
-  | Jason Winiarski^1^ and Taylor Finger^2^
+  | Drew Fowler^1^ and Taylor Finger^2^
   | *^1^Office of Applied Science*
   | *^2^Bureau of Wildlife Management*
   | *Wisconsin Department of Natural Resources*
 date: "`r format(Sys.time(), '%B %Y')`"
+mainfont: Fira Sans
 fontsize: 12pt
 geometry: margin = 1in
 params: 
@@ -13,20 +17,26 @@ params:
 bibliography: survey_citations.bib
 csl: the-journal-of-wildlife-management
 header-includes:
-   - \usepackage[default]{sourcesanspro}
-   - \usepackage[T1]{fontenc}
   - \usepackage{booktabs}
   - \usepackage{colortbl}
   - \usepackage{tabu}
   - \usepackage{threeparttable}
   - \usepackage{makecell}
+  - \usepackage[labelfont=bf]{caption}
+  - \usepackage{fontspec}
+  - \usepackage{titlesec}
+  - \usepackage{titling}
+  - \pretitle{\centering\Huge\fontspec{Anton}}
+  - \posttitle{\vspace{0.5 cm}\centering\Huge\fontspec{Anton}}
+  - \usepackage{sectsty}
+  - \sectionfont{\LARGE\fontspec{Anton}}
   - \renewcommand{\contentsname}{Table of Contents} # change TOC name
-mainfont: SourceSansPro
 output: 
   pdf_document:
-    toc: true
-    number_sections: true
-    toc_depth: 3
+    latex_engine: xelatex
+    # toc: true
+    # number_sections: true
+    # toc_depth: 3
 urlcolor: blue
 linkcolor: blue
 ---
@@ -99,11 +109,11 @@ air_swan_count <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 
 survey_timing <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'survey_timing', "_", analysis_year, '.csv'), show_col_types = FALSE)
 ```
 
-\newpage
+<!-- \fontspec{Fira Sans} -->
 
 # Abstract
 
-The `r params$year` Waterfowl Breeding Population Survey for Wisconsin was conducted from `r survey_timing$min_air_ground_survey_date`--`r survey_timing$max_air_ground_survey_date` and followed methods of the North American Waterfowl Breeding Population and Habitat Survey. The information from this survey is used as part of the overall survey of breeding waterfowl in North America as well as in making state-level waterfowl management decisions. This survey has been conducted annually since 1973, and data on Wisconsin waterfowl breeding populations and wetland counts are best interpreted as trends over several years rather than as year-to-year fluctuations.
+The `r params$year` Waterfowl Breeding Population Survey for Wisconsin was conducted from `r survey_timing$min_air_ground_survey_date`--`r survey_timing$max_air_ground_survey_date` and followed methods of the North American Waterfowl Breeding Population and Habitat Survey. The information from this survey is used as part of the overall survey of breeding waterfowl in North America as well as in making state-level waterfowl management decisions. This survey has been conducted annually since 1973 (except for 2020), and data on Wisconsin waterfowl breeding populations and wetland counts are best interpreted as trends over several years rather than as year-to-year fluctuations.
 
 Total non-linear basins were `r sec_results$direction_previous_non_linear` `r sec_results$percent_change_previous_non_linear` from `r previous_year` in the Southeast Central (SEC) region and `r sec_results$direction_long_term_non_linear` `r sec_results$percent_change_long_term_non_linear` from the long-term, `r num_survey_years`-year mean. In the Northern High Density (NHI) region, total non-linear basins were `r nhi_results$direction_previous_non_linear` `r nhi_results$percent_change_previous_non_linear` from `r previous_year` and `r nhi_results$direction_long_term_non_linear` `r nhi_results$percent_change_long_term_non_linear` from the long-term mean. Non-linear basins were `r nlo_results$direction_previous_non_linear` `r nlo_results$percent_change_previous_non_linear` from `r previous_year` in the Northern Low Density (NLO) region and `r nlo_results$direction_long_term_non_linear` `r nlo_results$percent_change_long_term_non_linear` from the long-term mean. Non-linear basins were `r swd_results$direction_previous_non_linear` `r swd_results$percent_change_previous_non_linear` from `r previous_year` in the Southwest Driftless (SWD) region and `r swd_results$direction_long_term_non_linear` `r swd_results$percent_change_long_term_non_linear` compared to this region's long-term (`r swd_survey_years`-year) mean. Total linear basins were `r sec_results$direction_previous_linear` `r sec_results$percent_change_previous_linear` from `r previous_year` in the SEC region and `r sec_results$direction_long_term_linear` `r sec_results$percent_change_long_term_linear` from the long-term mean. In the NHI region, linear basins were `r nhi_results$direction_previous_linear` `r nhi_results$percent_change_previous_linear` from `r previous_year` and `r nhi_results$direction_long_term_linear` `r nhi_results$percent_change_long_term_linear` from the long-term mean. NLO region linear basins were `r nlo_results$direction_previous_linear` `r nlo_results$percent_change_previous_linear` from `r previous_year` and `r nlo_results$direction_long_term_linear` `r nlo_results$percent_change_long_term_linear` from the long-term mean. Linear basins were `r swd_results$direction_previous_linear` `r swd_results$percent_change_previous_linear` from `r previous_year` in the SWD region and `r swd_results$direction_long_term_linear` `r swd_results$percent_change_long_term_linear` from the long-term mean.
 
@@ -113,7 +123,7 @@ The `r params$year` total breeding duck modeled population estimate of `r all_re
 
 # Introduction
 
-Decisions regarding hunting season structure and harvest limits in waterfowl management are based in part upon spring breeding pair surveys. The U.S. Fish and Wildlife Service's (USFWS) [Waterfowl Breeding Population and Habitat Survey (BPOP)](https://www.fws.gov/project/waterfowl-breeding-population-and-habitat-survey) has been conducted for `r length(seq(1955, params$year, 1))` years across the traditional survey area of the north-central United States, Canada and Alaska. The Wisconsin Waterfowl Breeding Population Survey--which is modeled after the BPOP--has been conducted since 1973 and provides a long-term record of waterfowl breeding trends and wetland counts in Wisconsin. These data are used at the national- and state-level for monitoring waterfowl populations and making management decisions. Wisconsin's breeding waterfowl survey data are included in the [Waterfowl Population Status report](https://www.fws.gov/sites/default/files/documents/WaterfowlPopulationStatusReport21.pdf) published annually by the USFWS on continental waterfowl populations. In addition, mallard data from Wisconsin, Minnesota, and Michigan are combined with data from the traditional survey area as a basis for the USFWS's [Adaptive Harvest Management report](https://www.fws.gov/sites/default/files/documents/adaptive-harvest-management-hunting-season-report-2022.pdf) that is used to establish federal waterfowl season frameworks. At the state-level, waterfowl breeding survey data are used to inform annual hunting season regulations, identify long-term changes in population trends, and evaluate the impacts of habitat changes and management. This report provides a summary and analysis of the `r params$year` survey data in support of these efforts.
+Decisions regarding hunting season structure and harvest limits in waterfowl management are based in part upon spring breeding pair surveys. The U.S. Fish and Wildlife Service's (USFWS) [Waterfowl Breeding Population and Habitat Survey (BPOP)](https://www.fws.gov/project/waterfowl-breeding-population-and-habitat-survey) has been conducted for `r length(seq(1955, params$year, 1))` years across the traditional survey area of the north-central United States, Canada and Alaska. The Wisconsin Waterfowl Breeding Population Survey--which is modeled after the BPOP--has been conducted since 1973 and provides a long-term record of waterfowl breeding trends and wetland counts in Wisconsin. These data are used at the national- and state-level for monitoring waterfowl populations and making management decisions. Wisconsin's breeding waterfowl survey data are included in the [Waterfowl Population Status report](https://www.fws.gov/library/collections/waterfowl-population-status-reports) published annually by the USFWS on continental waterfowl populations. In addition, mallard data from Wisconsin, Minnesota, and Michigan are combined with data from the traditional survey area as a basis for the USFWS's [Adaptive Harvest Management report](https://www.fws.gov/project/adaptive-harvest-management) that is used to establish federal waterfowl season frameworks. At the state-level, waterfowl breeding survey data are used to inform annual hunting season regulations, identify long-term changes in population trends, and evaluate the impacts of habitat changes and management. This report provides a summary and analysis of the `r params$year` survey data in support of these efforts.
 
 # Methods
 
