@@ -16,7 +16,7 @@ opts_knit$set(eval.after = "fig.cap")
 survey_year <- params$year
 ```
 
-```{r transect_map, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "\\label{fig:transect_map}Wisconsin Waterfowl Breeding Population Survey aerial transects (*n* = 66) labeled by transect number and survey region. The four regions surveyed are the Northern High Density region (NHI), Northern Low Density region (NLO), Southeast Central region (SEC), and Southwest Driftless region (SWD)."}
+```{r transect_map, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = "\\label{fig:transect_map}Wisconsin Waterfowl Breeding Population Survey aerial transects (*n* = 66) labeled by survey region. The four regions surveyed are the Northern High Density region (NHI), Northern Low Density region (NLO), Southeast Central region (SEC), and Southwest Driftless region (SWD)."}
 plot_transect_map()
 ```
 
