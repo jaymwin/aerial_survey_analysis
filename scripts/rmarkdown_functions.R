@@ -699,16 +699,16 @@ plot_transect_map <- function() {
     geom_sf(data = wi) +
     geom_sf(data = air_rts, aes(color = region), size = 1, show.legend = "line") +
     # geom_sf_text(data = air_rts, aes(label = transect), colour = "black") +
-    geom_sf_text_repel(
-      data = air_rts,
-      aes(label = transect),
-      size = 3,
-      # additional parameters are passed to geom_text_repel()
-      nudge_x = -.02,
-      nudge_y = -.02,
-      seed = 10 # same text position repeatable every year
-    ) +
-    theme_minimal() +
+    # geom_sf_text_repel(
+    #   data = air_rts,
+    #   aes(label = transect),
+    #   size = 3,
+    #   # additional parameters are passed to geom_text_repel()
+    #   nudge_x = -.02,
+    #   nudge_y = -.02,
+    #   seed = 10 # same text position repeatable every year
+    # ) +
+    # theme_minimal() +
     scale_color_viridis_d(name = 'Region') +
     theme(axis.title = element_blank())
   
