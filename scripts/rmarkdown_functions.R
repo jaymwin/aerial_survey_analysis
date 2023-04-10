@@ -708,7 +708,7 @@ plot_transect_map <- function() {
     #   nudge_y = -.02,
     #   seed = 10 # same text position repeatable every year
     # ) +
-    # theme_minimal() +
+    theme_minimal() +
     scale_color_viridis_d(name = 'Region') +
     theme(axis.title = element_blank())
   
