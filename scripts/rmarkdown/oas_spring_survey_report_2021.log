@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.3)  6 APR 2023 15:06
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.3)  24 APR 2023 09:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021.tex
-(c:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021.tex
+**"C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021.tex"
+(c:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-03-30> (c:/Users/winiaj/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
@@ -1116,35 +1116,35 @@ LaTeX Font Info:    Font shape `TU/FiraSans(0)/b/n' will be
 
 Package fontspec Info: Anton scale = 0.7249905074925519.
 
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/transect_map-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/transect_map-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/transect_map-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/transect_map-1.pdf>
 [18]
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/wetland_abundance-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/wetland_abundance-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/wetland_abundance-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/wetland_abundance-1.pdf>
 [19]
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_mall-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_mall-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_mall-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_mall-1.pdf>
 [20]
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_bwte-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_bwte-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_bwte-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_bwte-1.pdf>
 [21]
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_wodu-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_wodu-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_wodu-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_wodu-1.pdf>
 [22]
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_other_ducks-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_other_ducks-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_other_ducks-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_other_ducks-1.pdf>
 [23]
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_total_ducks-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_total_ducks-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_total_ducks-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_total_ducks-1.pdf>
 [24]
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_cago-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_cago-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_cago-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_cago-1.pdf>
 [25]
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/annual_crane_counts-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/annual_crane_counts-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/annual_crane_counts-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/annual_crane_counts-1.pdf>
 [26]
-File: C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_trsw-1.pdf Graphic file (type pdf)
-<use C:/Users/winiaj/Desktop/rmarkdown_font/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_trsw-1.pdf>
+File: C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_trsw-1.pdf Graphic file (type pdf)
+<use C:/Users/winiaj/Desktop/old_code/New folder (3)/aerial_survey_analysis/reports/2021/oas_spring_survey_report_2021_files/figure-latex/ssm_trsw-1.pdf>
 [27] (./oas_spring_survey_report_2021.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1154,11 +1154,11 @@ Package rerunfilecheck Info: File `oas_spring_survey_report_2021.out' has not ch
  ) 
 Here is how much of TeX's memory you used:
  22118 strings out of 478674
- 419553 string characters out of 5846653
+ 420237 string characters out of 5846653
  1946290 words of memory out of 5000000
  41896 multiletter control sequences out of 15000+600000
  521845 words of font info for 131 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 86i,18n,122p,1293b,489s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,18n,122p,1304b,489s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on oas_spring_survey_report_2021.pdf (27 pages).

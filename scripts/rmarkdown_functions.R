@@ -43,12 +43,29 @@ options(tidyverse.quiet = TRUE)
 # create new report template each year
 create_new_report_rmd <- function(year) {
   
-  # take template, copy it for new year
-  file_copy(
-    path = here::here("scripts/rmarkdown/oas_report.Rmd"),
-    new_path = str_c(here::here("scripts/rmarkdown/oas_report_"), analysis_year, ".Rmd"),
-    overwrite = FALSE
-  )
+  if(year == 2021) {
+    
+    print('copy original')
+    
+    # take template, copy it for new year
+    file_copy(
+      path = here::here("scripts/rmarkdown/oas_report.Rmd"),
+      new_path = str_c(here::here("scripts/rmarkdown/oas_report_"), year, ".Rmd"),
+      overwrite = FALSE
+    )
+    
+  } else {
+    
+    print('copy previous year')
+    
+    # use previous year template
+    file_copy(
+      path = str_c(here::here("scripts/rmarkdown/oas_report_"), analysis_year - 1, ".Rmd"),
+      new_path = str_c(here::here("scripts/rmarkdown/oas_report_"), year, ".Rmd"),
+      overwrite = FALSE
+    ) 
+    
+  }
   
 }
 
