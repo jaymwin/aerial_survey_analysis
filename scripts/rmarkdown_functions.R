@@ -115,7 +115,8 @@ render_report <- function(year, report_type) {
 create_wetland_summary_table <- function(region_code) {
   
   # lay out region codes here; need names for table captions
-  regions <- tribble(
+  regions <- 
+    tribble(
     ~region, ~name,
     1, 'SEC',
     2, 'NHI',
@@ -124,7 +125,8 @@ create_wetland_summary_table <- function(region_code) {
   )
   
   # filter out region name by region number
-  region_name <- regions %>%
+  region_name <- 
+    regions %>%
     filter(region == region_code) %>% 
     pull(name)
   
@@ -132,7 +134,8 @@ create_wetland_summary_table <- function(region_code) {
   df_wetlands <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summaries_', analysis_year, '.csv'), show_col_types = FALSE)
   
   # figure out first year or surveys to display in table
-  summary_start_year <- df_wetlands %>%
+  summary_start_year <- 
+    df_wetlands %>%
     ungroup() %>%
     select(year) %>%
     distinct() %>%
@@ -142,7 +145,8 @@ create_wetland_summary_table <- function(region_code) {
   
   # grab last 10 years of surveys from current year
   # note: surveys not done in 2020 due to covid
-  annual_wetlands <- df_wetlands %>%
+  annual_wetlands <- 
+    df_wetlands %>%
     filter(region == region_code & year >= summary_start_year) %>%
     # change column names for table
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
@@ -153,7 +157,8 @@ create_wetland_summary_table <- function(region_code) {
     mutate_all(as.character)
   
   # calculate % change from last survey year
-  perc_change_last_year <- df_wetlands %>%
+  perc_change_last_year <- 
+    df_wetlands %>%
     filter(region == region_code & year >= summary_start_year) %>% # filter to region & 10-year period
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
@@ -167,7 +172,8 @@ create_wetland_summary_table <- function(region_code) {
     mutate(across(`I, II, VI`:Linear, ~str_c(.x, '%'))) # add percent sign
   
   # calculate 10-year mean
-  ten_year_mean <- df_wetlands %>%
+  ten_year_mean <- 
+    df_wetlands %>%
     drop_na() %>% # get rid of any no-survey years like 2020
     filter(region == region_code) %>%
     ungroup() %>%
@@ -181,7 +187,8 @@ create_wetland_summary_table <- function(region_code) {
   max_year <- max(ten_year_mean$Year)
   
   # format 10-year mean part of the table
-  ten_year_mean <- ten_year_mean %>%
+  ten_year_mean <- 
+    ten_year_mean %>%
     summarise(across(`I, II, VI`:Linear, ~ mean(.x, na.rm = TRUE))) %>%
     mutate(across(everything(), ~format(round(.x, 1), nsmall = 1))) %>%
     mutate(Year = str_glue('10-Year mean ({min_year}-{max_year})')) %>%
@@ -189,7 +196,8 @@ create_wetland_summary_table <- function(region_code) {
     mutate(across(everything(), as.character))
   
   # calculate long-term mean (across every year of data)
-  long_term_mean <- df_wetlands %>%
+  long_term_mean <- 
+    df_wetlands %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
     ungroup() %>%
@@ -202,7 +210,8 @@ create_wetland_summary_table <- function(region_code) {
     mutate(across(everything(), as.character))
   
   # calculate current year
-  current_year_wetlands <- df_wetlands %>%
+  current_year_wetlands <- 
+    df_wetlands %>%
     filter(region == region_code & year == analysis_year) %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
@@ -214,7 +223,8 @@ create_wetland_summary_table <- function(region_code) {
   # calculate long-term mean again to calculate % change from long-term mean
   # just a note here: if current survey year = 2022, then long-term average should
   # come from 1973 through current survey year - 1 (1973--2021)
-  long_term <- df_wetlands %>%
+  long_term <- 
+    df_wetlands %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
     ungroup() %>%
@@ -226,7 +236,8 @@ create_wetland_summary_table <- function(region_code) {
     select(Year, `I, II, VI`, III, `IV, V`, `VII, VIII`, `Non-linear`, Stream, Ditch, Linear)
   
   # % change from long-term mean
-  perc_long_term <- long_term %>% # long-term mean
+  perc_long_term <- 
+    long_term %>% # long-term mean
     bind_rows(., current_year_wetlands) %>% # current year summary
     mutate(across(`I, II, VI`:Linear, ~(.x/lag(.x) - 1) * 100)) %>% # percent difference between the two
     slice(2) %>% # pull out differences
@@ -235,13 +246,15 @@ create_wetland_summary_table <- function(region_code) {
     mutate(across(`I, II, VI`:Linear, ~str_c(.x, '%')))
   
   # combine dataframes needed for table
-  wetland_summary <- perc_change_last_year %>% # percent change from last year
+  wetland_summary <- 
+    perc_change_last_year %>% # percent change from last year
     bind_rows(., long_term_mean) %>% # long-term average
     bind_rows(., perc_long_term) %>% # % change from long-term average
     bind_rows(., ten_year_mean) # and ten year average; these are used at bottom of table
   
   # add annual statistics with percent change summaries
-  annual_wetlands <- annual_wetlands %>%
+  annual_wetlands <- 
+    annual_wetlands %>%
     bind_rows(., wetland_summary)
   
   # create table
@@ -301,7 +314,8 @@ create_trumpeter_table <- function(start_year) {
 # analysis year population size, VCF-related estimates
 create_current_breeding_estimate_table <- function() {
   
-  df <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_summary', '.csv'), show_col_types = FALSE) %>%
+  df <- 
+    read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_summary', '.csv'), show_col_types = FALSE) %>%
     select(species, region, area, b, r, pop_est, pop_se_1) %>%
     mutate(
       region = case_when(
@@ -332,7 +346,8 @@ create_current_breeding_estimate_table <- function() {
     mutate(across("Bird density seen from the air (birds/mi$^2$)":`Aerial visibility correction factor`, ~format(round(.x, 3), nsmall = 3)))
   
   # calculate statewide SEs according to Ron and Drew
-  statewide_se <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_summary', '.csv'), show_col_types = FALSE) %>%
+  statewide_se <- 
+    read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_summary', '.csv'), show_col_types = FALSE) %>%
     select(species, region, pop_var) %>%
     mutate(
       region = case_when(
@@ -359,7 +374,8 @@ create_current_breeding_estimate_table <- function() {
     pull(`Standard error`)
   
   # calculate subtotals; not sure if actually necessary or what the subtotal is here
-  subtotals <- df %>%
+  subtotals <- 
+    df %>%
     mutate(Stratum = 'Subtotal') %>%
     group_by(Species, Stratum) %>%
     summarize(
@@ -369,7 +385,8 @@ create_current_breeding_estimate_table <- function() {
     mutate(`Standard error` = statewide_se)
   
   # now add back and order table by species and strata
-  df <- df %>%
+  df <- 
+    df %>%
     bind_rows(., subtotals) %>%
     mutate(
       Species = fct_relevel(Species, 'Mallard', 'Blue-winged teal', 'Wood duck', 'Other duck species', 'Canada goose'),
@@ -380,13 +397,15 @@ create_current_breeding_estimate_table <- function() {
     mutate(across(c(2, 5:6), ~scales::number(.x, big.mark = ",", accuracy = 1)))
   
   # add footnote markers to strata and aerial visibility columns
-  names(df)[c(1,4)] <- paste0(
+  names(df)[c(1,4)] <- 
+    paste0(
     names(df)[c(1,4)],
     footnote_marker_symbol(1:2)
   )
   
   # create a special grouped row for other ducks
-  prlabel <- paste0(
+  prlabel <- 
+    paste0(
     "Other duck species",
     footnote_marker_alphabet(1)
   )
@@ -456,7 +475,8 @@ create_survey_state_space_estimates_table <- function() {
   jags_output_all_species <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'state_space_results_', analysis_year, '.csv'), show_col_types = FALSE)
   
   # pull in vcf and state-space population estimates
-  df <- jags_output_all_species %>%
+  df <- 
+    jags_output_all_species %>%
     filter(species != 'trumpeter swan') %>% # don't need this species for estimates table
     select(year, species, survey_n = n, ssm_n = mean) %>%
     pivot_wider(
@@ -466,7 +486,8 @@ create_survey_state_space_estimates_table <- function() {
     select(year, matches(c('mallard', 'blue', 'wood', 'other', 'total', 'canada')))
   
   # mean: 1973-current year (all years)
-  mean_all_years <- df %>%
+  mean_all_years <- 
+    df %>%
     # select(1:13) %>%
     filter(year < analysis_year) %>%
     summarize(across(2:13, ~mean(.x, na.rm = TRUE))) %>% # average all years in each column
@@ -475,13 +496,15 @@ create_survey_state_space_estimates_table <- function() {
     mutate(across(c(2:13), ~scales::number(.x, big.mark = ",", accuracy = 1))) # round, format with ,
   
   # select last 10 years
-  min_ten_year <- df %>%
+  min_ten_year <- 
+    df %>%
     slice_tail(n = 10) %>%
     select(year) %>%
     min()
   
   # mean: last 10 years (including current year)
-  mean_last_ten_years <- df %>%
+  mean_last_ten_years <- 
+    df %>%
     filter(year >= min_ten_year) %>% # grab most recent 10-year period
     # select(1:13) %>%
     summarize(across(2:13, ~mean(.x, na.rm = TRUE))) %>% # average in each column
@@ -490,7 +513,8 @@ create_survey_state_space_estimates_table <- function() {
     mutate(across(c(2:13), ~scales::number(.x, big.mark = ",", accuracy = 1))) # round, format with ,
   
   # % change from previous year
-  percent_change_last_year <- df %>%
+  percent_change_last_year <- 
+    df %>%
     slice_tail(n = 2) %>%
     mutate(across(2:13, ~(.x/lag(.x) - 1) * 100)) %>% # calculate percent difference from last year
     slice(2) %>% # slice row that now contains percent difference
@@ -505,12 +529,14 @@ create_survey_state_space_estimates_table <- function() {
   length_of_df <- dim(df)[1] # from report, sounds like long-term includes current year so commented out
   
   # mean of all years (1973 to current year minus one)
-  long_term_mean <- df %>%
+  long_term_mean <- 
+    df %>%
     slice_head(n = length_of_df - 1) %>%
     summarize(across(2:13, ~mean(.x, na.rm = TRUE)))
   
   # percent change between long-term mean and current year
-  percent_change_long_term_mean <- long_term_mean %>% # long-term mean
+  percent_change_long_term_mean <- 
+    long_term_mean %>% # long-term mean
     bind_rows(., df %>% slice_tail(n = 1) %>% select(-year)) %>% # add on current year
     mutate(across(1:12, ~(.x/lag(.x) - 1) * 100)) %>% # calculate % difference
     slice(2) %>% # slice row containing percent difference
@@ -520,7 +546,8 @@ create_survey_state_space_estimates_table <- function() {
     mutate(across(2:13, ~str_c(.x, '%')))
   
   # now combine population estimates and changes
-  df <- df %>%
+  df <- 
+    df %>%
     mutate(across(c(2:13), ~scales::number(.x, big.mark = ",", accuracy = 1))) %>%
     rename(Year = year) %>%
     mutate(Year = as.character(Year)) %>%
@@ -610,7 +637,8 @@ plot_wetland_abundance <- function() {
   df_wetlands <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summaries_', analysis_year, '.csv'), show_col_types = FALSE)
   
   # lay out region codes here; need names for captions
-  regions <- tribble(
+  regions <- 
+    tribble(
     ~region, ~name,
     1, 'Southeast Central region',
     2, 'Northern High Density region',
@@ -618,12 +646,14 @@ plot_wetland_abundance <- function() {
     4, 'Southwest Driftless region'
   )
   
-  df_wetlands <- df_wetlands %>%
+  df_wetlands <- 
+    df_wetlands %>%
     left_join(., regions, by = 'region') %>%
     mutate(name = fct_reorder(name, region))
   
   # missing covid year
-  missing_covid_wpsqm <- tribble(
+  missing_covid_wpsqm <- 
+    tribble(
     ~Year, ~name, ~wetland_type, ~wpsqm,
     2020, 'Southeast Central region', 'Non-linear', as.numeric(NA),
     2020, 'Southeast Central region', 'Linear', as.numeric(NA),
@@ -690,7 +720,8 @@ plot_state_space_abundance <- function(spp) {
 plot_transect_map <- function() {
   
   # read in aerial transects shapefile
-  air_rts <- read_sf(here::here('databases/survey_gis.gpkg'), layer = 'aerial_transects') %>%
+  air_rts <- 
+    read_sf(here::here('databases/survey_gis.gpkg'), layer = 'aerial_transects') %>%
     st_transform(., 4326) %>% 
     janitor::clean_names() %>%
     group_by(transect) %>%
@@ -700,7 +731,8 @@ plot_transect_map <- function() {
   wi <- read_sf(here::here('databases/survey_gis.gpkg'), layer = 'wi_border')
   
   # create region variable based off transect number
-  air_rts <- air_rts %>%
+  air_rts <- 
+    air_rts %>%
     mutate(
       region = case_when(
         transect < 30 ~ 'SEC', # SEC = 1; transects 1-29
@@ -739,7 +771,8 @@ plot_crane_counts <- function() {
   df_cranes <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'cranes', "_", analysis_year, '.csv'), show_col_types = FALSE)
   
   # missing covid year
-  missing_covid_cranes <- tribble(
+  missing_covid_cranes <- 
+    tribble(
     ~year, ~cranes_total, ~cranes_no_groups,
     2020, as.numeric(NA), as.numeric(NA)
   )
@@ -772,7 +805,8 @@ plot_air_ground <- function(spp) {
   df_air_ground <-  read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_air_vs_ground', '.csv'), show_col_types = FALSE)
   
   # filter to species
-  df_air_ground <- df_air_ground %>%
+  df_air_ground <- 
+    df_air_ground %>%
     filter(p_species == spp & grd >= 1) %>%
     group_by(year, grd) %>%
     summarize(ind_birds_R = sum(ind_birds_R))
@@ -808,12 +842,14 @@ extract_state_space_statistics <- function(spp) {
   jags_output_all_species <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'state_space_results_', analysis_year, '.csv'), show_col_types = FALSE)
   
   # filter to last 2 years for a particular species
-  df <- jags_output_all_species %>%
+  df <- 
+    jags_output_all_species %>%
     filter(species == spp) %>%
     slice_tail(n = 2)
   
   # calculate percent difference from previous year
-  deviation_previous_year <- df %>%
+  deviation_previous_year <- 
+    df %>%
     mutate(across(2, ~(.x/lag(.x) - 1) * 100)) %>%
     slice(2) %>%
     mutate(across(2, ~format(round(.x, 1), nsmall = 1))) %>%
@@ -834,12 +870,14 @@ extract_state_space_statistics <- function(spp) {
   deviation_previous_year <- str_remove(deviation_previous_year, '-')
   
   # now do something similar for this year compared to long-term mean
-  long_term_mean <- jags_output_all_species %>%
+  long_term_mean <- 
+    jags_output_all_species %>%
     filter(species == spp) %>%
     summarise(mean = mean(mean)) %>%
     bind_rows(., df %>% slice_tail(n = 1))
   
-  deviation_long_term_mean <- long_term_mean %>%
+  deviation_long_term_mean <- 
+    long_term_mean %>%
     mutate(across(1, ~(.x/lag(.x) - 1) * 100)) %>%
     slice(2) %>%
     mutate(across(1, ~format(round(.x, 1), nsmall = 1))) %>%
@@ -884,7 +922,8 @@ extract_state_space_statistics <- function(spp) {
 extract_wetland_statistics <- function(region_code) {
   
   # lay out region codes here; need names for table captions
-  regions <- tribble(
+  regions <- 
+    tribble(
     ~region, ~name,
     1, 'SEC',
     2, 'NHI',
@@ -893,7 +932,8 @@ extract_wetland_statistics <- function(region_code) {
   )
   
   # filter out region name by region number
-  region_name <- regions %>%
+  region_name <- 
+    regions %>%
     filter(region == region_code) %>% 
     pull(name)
   
@@ -901,7 +941,8 @@ extract_wetland_statistics <- function(region_code) {
   df_wetlands <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summaries_', analysis_year, '.csv'), show_col_types = FALSE)
   
   # figure out first year or surveys to display in table
-  summary_start_year <- df_wetlands %>%
+  summary_start_year <- 
+    df_wetlands %>%
     ungroup() %>%
     select(year) %>%
     distinct() %>%
@@ -911,7 +952,8 @@ extract_wetland_statistics <- function(region_code) {
   
   # grab last 10 years of surveys from current year
   # note: surveys not done in 2020 due to covid
-  annual_wetlands <- df_wetlands %>%
+  annual_wetlands <- 
+    df_wetlands %>%
     filter(region == region_code & year >= summary_start_year) %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
@@ -921,7 +963,8 @@ extract_wetland_statistics <- function(region_code) {
     mutate_all(as.character)
   
   # calculate % change from last survey year
-  perc_change_last_year <- df_wetlands %>%
+  perc_change_last_year <- 
+    df_wetlands %>%
     filter(region == region_code & year >= summary_start_year) %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
@@ -935,7 +978,8 @@ extract_wetland_statistics <- function(region_code) {
     mutate(across(`I, II, VI`:Linear, ~str_c(.x, '%')))
   
   # calculate 10-year mean
-  ten_year_mean <- df_wetlands %>%
+  ten_year_mean <- 
+    df_wetlands %>%
     drop_na() %>% # get rid of any no-survey years like 2020
     filter(region == region_code) %>%
     ungroup() %>%
@@ -949,7 +993,8 @@ extract_wetland_statistics <- function(region_code) {
   max_year <- max(ten_year_mean$Year)
   
   # format 10-year mean part of the table
-  ten_year_mean <- ten_year_mean %>%
+  ten_year_mean <- 
+    ten_year_mean %>%
     summarise(across(`I, II, VI`:Linear, ~ mean(.x, na.rm = TRUE))) %>%
     mutate(across(everything(), ~format(round(.x, 1), nsmall = 1))) %>%
     mutate(Year = str_glue('10-Year mean ({min_year}-{max_year})')) %>%
@@ -957,7 +1002,8 @@ extract_wetland_statistics <- function(region_code) {
     mutate(across(everything(), as.character))
   
   # calculate long-term mean (across every year of data)
-  long_term_mean <- df_wetlands %>%
+  long_term_mean <- 
+    df_wetlands %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
     ungroup() %>%
@@ -970,7 +1016,8 @@ extract_wetland_statistics <- function(region_code) {
     mutate(across(everything(), as.character))
   
   # calculate current year
-  current_year_wetlands <- df_wetlands %>%
+  current_year_wetlands <- 
+    df_wetlands %>%
     filter(region == region_code & year == analysis_year) %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
@@ -981,7 +1028,8 @@ extract_wetland_statistics <- function(region_code) {
   
   # calculate long-term mean again to calculate % change from long-term mean
   # should this not include the current year?
-  long_term <- df_wetlands %>%
+  long_term <- 
+    df_wetlands %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
     ungroup() %>%
@@ -992,7 +1040,8 @@ extract_wetland_statistics <- function(region_code) {
     select(Year, `I, II, VI`, III, `IV, V`, `VII, VIII`, `Non-linear`, Stream, Ditch, Linear)
   
   # % change from long-term mean
-  perc_long_term <- long_term %>%
+  perc_long_term <- 
+    long_term %>%
     bind_rows(., current_year_wetlands) %>%
     mutate(across(`I, II, VI`:Linear, ~(.x/lag(.x) - 1) * 100)) %>%
     slice(2) %>%
@@ -1001,13 +1050,15 @@ extract_wetland_statistics <- function(region_code) {
     mutate(across(`I, II, VI`:Linear, ~str_c(.x, '%')))
   
   # combine dataframes needed for table
-  wetland_summary <- perc_change_last_year %>%
+  wetland_summary <- 
+    perc_change_last_year %>%
     bind_rows(., long_term_mean) %>%
     bind_rows(., perc_long_term) %>%
     bind_rows(., ten_year_mean)
   
   # need this for reporting in report text
-  wetland_summary <- wetland_summary %>%
+  wetland_summary <- 
+    wetland_summary %>%
     filter(Year %in% c('% Change from previous year', '% Change from long-term mean')) %>%
     select(Year, `Non-linear`, Linear) %>%
     janitor::clean_names() %>%
@@ -1034,7 +1085,8 @@ extract_wetland_statistics <- function(region_code) {
 # percentage of mallards by region
 mall_percentage <- function(){
   
-  highest_region <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_summary', '.csv'), show_col_types = FALSE) %>%
+  highest_region <- 
+    read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_summary', '.csv'), show_col_types = FALSE) %>%
     select(species, region, area, b, r, pop_est, pop_se_2) %>%
     mutate(
       region = case_when(

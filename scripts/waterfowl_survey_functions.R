@@ -197,13 +197,15 @@ update_database <- function(db, table, data_to_append) {
 summarize_wetlands <- function(x, y) { 
   
   # start with unoccupied wetlands
-  unoccupied <- x %>%
+  unoccupied <- 
+    x %>%
     group_by(year, region) %>%
     summarise(across(typ1:dit, ~sum(.x, na.rm = TRUE))) %>%
     rename(ditch = dit, stream = str)
   
   # then occupied
-  occupied <- y %>%
+  occupied <- 
+    y %>%
     group_by(year, region) %>%
     count(wetype) %>%
     spread(wetype, n) %>%
@@ -213,12 +215,14 @@ summarize_wetlands <- function(x, y) {
     select(-`10`) # get rid of `10` column; these are fields
   
   # give each of these data frames the same name
-  occupied <- occupied %>%
+  occupied <- 
+    occupied %>%
     select(year, region, typ1 = `1`, typ2 = `2`, typ3 = `3`, typ4 = `4`, 
            typ5 = `5`, typ6 = `6`, typ7 = `7`, typ8 = `8`, stream = `9`, ditch = `0`)
   
   # wetland types (count)
-  total_wetlands <- unoccupied %>%
+  total_wetlands <- 
+    unoccupied %>%
     mutate(across(typ1:ditch, ~.x * 2)) %>% # multiply by 2 for 2 sides of plane?
     mutate(type = 'unoccupied') %>% # this helps for summing occupied and unoccupied later
     bind_rows(., occupied) %>%
@@ -227,29 +231,36 @@ summarize_wetlands <- function(x, y) {
     ungroup()
   
   # now calculate wetlands per sqm for particular regions
-  wet_psqm <- total_wetlands %>%
+  wet_psqm <- 
+    total_wetlands %>%
     split(.$region)
   
   # this could probably be one function
-  wet_psqm$`1` <- wet_psqm$`1` %>%
+  wet_psqm$`1` <- 
+    wet_psqm$`1` %>%
     mutate(across(typ1:ditch, ~ (.x /29) / 7.5)) #
   
-  wet_psqm$`2` <- wet_psqm$`2` %>%
+  wet_psqm$`2` <- 
+    wet_psqm$`2` %>%
     mutate(across(typ1:ditch, ~ (.x /13) / 7.5)) #
   
-  wet_psqm$`3` <- wet_psqm$`3` %>%
+  wet_psqm$`3` <- 
+    wet_psqm$`3` %>%
     mutate(across(typ1:ditch, ~ (.x /13) / 7.5)) #
   
-  wet_psqm$`4` <- wet_psqm$`4` %>%
+  wet_psqm$`4` <- 
+    wet_psqm$`4` %>%
     mutate(across(typ1:ditch, ~ (.x /11) / 7.5)) # 
   
   # combine regions
-  wet_psqm <- wet_psqm$`1` %>%
+  wet_psqm <- 
+    wet_psqm$`1` %>%
     bind_rows(., wet_psqm$`2`, wet_psqm$`3`, wet_psqm$`4`) %>%
     arrange(year, region)
   
   # wetland classes summed by different types
-  sum_wet_psqm <- wet_psqm %>%
+  sum_wet_psqm <- 
+    wet_psqm %>%
     group_by(year, region) %>%
     summarize(
       i = sum(c(typ1, typ2, typ6)), #
@@ -277,28 +288,33 @@ calculate_vcf <- function(df, spp) {
   for(i in 2:length(unique(df$year))) { # do we always need at least 2 years of data?
     
     # work backwards from current year
-    all_years <- unique(df$year) %>%
+    all_years <- 
+      unique(df$year) %>%
       as_tibble() %>%
       arrange(value)
     
     # go back i years to try to calculate vcf
-    vcf_years <- all_years %>%
+    vcf_years <- 
+      all_years %>%
       slice_tail(n = i) %>%
       pull(value)
     
     # now filter data within i years and by species
-    df_year_spp <- df %>%
+    df_year_spp <- 
+      df %>%
       filter(year %in% c(vcf_years) & p_species == spp)
     
     # begin Drew's calculations
     # create transect by year variable for grouping and summarizing air and ground counts
-    df_year_spp <- df_year_spp %>%
+    df_year_spp <- 
+      df_year_spp %>%
       pivot_wider(names_from = grd, values_from = ind_birds_R) %>%
       rename(air = `1`, grd = `2`) %>%
       mutate(year_x_transect = as.factor(paste(year, transect)))
     
     # sum air and ground counts by transect/year
-    df_air_to_ground <- df_year_spp %>%
+    df_air_to_ground <- 
+      df_year_spp %>%
       group_by(year_x_transect) %>%
       summarise(
         air = sum(air, na.rm = TRUE), 
@@ -315,7 +331,8 @@ calculate_vcf <- function(df, spp) {
     n_transects <- 27 * i # adjust number of transects
     
     # perform VCF calculations
-    vcf_calc <- tibble(
+    vcf_calc <- 
+      tibble(
       species = spp, # priority species code
       sum_sqx = sum(df_air_to_ground$sqx),
       sum_sqy = sum(df_air_to_ground$sqy),
@@ -334,7 +351,8 @@ calculate_vcf <- function(df, spp) {
     results <- list(df_year_spp, df_air_to_ground, vcf_calc)
     
     # VCF results here (vcf_calc from list)
-    res <- results[[3]] %>% 
+    res <- 
+      results[[3]] %>% 
       as_tibble() %>%
       mutate(
         min_year = min(df_year_spp$year), # first year of VCF calculations
@@ -347,7 +365,9 @@ calculate_vcf <- function(df, spp) {
     
     # stop looping through years if VCF CV < 0.20
     if(cv < 0.20) {
+      
       break
+      
     }
     
   }
@@ -362,14 +382,16 @@ estimate_population_size_by_region <- function(count_df, vcf_df, species_code, r
   
   # filter count data by species, region
   # sum count in each transect
-  df <- count_df %>%
+  df <- 
+    count_df %>%
     filter(p_species == species_code & region == region_num) %>%
     group_by(transect) %>%
     summarize(total_transect = sum(ind_birds_Pop))
 
   # number of transects and area by region
   # needed for b * a * r equation
-  survey_parameters <- tibble(
+  survey_parameters <- 
+    tibble(
     region = seq(1, 4, 1),
     transects = c(29, 13, 13, 11),
     area = c(17949, 9431, 15979, 12311)
@@ -377,21 +399,25 @@ estimate_population_size_by_region <- function(count_df, vcf_df, species_code, r
   
   # estimates are based on region-specific parameters, filter here
   # grab number of transects
-  transects <- survey_parameters %>%
+  transects <- 
+    survey_parameters %>%
     filter(region == region_num) %>%
     pull(transects)
   
   # grab region-specific area
-  area <- survey_parameters %>%
+  area <- 
+    survey_parameters %>%
     filter(region == region_num) %>%
     pull(area)
   
   # also subset VCF dataframe to species of interest
-  VCF <- vcf_df %>%
+  VCF <- 
+    vcf_df %>%
     filter(species == species_code)
 
   # now estimate population size using VCF and aerial counts
-  pop_calc <- tibble(
+  pop_calc <- 
+    tibble(
     species = species_code,
     region = region_num,
     total_air = sum(df$total_transect),
@@ -413,7 +439,8 @@ estimate_population_size_by_region <- function(count_df, vcf_df, species_code, r
 
   # collect results
   results <- list(VCF, pop_calc) # VCF and population estimates in list form
-  results <- results[2] %>% # really just interested in population estimates (?)
+  results <- 
+    results[2] %>% # really just interested in population estimates (?)
     as.data.frame() %>%
     as_tibble()
   
@@ -426,13 +453,15 @@ estimate_population_size_swans <- function(count_df, region_num) {
   # again filter count data, but only to specific region as we'll start with a swan-only
   # data set
   # sum counts for each transect
-  df <- count_df %>%
+  df <- 
+    count_df %>%
     filter(region == region_num) %>%
     group_by(transect) %>%
     summarize(total_transect = sum(ind_birds_Pop))
   
   # number of transects and area by region
-  survey_parameters <- tibble(
+  survey_parameters <- 
+    tibble(
     region = seq(1, 4, 1),
     transects = c(29, 13, 13, 11),
     area = c(17949, 9431, 15979, 12311)
@@ -440,17 +469,20 @@ estimate_population_size_swans <- function(count_df, region_num) {
   
   # estimates are based on region-specific parameters, filter here
   # grab number of transects
-  transects <- survey_parameters %>%
+  transects <- 
+    survey_parameters %>%
     filter(region == region_num) %>%
     pull(transects)
   
   # grab region-specific area
-  area <- survey_parameters %>%
+  area <- 
+    survey_parameters %>%
     filter(region == region_num) %>%
     pull(area)
   
   # estimate population size
-  pop_calc <- tibble(
+  pop_calc <- 
+    tibble(
     species = 81, # 81 for tundra swan
     region = region_num,
     total_air = sum(df$total_transect),
@@ -479,17 +511,20 @@ estimate_population_size_statewide <- function(count_df, vcf_df, species_code) {
   
   # filter count data for specific species, all regions
   # sum for each transect
-  df <- count_df %>%
+  df <- 
+    count_df %>%
     filter(p_species == species_code) %>%
     group_by(transect) %>%
     summarize(total_transect = sum(ind_birds_Pop))
   
   # subset VCF dataframe to species of interest
-  VCF <- vcf_df %>%
+  VCF <- 
+    vcf_df %>%
     filter(species == species_code)
   
   # now estimate population size using VCF and aerial counts
-  pop_calc <- tibble(
+  pop_calc <- 
+    tibble(
     species = species_code,
     total_air = sum(df$total_transect),
     b = (total_air / 66) / 7.5,
@@ -509,7 +544,8 @@ estimate_population_size_statewide <- function(count_df, vcf_df, species_code) {
   )
   
   results <- list(VCF, pop_calc)
-  results <- results[2] %>% # really just interested in population estimates (?)
+  results <- 
+    results[2] %>% # really just interested in population estimates (?)
     as.data.frame() %>%
     as_tibble()
   
