@@ -13,8 +13,6 @@ library(janitor)
 
 source(here::here('scripts/waterfowl_survey_functions.R')) # functions for summarizing, analyzing data
 
-# analysis_year <- 2021
-
 
 # import data from sas (2022) --------------------------------------
 
@@ -91,4 +89,3 @@ update_database(db = hist_db, table = "raw_wetland_counts", data_to_append = new
 
 # disconnect
 dbDisconnect(hist_db)
-

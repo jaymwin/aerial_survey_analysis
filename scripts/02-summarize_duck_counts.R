@@ -7,8 +7,6 @@ library(tidyverse)
 library(janitor)
 library(lubridate)
 
-# analysis_year <- 2021 # lubridate::year(Sys.Date())
-
 
 # load data ---------------------------------------------------------------
 
@@ -138,15 +136,15 @@ ws_structured <-
   ws_structured %>%
   mutate(
     pairs = case_when(
-      p_species !=4 & groups > 0 & groups < 5 ~ (pairs) + as.integer((groups / 2)),
+      p_species != 4 & groups > 0 & groups < 5 ~ (pairs) + as.integer((groups / 2)),
       TRUE ~ pairs
     ),
     lonedrake = case_when(
-      p_species !=4 & groups > 0 & groups < 5 ~ lonedrake + (groups - 2 * (as.integer((groups / 2)))),
+      p_species != 4 & groups > 0 & groups < 5 ~ lonedrake + (groups - 2 * (as.integer((groups / 2)))),
       TRUE ~ lonedrake
     ),
     groups = case_when(
-      p_species !=4 & groups > 0 & groups < 5 ~ 0,
+      p_species != 4 & groups > 0 & groups < 5 ~ 0,
       TRUE ~ groups
     )
   )
