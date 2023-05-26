@@ -40,6 +40,11 @@ air_wet <- tbl(hist_db, 'raw_wetland_counts') %>%
   mutate(across(everything(), ~replace_na(.x, 0))) # replace na counts with 0s
 air_wet
 
+# get rid of ground wetland counts here
+air_wet <-
+  air_wet %>%
+  filter(ground != 1)
+
 # disconnect
 dbDisconnect(hist_db)
 
