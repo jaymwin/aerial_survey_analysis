@@ -19,18 +19,21 @@ hist_db <- dbConnect(RSQLite::SQLite(), here::here("databases/historical_db.sqli
 src_dbi(hist_db)
 
 # ducks and geese estimates (VCF-corrected)
-ducks_geese <- tbl(hist_db, 'vcf_corrected_pop_estimates') %>%
+ducks_geese <- 
+  tbl(hist_db, 'vcf_corrected_pop_estimates') %>%
   collect()
 
 # swans estimates (not VCF-corrected)
-swans <- tbl(hist_db, 'swan_pop_estimates') %>%
+swans <- 
+  tbl(hist_db, 'swan_pop_estimates') %>%
   collect()
 
 # disconnect
 dbDisconnect(hist_db)
 
 # combine all species now for state-space modeling
-waterfowl_pop_estimates <- ducks_geese %>%
+waterfowl_pop_estimates <- 
+  ducks_geese %>%
   bind_rows(., swans)
 
 # create a year-specific directory to store fitted JAGS models
@@ -52,7 +55,8 @@ jags_output_all_species <- c()
 for (i in seq_along(spp)) {
   
   # data set for analysis
-  df <- waterfowl_pop_estimates %>%
+  df <- 
+    waterfowl_pop_estimates %>%
     filter(species == spp[i]) %>% # filter to species
     filter( # remove early NA years for geese, swans
       case_when(
@@ -105,7 +109,8 @@ for (i in seq_along(spp)) {
   }
   
   # bundle data, identify parameters to save, and submit to JAGS
-  bbs.data <- list(
+  bbs.data <- 
+    list(
     nyr = length(year), # survey years
     lnCount = log(mcounts), # log of annual counts
     ln1 = log(mcounts[,1]), # log of initial count
@@ -116,7 +121,8 @@ for (i in seq_along(spp)) {
   parameters <- c("alpha", "epsilon", "obs.sd", "N.est")
   
   # fit jags model
-  jags_out <- jagsUI(
+  jags_out <- 
+    jagsUI(
     bbs.data, # bundled JAGS data
     inits = NULL, 
     parameters, 
@@ -131,7 +137,8 @@ for (i in seq_along(spp)) {
   )
 
   # now, pull out parameters of interest (estimated count each year)
-  jags_out <- MCMCsummary(jags_out, params = 'N.est') %>%
+  jags_out <- 
+    MCMCsummary(jags_out, params = 'N.est') %>%
     as_tibble() %>%
     mutate(species = spp[i]) %>%
     select(
@@ -150,7 +157,8 @@ for (i in seq_along(spp)) {
 }
 
 # bind list together of SSM parameters and join with population estimates
-jags_output_all_species <- jags_output_all_species %>% 
+jags_output_all_species <- 
+  jags_output_all_species %>% 
   bind_rows() %>%
   left_join(., waterfowl_pop_estimates)
 

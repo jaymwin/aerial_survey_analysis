@@ -20,7 +20,8 @@ source(here::here('scripts/waterfowl_survey_functions.R')) # functions for summa
 
 if (analysis_year == 2022) {
 
-sas_files <- dir_ls(here::here('raw_data/annual_survey_data'), glob = '*sas7bdat') %>%
+sas_files <- 
+  dir_ls(here::here('raw_data/annual_survey_data'), glob = '*sas7bdat') %>%
   as_tibble() %>%
   mutate(
     type = str_extract(value, 'airwet|wsds'),
@@ -28,7 +29,6 @@ sas_files <- dir_ls(here::here('raw_data/annual_survey_data'), glob = '*sas7bdat
     year = str_sub(name, start = -2, end = -1),
     year = str_c(20, year)
   )
-sas_files
 
 # waterfowl
 sas_files %>%

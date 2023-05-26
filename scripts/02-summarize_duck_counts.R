@@ -16,19 +16,19 @@ library(lubridate)
 hist_db <- dbConnect(RSQLite::SQLite(), here::here("databases/historical_db.sqlite"))
 
 # read in metadata with transect/species codes...this will be helpful for prepping data later
-transect_metadata <- tbl(hist_db, 'transects_regions') %>%
+transect_metadata <- 
+  tbl(hist_db, 'transects_regions') %>%
   collect()
-# species_codes <- tbl(hist_db, 'species_codes') %>%
-# collect()
 
 # read in raw duck counts
-ws_survey_raw <- tbl(hist_db, 'raw_duck_counts') %>%
+ws_survey_raw <- 
+  tbl(hist_db, 'raw_duck_counts') %>%
   collect()
 
 # read in species codes
-spp_codes <- tbl(hist_db, 'species_codes') %>%
+spp_codes <- 
+  tbl(hist_db, 'species_codes') %>%
   collect()
-spp_codes %>% print(n=Inf)
 
 # disconnect
 dbDisconnect(hist_db)
@@ -37,7 +37,8 @@ dbDisconnect(hist_db)
 # clean data --------------------------------------------------------------
 
 # convert year into 4-digit year
-ws_survey_raw <- ws_survey_raw %>%
+ws_survey_raw <- 
+  ws_survey_raw %>%
   mutate(
     year = case_when(
       # year > 21 ~ year + 1900, # pre-2000 years ### THIS COULD BE A PROBLEM IN >2022 SO REMOVED ###
@@ -45,19 +46,19 @@ ws_survey_raw <- ws_survey_raw %>%
       TRUE ~ year + 2000 # >= 2000
     )
   )
-ws_survey_raw
 
 # replace empty cells (NAs) in grd column with '4'; this way:
 # "4" and "1" = observations from air
 # "2" = from ground
 # "1" = air count over air-ground portion of transect
-ws_survey_raw <- ws_survey_raw %>%
+ws_survey_raw <- 
+  ws_survey_raw %>%
   mutate(grd = replace_na(grd, 4)) # replace NAs with 4 
-ws_survey_raw
 
 # replace empty cells (NAs) in wetype column with 10 
 # here, "10" represents a "field" sighting rather than a wetland
-ws_survey_raw <- ws_survey_raw %>%
+ws_survey_raw <- 
+  ws_survey_raw %>%
   mutate(
     wetype = as.numeric(wetype),
     wetype = case_when(
@@ -67,22 +68,24 @@ ws_survey_raw <- ws_survey_raw %>%
   )
 
 # replace empty species cells (NAs) with 0
-ws_survey_raw <- ws_survey_raw %>%
+ws_survey_raw <- 
+  ws_survey_raw %>%
   mutate_at(vars(sp1:bryg), ~replace_na(., 0))
 
 # basin or observation number
-ws_survey_raw <- ws_survey_raw %>%
+ws_survey_raw <- 
+  ws_survey_raw %>%
   group_by(transect) %>%
   mutate(basin_no = as.numeric(row_number())) %>%
   ungroup()
-ws_survey_raw
 
 # save for summarizing wetlands in next script
 ws_survey_raw %>%
   write_csv(str_c(here::here('output'), '/', analysis_year, '/', 'ws_survey_raw', '.csv'))
 
 # pivot data to a longer format - observation for each species code
-ws_structured <- ws_survey_raw %>%
+ws_structured <- 
+  ws_survey_raw %>%
   select(year, date, transect, grd, wetype, basin_no, starts_with(c('sp', 'pr', 'lm', 'fm', 'us'))) %>%
   pivot_longer(
     c(-year, -date, -transect, -grd, -wetype, -basin_no), # keep these in place
@@ -91,15 +94,15 @@ ws_structured <- ws_survey_raw %>%
   ) %>%
   select(-set) %>% # not needed
   rename(species = sp, pairs = pr, lonedrake = lm, flockdrake = fm, groups = us)
-ws_structured
 
 # join with transect metadata to add region
-ws_structured <- ws_structured %>%
+ws_structured <- 
+  ws_structured %>%
   left_join(., transect_metadata)
-ws_structured
 
 # create priority species codes from species codes
-ws_structured <- ws_structured %>%
+ws_structured <- 
+  ws_structured %>%
   mutate(
     p_species = case_when(
       species == 32 ~ 1, # mallard
@@ -110,16 +113,15 @@ ws_structured <- ws_structured %>%
       TRUE ~ 5 # all other duck species
     )
   )
-ws_structured
-
 
 # remove observations where no species was recorded (i.e unoccupied wetland observations)
-ws_structured <- ws_structured %>%
+ws_structured <- 
+  ws_structured %>%
   filter(species != 0)
-ws_structured
 
 # Adjusting for reports of "1" flocked drake - according to R. Gatti analysis
-ws_structured <- ws_structured %>%
+ws_structured <- 
+  ws_structured %>%
   mutate(
     lonedrake = case_when(
       flockdrake == 1 ~ lonedrake + flockdrake,
@@ -130,10 +132,10 @@ ws_structured <- ws_structured %>%
       TRUE ~ flockdrake
     )
   )
-ws_structured
 
 #Treats groups less than 5 as identifiable pairs, with the exception of CAGO.  
-ws_structured <- ws_structured %>%
+ws_structured <- 
+  ws_structured %>%
   mutate(
     pairs = case_when(
       p_species !=4 & groups > 0 & groups < 5 ~ (pairs) + as.integer((groups / 2)),
@@ -148,7 +150,6 @@ ws_structured <- ws_structured %>%
       TRUE ~ groups
     )
   )
-ws_structured
 
 #check the structure of the ws_structured
 glimpse(ws_structured)
@@ -161,11 +162,13 @@ ws_structured %>%
 ###########Create Copies of WSdata_Str for varying objectives in subsequent analyses###################################
 
 ###Copy 1 - AIR DATA ONLY ### 
-ws_structured_air <- ws_structured %>%
+ws_structured_air <- 
+  ws_structured %>%
   filter(grd %in% c(1, 4))
 
 #Calculate the number of "indicated birds" per transect for calculating total population # "ind_birds_Pop"
-ws_structured_air <- ws_structured_air %>%
+ws_structured_air <- 
+  ws_structured_air %>%
   mutate(
     ind_birds_Pop = case_when(
       species %in% c(46, 47, 50, 67) ~ (pairs * 2) + flockdrake + lonedrake + groups, # Redheads, Cans , Ring-necks, and Ruddy ducks
@@ -174,7 +177,8 @@ ws_structured_air <- ws_structured_air %>%
   )
 
 #Calculate the number of "seen birds" per transect for calculating total population # "seen_birds_Pop" - Basically all counted the same (<- (pairs*2) + lonedrake + Flockdrake+Groups); just kept the format for different species though
-ws_structured_air <- ws_structured_air %>%
+ws_structured_air <- 
+  ws_structured_air %>%
   mutate(
     seen_birds_Pop = case_when(
       species %in% c(46, 47, 50, 67) ~ (pairs * 2) + flockdrake + lonedrake + groups, # Redheads, Cans , Ring-necks, and Ruddy ducks
@@ -183,7 +187,8 @@ ws_structured_air <- ws_structured_air %>%
   )
 
 #Calculate the number of "indicated birds without the groups" per transect for calculating total population # "oldind_birds_Pop"
-ws_structured_air <- ws_structured_air %>%
+ws_structured_air <- 
+  ws_structured_air %>%
   mutate(
     oldind_birds_Pop = case_when(
       species %in% c(46, 47, 50, 67) ~ (pairs * 2) + flockdrake + lonedrake, # Redheads, Cans , Ring-necks, and Ruddy ducks
@@ -191,19 +196,19 @@ ws_structured_air <- ws_structured_air %>%
     )
   )
 
-ws_structured_air
-
-###Copy 2 - AIR and GROUND Data (GRD = 1,2,and4) ### 
+###Copy 2 - AIR and GROUND Data ### 
 
 #Calculate "numbirds" according to Ron's "sppcheck.sas" file. Basically does not discriminate calculation among species, same as "seen_birds_Pop" above
 #Calculate "numbirds" according to Ron's "sppcheck.sas" file. Basically does not discriminate calculation among species, same as "seen_birds_Pop" above
-ws_structured_air_ground <- ws_structured %>%
+ws_structured_air_ground <- 
+  ws_structured %>%
   mutate(
     numbirds_Pop = (pairs * 2) + flockdrake + lonedrake + groups
   )
 
 #Calculate the number of "indicated birds" per transect for calculating total population # "ind_birds_Pop"
-ws_structured_air_ground <- ws_structured_air_ground %>%
+ws_structured_air_ground <- 
+  ws_structured_air_ground %>%
   mutate(
     ind_birds_Pop = case_when(
       species %in% c(46, 47, 50, 67) ~ (pairs*2) + flockdrake + lonedrake + groups, # Redheads, Cans , Ring-necks, and Ruddy ducks
@@ -215,11 +220,13 @@ ws_structured_air_ground <- ws_structured_air_ground %>%
 ######Filter Data Sets for Relevant Queries ################
 
 ####### Subset Data to those recorded in Groups seen by AIR
-ws_structured_air_groups <- ws_structured_air %>%
+ws_structured_air_groups <- 
+  ws_structured_air %>%
   filter(groups >= 5)
 
 #Summarize into table by Region
-wsds_groups <- ws_structured_air_groups %>%
+wsds_groups <- 
+  ws_structured_air_groups %>%
   group_by(year, region, p_species) %>%
   summarize(group = sum(groups)) %>%
   mutate(
@@ -235,9 +242,9 @@ wsds_groups <- ws_structured_air_groups %>%
   arrange(year, p_species) %>%
   select(year, p_species, SEC, NHI, NLO, SWD)
 
-
 #Check Groups in Year of Interest by row
-group_21 <- ws_structured_air_groups %>%
+group_21 <- 
+  ws_structured_air_groups %>%
   filter(year == analysis_year)
 #Export to Excel to include as anecdotal support in summary report
 
@@ -247,7 +254,8 @@ group_21 <- ws_structured_air_groups %>%
 #   write_csv(here::here('output/annual_report_data/2021_WSDS_results/group_identification.csv'))
 
 #Subset Down to the Year of Interest - CHANGE ANNUALLY
-wsds_groups_21 <- wsds_groups %>%
+wsds_groups_21 <-
+  wsds_groups %>%
   filter(year == analysis_year)
 
 wsds_groups_21 %>%
@@ -255,7 +263,8 @@ wsds_groups_21 %>%
   mutate(total = SEC + NHI + NLO + SWD)
 
 ####### Summarize into table for all indicated birds seen by AIR (Includes birds counted in all groups)
-wsds_birds <- ws_structured_air %>%
+wsds_birds <- 
+  ws_structured_air %>%
   group_by(year, region, p_species) %>%
   summarize(ind_birds_Pop = sum(ind_birds_Pop)) %>%
   mutate(
@@ -271,29 +280,35 @@ wsds_birds <- ws_structured_air %>%
   arrange(year, p_species) %>%
   select(year, p_species, SEC, NHI, NLO, SWD)
 
-wsds_birds_21 <- wsds_birds %>%
+wsds_birds_21 <- 
+  wsds_birds %>%
   filter(year == analysis_year)
 
 ########### For comparison to 2021
 
-previous_year <- wsds_groups %>%
+previous_year <- 
+  wsds_groups %>%
   distinct(year) %>%
   slice_tail(n = 2) %>%
   slice(1) %>%
   pull()
 
-wsds_groups_19 <- wsds_groups %>%
+wsds_groups_19 <- 
+  wsds_groups %>%
   filter(year == previous_year)
 
-wsds_birds_19 <- wsds_birds %>%
+wsds_birds_19 <- 
+  wsds_birds %>%
   filter(year == previous_year)
 
 #Group Tables for Export
 
-wsds19_sum <- wsds_groups_19 %>%
+wsds19_sum <- 
+  wsds_groups_19 %>%
   bind_rows(wsds_birds_19)
 
-wsds21_sum <- wsds_groups_21 %>%
+wsds21_sum <- 
+  wsds_groups_21 %>%
   bind_rows(wsds_birds_21)
 
 #Export to Excel for final formatting and percent calculation
@@ -306,14 +321,16 @@ wsds21_sum <- wsds_groups_21 %>%
 
 
 #Summarizing total Seen P-Species, by Air only, by Year; then Ground Only - CHANGE YEARS AS NECESSARY
-air_seen <- ws_structured_air %>%
+air_seen <- 
+  ws_structured_air %>%
   filter(year %in% c(previous_year, analysis_year)) %>%
   group_by(year, p_species) %>%
   summarise(seen_birds_Pop = sum(seen_birds_Pop))
 
 # write.csv(Air_Seen, "Air_Seen.csv")
 
-ground_seen <- ws_structured_air_ground %>%
+ground_seen <- 
+  ws_structured_air_ground %>%
   filter(grd == 2) %>%
   filter(year %in% c(previous_year, analysis_year)) %>%
   group_by(year, p_species) %>%
@@ -328,13 +345,15 @@ ground_seen <- ws_structured_air_ground %>%
 #NOTE: 6-14-21 Going forward and switching code to use "ws_structured_air" instead of "ws_structured_air_ground".  This switch will only count the composition of species indicated from the AIR. 
 
 # % Composition of species making up indicated O_Ducks - CHANGE YEAR AS NECESSARY
-comp_oducks_region <- ws_structured_air %>%
+comp_oducks_region <- 
+  ws_structured_air %>%
   filter(p_species == 5 & year == analysis_year & groups < 20) %>%
   group_by(region, species) %>%
   summarize(ind_birds_Pop = sum(ind_birds_Pop))
 # write.csv(Comp_ODucks_Region, "Comp_ODucks_Region.csv")
 
-comp_oducks_state <- ws_structured_air %>%
+comp_oducks_state <- 
+  ws_structured_air %>%
   filter(p_species == 5 & year == analysis_year & groups < 20) %>%
   group_by(species) %>%
   summarize(ind_birds_Pop = sum(ind_birds_Pop))
@@ -363,7 +382,8 @@ comp_oducks_state %>%
 # summarize coots, cranes, and swans --------------------------------------
 
 # count coots by year and region (air only)
-coots <- ws_survey_raw %>%
+coots <- 
+  ws_survey_raw %>%
   filter(coots != 0 & grd != 2) %>%
   group_by(year) %>%
   summarize(coots = sum(coots)) %>%
@@ -374,17 +394,20 @@ coots %>%
   write_csv(str_c(here::here('output'), '/', analysis_year, '/', 'coots', "_", analysis_year, '.csv'))
 
 # count sandhill cranes by year and region (air only)
-shcranes_total <- ws_structured_air %>%
+shcranes_total <- 
+  ws_structured_air %>%
   filter(species == 86) %>%
   group_by(year) %>%
   summarize(seen_birds_Pop = sum(seen_birds_Pop))
 
-shcranes_no_groups <- ws_structured_air %>%
+shcranes_no_groups <- 
+  ws_structured_air %>%
   filter(species == 86 & groups == 0) %>%
   group_by(year) %>%
   summarize(seen_birds_Pop = sum(seen_birds_Pop))
 
-shcranes <- shcranes_total %>%
+shcranes <- 
+  shcranes_total %>%
   rename(cranes_total = seen_birds_Pop) %>%
   left_join(., shcranes_no_groups %>% rename(cranes_no_groups = seen_birds_Pop))
 
@@ -393,11 +416,13 @@ shcranes %>%
   write_csv(str_c(here::here('output'), '/', analysis_year, '/', 'cranes', "_", analysis_year, '.csv'))
 
 # count whooping cranes by year and region (air only)
-whcranes <- ws_structured_air %>%
+whcranes <- 
+  ws_structured_air %>%
   filter(species == 84 & year >= 2016)
 
 # count trumpeter swans by year and region (air only)
-trumpeter_swans <- ws_structured_air %>%
+trumpeter_swans <- 
+  ws_structured_air %>%
   filter(species == 81 & groups < 5 & year >= 2016) %>%
   group_by(year) %>%
   summarize(seen_birds_Pop = sum(seen_birds_Pop))
@@ -415,7 +440,8 @@ trumpeter_swans %>%
 # 4 = air only observations
 
 # start and end dates (aerial)
-aerial_dates <- ws_survey_raw %>%
+aerial_dates <- 
+  ws_survey_raw %>%
   select(year, month, day = date, grd) %>%
   # make dates from year/month/day columns
   mutate(date = make_date(year, month, day)) %>%
@@ -427,7 +453,8 @@ aerial_dates <- ws_survey_raw %>%
   arrange(date) 
 
 # start and end dates (ground)
-ground_dates <- ws_survey_raw %>%
+ground_dates <- 
+  ws_survey_raw %>%
   select(year, month, day = date, grd) %>%
   mutate(date = make_date(year, month, day)) %>%
   filter(year == analysis_year) %>%
@@ -438,7 +465,8 @@ ground_dates <- ws_survey_raw %>%
 
 # aerial
 # aerial start, end dates
-aerial_start_end <- aerial_dates %>%
+aerial_start_end <- 
+  aerial_dates %>%
   # filter to first/last date
   filter(row_number() == 1 | row_number() == n())
 
@@ -448,14 +476,18 @@ aerial_end_survey_date <- aerial_start_end[2, 1] %>% pull()
 aerial_total_survey_days <- nrow(aerial_dates)
 
 # reformat start, end dates for report
-aerial_start_survey_date <- format(aerial_start_survey_date, format = "%B %d") %>%
+aerial_start_survey_date <- 
+  format(aerial_start_survey_date, format = "%B %d") %>%
   str_replace(., ' 0', ' ')
-aerial_end_survey_date <- format(aerial_end_survey_date, format = "%B %d") %>%
+
+aerial_end_survey_date <- 
+  format(aerial_end_survey_date, format = "%B %d") %>%
   str_replace(., ' 0', ' ')
 
 # ground
 # ground start, end dates
-ground_start_end <- ground_dates %>%
+ground_start_end <- 
+  ground_dates %>%
   # filter to first/last date
   filter(row_number() == 1 | row_number() == n())
 
@@ -468,13 +500,17 @@ ground_end_survey_date <- ground_start_end[2, 1] %>% pull()
 ground_total_survey_days <- nrow(ground_dates)
 
 # reformat start, end dates for report
-ground_start_survey_date <- format(ground_start_survey_date, format = "%B %d") %>%
+ground_start_survey_date <- 
+  format(ground_start_survey_date, format = "%B %d") %>%
   str_replace(., ' 0', ' ')
-ground_end_survey_date <- format(ground_end_survey_date, format = "%B %d") %>%
+
+ground_end_survey_date <- 
+  format(ground_end_survey_date, format = "%B %d") %>%
   str_replace(., ' 0', ' ')
 
 # finally, what's the overlap between air and ground surveys?
-air_ground_overlap <- ws_survey_raw %>%
+air_ground_overlap <- 
+  ws_survey_raw %>%
   select(transect, year, month, day = date, grd) %>%
   mutate(date = make_date(year, month, day)) %>%
   filter(year == analysis_year) %>%
@@ -498,7 +534,8 @@ air_ground_overlap <- ws_survey_raw %>%
   drop_na()
 
 # table of survey timing to report later
-survey_timing <- tibble(
+survey_timing <- 
+  tibble(
   aerial_start_survey_date = aerial_start_survey_date,
   aerial_end_survey_date = aerial_end_survey_date,
   aerial_total_survey_days = aerial_total_survey_days,
@@ -511,9 +548,7 @@ survey_timing <- tibble(
   max_air_ground_survey_date = max_air_ground_survey_date %>% format(., format = "%B %d") %>%
     str_replace(., ' 0', ' ')
 )
-survey_timing
 
 # save for reporting
 survey_timing %>%
   write_csv(str_c(here::here('output'), '/', analysis_year, '/', 'survey_timing', "_", analysis_year, '.csv'))
-

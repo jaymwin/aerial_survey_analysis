@@ -12,17 +12,18 @@ library(janitor)
 hist_db <- dbConnect(RSQLite::SQLite(), here::here("databases/historical_db.sqlite"))
 
 # read in duck counts
-ws_survey_raw <- read_csv(
+ws_survey_raw <- 
+  read_csv(
   str_c(here::here('output'), '/', analysis_year, '/', 'ws_survey_raw', '.csv'),
   col_types = cols(
     .default = "d", 
     direct = 'c', 
     side = 'c')
 )
-ws_survey_raw
 
 # occupied wetlands only
-occ_wet <- ws_survey_raw %>%
+occ_wet <- 
+  ws_survey_raw %>%
   filter(sp1 != 0 & grd != 2) %>% # species not = 0 and transect not = ground
   mutate(
     region = case_when(
@@ -32,13 +33,12 @@ occ_wet <- ws_survey_raw %>%
       transect >= 61 & transect < 72 ~ 4
     )
   )
-occ_wet
 
 # read in aerial wetland counts from database
-air_wet <- tbl(hist_db, 'raw_wetland_counts') %>%
+air_wet <- 
+  tbl(hist_db, 'raw_wetland_counts') %>%
   collect() %>%
   mutate(across(everything(), ~replace_na(.x, 0))) # replace na counts with 0s
-air_wet
 
 # get rid of ground wetland counts here
 air_wet <-
@@ -64,7 +64,8 @@ all_sum_wetlands_psqm <- wetland_estimates[[5]]
 #   write_rds(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summaries_', analysis_year, '.rds'))
 
 # data frame for wetland summary tables/figures in internal report
-all_wetlands_psqm <- all_wetlands_psqm %>%
+all_wetlands_psqm <- 
+  all_wetlands_psqm %>%
   group_by(year, region) %>%
   summarize(
     i_ii_vi = sum(c(typ1, typ2, typ6)),
