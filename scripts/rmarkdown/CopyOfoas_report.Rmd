@@ -1,0 +1,247 @@
+---
+title: "Waterfowl Breeding Population Survey For Wisconsin, 1973--`r params$year`"
+author:  |
+  | Jason Winiarski^1^ and Taylor Finger^2^
+  | *^1^Office of Applied Science*
+  | *^2^Bureau of Wildlife Management*
+  | *Wisconsin Department of Natural Resources*
+date: "`r format(Sys.time(), '%B %Y')`"
+fontsize: 12pt
+geometry: margin = 1in
+params: 
+  year: 
+bibliography: survey_citations.bib
+csl: the-journal-of-wildlife-management
+header-includes:
+   - \usepackage[default]{sourcesanspro}
+   - \usepackage[T1]{fontenc}
+  - \usepackage{booktabs}
+  - \usepackage{colortbl}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{makecell}
+  - \renewcommand{\contentsname}{Table of Contents} # change TOC name
+mainfont: SourceSansPro
+output: 
+  pdf_document:
+    toc: true
+    number_sections: true
+    toc_depth: 3
+urlcolor: blue
+linkcolor: blue
+---
+
+<!-- load relevant report data -->
+<!-- load survey year, length -->
+
+```{r year_data, echo = FALSE, warning = FALSE, message = FALSE}
+# automate some parts of report text with previous year, number of study years
+previous_year <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'ws_structured.csv'), show_col_types = FALSE) %>%
+  distinct(year) %>%
+  slice_tail(n = 2) %>%
+  slice(1) %>%
+  pull()
+missing_years <- 1 # due to covid
+num_survey_years <- length(seq(1973, analysis_year, 1)) - missing_years
+swd_survey_years <- length(seq(1997, analysis_year, 1)) - missing_years
+goose_years <- length(seq(1986, analysis_year, 1)) - missing_years
+```
+
+<!-- load wetlands -->
+
+```{r wetland_data, echo = FALSE, warning = FALSE, message = FALSE}
+# wetland summary statistics
+# reported in text below
+extract_wetland_statistics(region_code = 1)
+extract_wetland_statistics(region_code = 2)
+extract_wetland_statistics(region_code = 3)
+extract_wetland_statistics(region_code = 4)
+
+sec_results <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_1.csv'), show_col_types = FALSE)
+nhi_results <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_2.csv'), show_col_types = FALSE)
+nlo_results <-read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_3.csv'), show_col_types = FALSE)
+swd_results <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_4.csv'), show_col_types = FALSE)
+```
+
+<!-- load population estimates -->
+
+```{r ssm_data, echo = FALSE, warning = FALSE, message = FALSE}
+# state-space model estimates for waterfowl species
+# reported in text below
+mall_results <- extract_state_space_statistics(spp = 'mallard')
+bwte_results <- extract_state_space_statistics(spp = 'blue-winged teal')
+wodu_results <- extract_state_space_statistics(spp = 'wood duck')
+other_results <- extract_state_space_statistics(spp = 'other ducks')
+all_results <- extract_state_space_statistics(spp = 'total ducks')
+cago_results <- extract_state_space_statistics(spp = 'canada goose')
+swan_results <- extract_state_space_statistics(spp = 'trumpeter swan')
+
+# get frequency of species compromising 'other' ducks
+comp_other_ducks <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'comp_oducks_state', "_", analysis_year, '.csv'), show_col_types = FALSE)
+
+# get region and percentage with most mallards
+mall_percent <- mall_percentage()
+
+# get coot, crane, swan info
+air_coot_count <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'coots', "_", analysis_year, '.csv'), show_col_types = FALSE) %>% 
+  slice_tail(n= 1) %>% 
+  pull(coots)
+air_crane_count <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'cranes', "_", analysis_year, '.csv'), show_col_types = FALSE) %>% 
+  slice_tail(n = 1)
+air_swan_count <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'trumpeter_swans', "_", analysis_year, '.csv'), show_col_types = FALSE) %>% 
+  slice_tail(n = 1) %>% 
+  pull(seen_birds_Pop)
+```
+
+<!-- load survey timing -->
+
+```{r survey_timing, echo = FALSE, warning = FALSE, message = FALSE}
+survey_timing <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'survey_timing', "_", analysis_year, '.csv'), show_col_types = FALSE)
+```
+
+\newpage
+
+# Abstract
+
+The `r params$year` Waterfowl Breeding Population Survey for Wisconsin was conducted from `r survey_timing$min_air_ground_survey_date`--`r survey_timing$max_air_ground_survey_date` and followed methods of the North American Waterfowl Breeding Population and Habitat Survey. The information from this survey is used as part of the overall survey of breeding waterfowl in North America as well as in making state-level waterfowl management decisions. This survey has been conducted annually since 1973, and data on Wisconsin waterfowl breeding populations and wetland counts are best interpreted as trends over several years rather than as year-to-year fluctuations.
+
+Total non-linear basins were `r sec_results$direction_previous_non_linear` `r sec_results$percent_change_previous_non_linear` from `r previous_year` in the Southeast Central (SEC) region and `r sec_results$direction_long_term_non_linear` `r sec_results$percent_change_long_term_non_linear` from the long-term, `r num_survey_years`-year mean. In the Northern High Density (NHI) region, total non-linear basins were `r nhi_results$direction_previous_non_linear` `r nhi_results$percent_change_previous_non_linear` from `r previous_year` and `r nhi_results$direction_long_term_non_linear` `r nhi_results$percent_change_long_term_non_linear` from the long-term mean. Non-linear basins were `r nlo_results$direction_previous_non_linear` `r nlo_results$percent_change_previous_non_linear` from `r previous_year` in the Northern Low Density (NLO) region and `r nlo_results$direction_long_term_non_linear` `r nlo_results$percent_change_long_term_non_linear` from the long-term mean. Non-linear basins were `r swd_results$direction_previous_non_linear` `r swd_results$percent_change_previous_non_linear` from `r previous_year` in the Southwest Driftless (SWD) region and `r swd_results$direction_long_term_non_linear` `r swd_results$percent_change_long_term_non_linear` compared to this region's long-term (`r swd_survey_years`-year) mean. Total linear basins were `r sec_results$direction_previous_linear` `r sec_results$percent_change_previous_linear` from `r previous_year` in the SEC region and `r sec_results$direction_long_term_linear` `r sec_results$percent_change_long_term_linear` from the long-term mean. In the NHI region, linear basins were `r nhi_results$direction_previous_linear` `r nhi_results$percent_change_previous_linear` from `r previous_year` and `r nhi_results$direction_long_term_linear` `r nhi_results$percent_change_long_term_linear` from the long-term mean. NLO region linear basins were `r nlo_results$direction_previous_linear` `r nlo_results$percent_change_previous_linear` from `r previous_year` and `r nlo_results$direction_long_term_linear` `r nlo_results$percent_change_long_term_linear` from the long-term mean. Linear basins were `r swd_results$direction_previous_linear` `r swd_results$percent_change_previous_linear` from `r previous_year` in the SWD region and `r swd_results$direction_long_term_linear` `r swd_results$percent_change_long_term_linear` from the long-term mean.
+
+The `r params$year` total breeding duck modeled population estimate of `r all_results$mean` was `r all_results$deviation_previous_year` `r all_results$direction_previous_year` than the `r params$year - 1` modeled estimate of `r all_results$previous_year_mean`, and was `r all_results$deviation_long_term_mean` `r all_results$direction_long_term_mean` than the long-term mean. Overall, the total duck population estimate for `r params$year` was higher than what we have experienced over the last few years (2015--2019) and above the total duck numbers experienced in the prior 10 years. The mallard modeled breeding population estimate of `r mall_results$mean` was `r mall_results$deviation_previous_year` `r mall_results$direction_previous_year` than the `r params$year - 1` estimate of `r mall_results$previous_year_mean` and was `r mall_results$deviation_long_term_mean` `r mall_results$direction_long_term_mean` than the long-term mean. The blue-winged teal modeled breeding population estimate of `r bwte_results$mean` was `r bwte_results$deviation_previous_year` `r bwte_results$direction_previous_year` compared to the `r params$year - 1` estimate of `r bwte_results$previous_year_mean`, but remains `r bwte_results$deviation_long_term_mean` `r bwte_results$direction_long_term_mean` than the long-term mean. At `r wodu_results$mean` the `r params$year` population estimate for wood ducks was `r wodu_results$deviation_previous_year` `r wodu_results$direction_previous_year` than the `r params$year - 1` estimate of `r wodu_results$previous_year_mean` and `r wodu_results$deviation_long_term_mean` `r wodu_results$direction_long_term_mean` than the long-term mean. The modeled Canada goose population estimate of `r cago_results$mean` was `r cago_results$deviation_previous_year` `r cago_results$direction_previous_year` compared to the `r params$year - 1` estimate of `r cago_results$previous_year_mean`, and `r cago_results$deviation_long_term_mean` `r cago_results$direction_long_term_mean` than the long-term mean. The population estimate of "other ducks" was `r other_results$mean`, which was `r other_results$deviation_previous_year` `r other_results$direction_previous_year` than the `r params$year - 1` estimate of `r other_results$previous_year_mean` and was `r other_results$deviation_long_term_mean` `r other_results$direction_long_term_mean` than the long-term mean.
+
+\newpage
+
+# Introduction
+
+Decisions regarding hunting season structure and harvest limits in waterfowl management are based in part upon spring breeding pair surveys. The U.S. Fish and Wildlife Service's (USFWS) [Waterfowl Breeding Population and Habitat Survey (BPOP)](https://www.fws.gov/project/waterfowl-breeding-population-and-habitat-survey) has been conducted for `r length(seq(1955, params$year, 1))` years across the traditional survey area of the north-central United States, Canada and Alaska. The Wisconsin Waterfowl Breeding Population Survey--which is modeled after the BPOP--has been conducted since 1973 and provides a long-term record of waterfowl breeding trends and wetland counts in Wisconsin. These data are used at the national- and state-level for monitoring waterfowl populations and making management decisions. Wisconsin's breeding waterfowl survey data are included in the [Waterfowl Population Status report](https://www.fws.gov/sites/default/files/documents/WaterfowlPopulationStatusReport21.pdf) published annually by the USFWS on continental waterfowl populations. In addition, mallard data from Wisconsin, Minnesota, and Michigan are combined with data from the traditional survey area as a basis for the USFWS's [Adaptive Harvest Management report](https://www.fws.gov/sites/default/files/documents/adaptive-harvest-management-hunting-season-report-2022.pdf) that is used to establish federal waterfowl season frameworks. At the state-level, waterfowl breeding survey data are used to inform annual hunting season regulations, identify long-term changes in population trends, and evaluate the impacts of habitat changes and management. This report provides a summary and analysis of the `r params$year` survey data in support of these efforts.
+
+# Methods
+
+## Study area and survey timing
+
+The Wisconsin Waterfowl Breeding Population Survey employs a stratified sampling scheme modeled after the BPOP survey [@platte1987standard] but modified for local conditions [@march1973breeding]. The state is divided into four strata based on regional waterfowl densities and habitat attributes: the Southeast Central region (SEC), Northern High Density region (NHI), Northern Low Density region (NLO), and Southwest Driftless region (SWD; Figure \ref{fig:transect_map}). Fifty-five east-west oriented transects, each 30 mi in length and 1/4 mi-wide, were randomly selected in 1973 within the SEC (*n* = 29), NHI (*n* = 13), and NLO (*n* = 13) regions; transects in the SWD region (*n* = 11) were not added until 1997 due to low wetland density. Surveys have been conducted every year since 1973, except in 2020 due to the COVID-19 pandemic.
+
+Transects are typically surveyed from May 1--20 to obtain accurate estimates of *local* breeding pairs. However, the start date may be adjusted to accommodate inter-annual variation in the timing of spring (i.e., to exclude migratory individuals and minimize the effects of leaf-out on observer visibility). To account for latitudinal differences in leaf-out and waterfowl breeding phenology, surveys are generally initiated in southern Wisconsin and northern transects are the last to be completed.
+
+## Data collection
+
+<!-- Two crews of two observers--each experienced in waterfowl identification and waterfowl census procedures--performed the aerial surveys, with one crew assigned to the south half of the state and the other crew assigned to the north half. -->
+
+Two observers--each experienced in waterfowl identification and waterfowl census procedures--performed the aerial surveys. To minimize problems with observer bias, the same aerial observers are used for a minimum five-year period. In addition, surveys do not take place when winds exceed 25 mph or if other adverse weather conditions exist (e.g., snow, rain, fog, and smoke). Fixed-wing aerial surveys were conducted from a Cessna 182 aircraft, flying at 90--100 mph and 100--150 ft above ground level. During each transect flight, an observer recorded all observations of ducks, geese, coots, cranes, and swans within a 1/8-mile strip from either side of the aircraft, while the observer on the north side of the plane recorded the number and type of unoccupied wetland basins containing surface water. All wetlands within the 1/4-mile transect width on which breeding waterfowl are observed (i.e., occupied wetlands) are also recorded by the observer counting waterfowl. 
+
+Given the challenges of detecting and counting waterfowl from the air, 27 segments of selected aerial transects are censused by ground crews to obtain a 'complete' count of all waterfowl present and calculate visibility (air-to-ground) correction factors (VCFs). Ground crews (2--4 individuals) cover every wetland basin within a transect segment on foot or by boat on the same day or within 2 days after the air count. Ground observers record waterfowl observations according to the same instructions for the aerial survey.
+
+## Data preparation
+
+The Waterfowl Breeding Population Survey focuses on four priority waterfowl species: mallards (*Anas platyrhynchos*), blue-winged teal (*A. discors*), wood ducks (*Aix sponsa*) and Canada geese (*Branta canadensis*). All other duck species that are likely breeders in Wisconsin are pooled into a category of "other ducks" ("total ducks" combines these four priority species and "other ducks"). By 2004, wood duck populations had increased to a level where we were able to estimate them as a separate group rather than as part of "other ducks." Lesser scaup (*Aythya affinis*) and bufflehead (*Bucephala albeola*) are not included in population estimates because they rarely breed in Wisconsin and when counted are assumed to be in migration to more northern breeding areas. We also tallied counts for several other species of interest: American coots (*Fulica americana*), whooping cranes (*Grus americana*), sandhill cranes (*Antigone canadensis*), and trumpeter swans (*Cygnus buccinator*).
+
+We note that this survey was not originally designed for surveying Wisconsin's resident Canada goose population due to their earlier breeding phenology. However, aerial counts of geese increased steadily from the mid-1980s through the early 2000s, making survey estimates useful indices of population trends. Human-goose conflicts resulting from a growing goose population increase the importance of tracking the population status of breeding geese in Wisconsin, and have been included in this report since 1986.
+
+Prior to analysis, we calculated the total numbers of "indicated" birds for each transect based on the observation type (i.e., pairs, lone drakes, flocked drakes [males in groups of 2--4], and groups [$\geq$ 5 drakes or mixed flocks that cannot be separated into pairs or sexes]) and each species’ breeding biology. In general, lone drakes, flocked drakes, and pairs are adjusted by a multiplier of two, while groups are not adjusted.
+
+## Statistical analysis
+
+### Visibility correction factors
+
+The VCF (also referred to as *R*; see below) is the ratio of individuals counted by ground crews to the number of individuals counted by aerial crews from the same set of transect segments. VCFs are used as a multiplier to the aerial survey counts and yield statewide, corrected abundance estimates. VCFs were calculated independently for all priority waterfowl species and "other ducks" by pooling data from all 27 air/ground transect segments. To quantify VCF precision, we calculated the coefficient of variation (CV), which provides a standardized measure of dispersion. We iteratively added prior years of survey data until a CV value $\leq$ 0.20 (and a robust VCF) was achieved.
+
+### Population estimates
+
+To calculate species-specific and visibility-corrected abundance estimates in each region, we used the traditional formula developed by @smith1995critical:
+
+\begin{equation}
+{\text{\textit{N}}} = {\text{\textit{B}}} \times {\text{\textit{A}}} \times {\text{\textit{R}}}
+\end{equation}
+
+where *B* is the bird density per mi^2^, *A* is the area of the survey region, and *R* is the visibility correction factor. We note that this procedure was only conducted for the four priority waterfowl species and "other ducks" (VCF-corrected estimates were summed across these groups to estimate "total duck" abundance).
+
+Because these abundance estimates are imperfect counts (i.e., some combination of true population size and detection error), we elected to model annual trends using a Bayesian state-space modeling approach [@kery2012bayesian]. State-space models are hierarchical models that simultaneously account for process error (true population size change) and measurement error (survey biases), and are increasingly used to model ecological time series [@auger2021guide]. State-space models offer at least two important advantages. First, modeled survey estimates smooth out drastic annual changes in population estimates that are biologically unrealistic (e.g., mallard abundance changing from roughly 250,000 in 1999, 450,000 in 2000, and then 180,000 in 2001). Second, a Bayesian state-space model allows for prediction, even when counts are unavailable (e.g., when surveys were canceled in 2020 due to the COVID-19 pandemic). Therefore, in the following waterfowl summaries we reference abundance and percent changes in state-space estimates rather than the raw population estimates. However, for comparison and continuity with previous reports, we provide both estimate types in the associated tables and figures (state-space modeling was first implemented for the 2021 report). We report the mean population estimate and 95% credible interval (CI), which can be interpreted as saying '*the true population size has a 95% probability of falling within this range, given the observed data*.'
+
+# Results
+
+## Survey timing
+
+We initiated the `r params$year` Waterfowl Breeding Population Survey on `r survey_timing$aerial_start_survey_date`. As in the past, the survey was initiated in the southern part of Wisconsin, progressing northward to account for the differences in phenology from south to north. The timing of the breeding waterfowl survey is always a challenge because variables such as weather, waterfowl phenology, and tree leaf-out all impact the timing, visibility and accuracy of the survey. Weather was a slight issue leading up to and during the survey, with extremely wet conditions across most of the state and cold conditions in the north, resulting in northern Wisconsin lakes retaining some ice into late April/early May. Significant rainfall events likely contributed to the high number of temporary and other wetland types recorded across much of the state.
+
+Aerial surveys were completed in `r survey_timing$aerial_total_survey_days` days from `r survey_timing$aerial_start_survey_date` to `r survey_timing$aerial_end_survey_date`. The ground survey was completed in `r survey_timing$ground_total_survey_days` days from `r survey_timing$ground_start_survey_date` to `r survey_timing$ground_end_survey_date`. Paired aerial and ground surveys occurred within 2 days of each other, except for one transect segment where aerial/ground surveys occurred within 3 days.
+
+<!-- Across all transect segments used to calculate VCFs, paired aerial and ground surveys occurred within `r survey_timing$air_ground_overlap` days of each other. -->
+
+## Wetland counts
+
+In the SEC region, total non-linear basins were `r sec_results$direction_previous_non_linear` `r sec_results$percent_change_previous_non_linear` from `r previous_year` and were `r sec_results$direction_long_term_non_linear` `r sec_results$percent_change_long_term_non_linear` from the long-term (`r num_survey_years`-year) mean. Linear basins in the SEC region were `r sec_results$direction_previous_linear` `r sec_results$percent_change_previous_linear` from `r previous_year` and `r sec_results$direction_long_term_linear` `r sec_results$percent_change_long_term_linear` from the long-term mean (Table \ref{tab:wetland_tab_sec}). In the NHI region, total non-linear basins were `r nhi_results$direction_previous_non_linear` `r nhi_results$percent_change_previous_non_linear` from `r previous_year` and `r nhi_results$direction_long_term_non_linear` `r nhi_results$percent_change_long_term_non_linear` from the long-term mean. Linear basins in the NHI region were `r nhi_results$direction_previous_linear` `r nhi_results$percent_change_previous_linear` from `r previous_year` and `r nhi_results$direction_long_term_linear` `r nhi_results$percent_change_long_term_linear` from the long-term mean (Table \ref{tab:wetland_tab_nhi}). In the NLO region, total non-linear basins were `r nlo_results$direction_previous_non_linear` `r nlo_results$percent_change_previous_non_linear` from `r previous_year` and `r nlo_results$direction_long_term_non_linear` `r nlo_results$percent_change_long_term_non_linear` from the long-term mean. Linear basins in the NLO region were `r nlo_results$direction_previous_linear` `r nlo_results$percent_change_previous_linear` from `r previous_year` and `r nlo_results$direction_long_term_linear` `r nlo_results$percent_change_long_term_linear` from the long-term mean (Table \ref{tab:wetland_tab_nlo}). In the SWD region, total non-linear basins were `r swd_results$direction_previous_non_linear` `r swd_results$percent_change_previous_non_linear` from `r previous_year` and `r swd_results$direction_long_term_non_linear` `r swd_results$percent_change_long_term_non_linear` from this region's long-term, `r swd_survey_years`-year mean. Linear basins in the SWD region were `r swd_results$direction_previous_linear` `r swd_results$percent_change_previous_linear` from `r previous_year` and `r swd_results$direction_long_term_linear` `r swd_results$percent_change_long_term_linear` from the long-term mean (Table \ref{tab:wetland_tab_swd}). Long-term wetland counts for each survey region are shown in Figure \ref{fig:wetland_abundance}.
+
+## Waterfowl population estimates
+
+`r params$year` VCF and population estimate summary statistics for mallards, blue-winged teal, wood ducks, "other ducks", and Canada geese are provided in Table \ref{tab:current_breeding_estimate_table}.
+
+### Mallards
+
+The `r params$year` modeled mallard population estimate was **`r mall_results$mean` (95% credible interval [CI] = `r mall_results$lower`--`r mall_results$upper` individuals)**. This estimate is `r mall_results$deviation_previous_year` `r mall_results$direction_previous_year` compared to the previous year's modeled estimate and `r mall_results$deviation_long_term_mean` `r mall_results$direction_long_term_mean` than the long-term, `r num_survey_years`-year mean (Table \ref{tab:annual_state_space_estimates_table}; Figure \ref{fig:ssm_mall}). As in previous years, the `r mall_percent$region` still represented the largest portion of the breeding mallard population (`r mall_percent$percent`%) and was similar to that of `r previous_year`.
+
+### Blue-winged teal
+
+The `r params$year` modeled population estimate for blue-winged teal was **`r bwte_results$mean` (95% CI = `r bwte_results$lower`--`r bwte_results$upper` individuals)**. This estimate was `r bwte_results$deviation_previous_year` higher compared to the previous year's modeled estimate but remains `r bwte_results$deviation_long_term_mean` `r bwte_results$direction_long_term_mean` than the long-term mean (Table \ref{tab:annual_state_space_estimates_table}; Figure \ref{fig:ssm_bwte}).
+
+### Wood ducks
+
+The `r params$year` population estimate for wood ducks was **`r wodu_results$mean` (95% CI = `r wodu_results$lower`--`r wodu_results$upper` individuals)**. This estimate was `r wodu_results$deviation_previous_year` `r wodu_results$direction_previous_year` compared to the previous year and was `r wodu_results$deviation_long_term_mean` `r wodu_results$direction_long_term_mean` than the long-term mean (Table \ref{tab:annual_state_space_estimates_table}; Figure \ref{fig:ssm_wodu}). The breeding wood duck population showed significant gains in the 1980s and early 1990s and appears to be leveling off around 100,000 after peaking about 10 years ago but has shown an increasing trend over the past five years.
+
+### Other ducks
+
+The `r params$year` modeled population estimate for "other ducks" was **`r other_results$mean` (95% CI = `r other_results$lower`--`r other_results$upper` individuals)**. This estimate was `r other_results$deviation_previous_year` `r other_results$direction_previous_year` compared to the previous year and was `r other_results$deviation_long_term_mean` `r other_results$direction_long_term_mean` than the long-term mean (Table \ref{tab:annual_state_space_estimates_table}; Figure \ref{fig:ssm_other_ducks}). Species considered as "other ducks" and their percent composition in the `r params$year` uncorrected aerial count were: American black duck (*A. rubripes*; `r comp_other_ducks$black_duck`), northern pintail (*A. acuta*; `r comp_other_ducks$northern_pintail`), gadwall (*Mareca strepera*; `r comp_other_ducks$gadwall`), American wigeon (*M. americana*; `r comp_other_ducks$american_wigeon`), northern shoveler (*Spatula clypeata*; `r comp_other_ducks$northern_shoveler`), green-winged teal (*A. carolinensis*; `r comp_other_ducks$green_winged_teal`), canvasback (*A. valisineria*; `r comp_other_ducks$canvasback`), redhead (*A. americana*; `r comp_other_ducks$redhead`), ring-necked duck (*A. collaris*; `r comp_other_ducks$ring_necked_duck`), common goldeneye (*B. clangula*; `r comp_other_ducks$goldeneye`), hooded merganser (*Lophodytes cucullatus*; `r comp_other_ducks$hooded_merganser`), common merganser (*Mergus merganser*; `r comp_other_ducks$common_merganser`), red-breasted merganser (*M. serrator*; `r comp_other_ducks$red_breasted_merganser`), and ruddy duck (*Oxyura jamaicensis*; `r comp_other_ducks$ruddy_duck`).
+
+### Total ducks
+
+The `r params$year` population estimate for all breeding ducks was **`r all_results$mean` (95% CI = `r all_results$lower`--`r all_results$upper` individuals)**. This estimate was `r all_results$deviation_previous_year` `r all_results$direction_previous_year` compared to the previous year and is `r all_results$deviation_long_term_mean` `r all_results$direction_long_term_mean` than the long-term mean (Table \ref{tab:annual_state_space_estimates_table}; Figure \ref{fig:ssm_total_ducks}).
+
+### Canada geese
+
+Based on the most recent harvest derivations, the proportion of the Wisconsin Canada goose harvest that consists of temperate breeding (formerly 'giant') Canada geese is about 60%, with most of those birds representing Canada geese that breed in Wisconsin [@dooley2017canada]. This proportion indicates the continued importance of in-state breeding Canada geese in our overall fall harvest. The `r params$year` population estimate for Canada geese was **`r cago_results$mean` (95% CI = `r cago_results$lower`--`r cago_results$upper` individuals)**. This estimate was `r cago_results$deviation_previous_year` `r cago_results$direction_previous_year` than the previous year's modeled estimate and was `r cago_results$deviation_long_term_mean` `r cago_results$direction_long_term_mean` than the long-term, `r goose_years`-year mean (Table \ref{tab:annual_state_space_estimates_table}; Figure \ref{fig:ssm_cago}). The long-term trend in goose numbers suggests a continued, gradual increase in their population.
+
+### American coots, sandhill cranes, and trumpeter swans
+
+In `r params$year`, observers counted a total of `r air_coot_count` coots, one pair of whooping cranes, and `r air_crane_count$cranes_no_groups` sandhill cranes (Figure \ref{fig:annual_crane_counts}). Excluding groups of five or more, `r air_swan_count` trumpeter swans were recorded and the `r params$year` population estimate (accounting for bird density and survey region area, but lacking VCF-correction) was **`r swan_results$mean` (95% CI = `r swan_results$lower`--`r swan_results$upper` individuals)**; Table \ref{tab:trump_tab}; Figure \ref{fig:ssm_trsw}).
+
+\newpage
+
+# Acknowledgments
+
+```{r acknowledgments, echo = FALSE, warning = FALSE, message = FALSE}
+# automate some parts of report text with previous year, number of study years
+surveyors <- read_csv(here::here('raw_data/archived_survey_data/WSDSobserverCodesMaster.csv')) %>%
+  filter(Year == analysis_year) %>%
+  separate(., col = 'Last Name, First Name', c("last_name","first_name"), sep = ',') %>%
+  arrange(last_name) %>%
+  transmute(name = str_c(first_name, last_name, sep = ' ')) %>%
+  mutate(name = str_remove(name, ' '))
+add_surveyors <- read_csv(here::here('raw_data/archived_survey_data/additional_observers.csv'))
+surveyors <- bind_rows(surveyors, add_surveyors) %>% 
+  distinct(name) %>% 
+  separate(., col = 'name', c("first", "last"), remove = FALSE, sep = ' ') %>%
+  arrange(last)
+surveyors_start <- surveyors %>% slice(c(1:n() - 1)) %>% pull(name) %>% str_flatten(., ', ')
+surveyors_end <- surveyors %>% slice(c(n())) %>% pull(name)
+```
+
+We thank Larry Waskow for piloting the Cessna, and Patrice Eyers for serving as the second aerial observer. For ground surveys, we thank `r surveyors_start`, and `r surveyors_end`. We would also like to thank Jes Rees Lohr for entering and proofing the survey data.
+
+\newpage
+
+# Literature cited
+
+<div id="refs"></div>
+
+\newpage
+
+# Tables
+
+```{r tables,  child = here::here("scripts/rmarkdown/oas_report_tables.Rmd"), warning = FALSE, message = FALSE}
+```
+
+\newpage
+
+# Figures
+
+```{r figures, child = here::here("scripts/rmarkdown/oas_report_figures.Rmd"), warning = FALSE, message = FALSE}
+```
