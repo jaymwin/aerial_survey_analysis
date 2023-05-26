@@ -16,9 +16,9 @@ source(here::here('scripts/waterfowl_survey_functions.R')) # functions for summa
 # analysis_year <- 2021
 
 
-# import data from sas (2022-onward) --------------------------------------
+# import data from sas (2022) --------------------------------------
 
-if (analysis_year >= 2022) {
+if (analysis_year == 2022) {
 
 sas_files <- dir_ls(here::here('raw_data/annual_survey_data'), glob = '*sas7bdat') %>%
   as_tibble() %>%
