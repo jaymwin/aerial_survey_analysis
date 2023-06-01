@@ -106,6 +106,7 @@ if (analysis_year == 2023) {
     clean_names() %>%
     mutate(across(-c(direct, side), as.numeric))
   
+  ### NOT SURE YET THAT THIS PART IS EVEN NECESSARY
   # ground waterfowl counts
   ground_waterfowl <-
     excel_files %>%
