@@ -14,12 +14,12 @@ hist_db <- dbConnect(RSQLite::SQLite(), here::here("databases/historical_db.sqli
 # read in duck counts
 ws_survey_raw <- 
   read_csv(
-  str_c(here::here('output'), '/', analysis_year, '/', 'ws_survey_raw', '.csv'),
-  col_types = cols(
-    .default = "d", 
-    direct = 'c', 
-    side = 'c')
-)
+    str_c(here::here('output'), '/', analysis_year, '/', 'ws_survey_raw', '.csv'),
+    col_types = cols(
+      .default = "d", 
+      direct = 'c', 
+      side = 'c')
+  )
 
 # occupied wetlands only
 occ_wet <- 

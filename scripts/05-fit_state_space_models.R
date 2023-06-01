@@ -102,7 +102,7 @@ for (i in seq_along(spp)) {
       } # end jags model
       ",
         fill = TRUE
-        )
+    )
     
     sink() # save JAGS model code
     
@@ -111,10 +111,10 @@ for (i in seq_along(spp)) {
   # bundle data, identify parameters to save, and submit to JAGS
   bbs.data <- 
     list(
-    nyr = length(year), # survey years
-    lnCount = log(mcounts), # log of annual counts
-    ln1 = log(mcounts[,1]), # log of initial count
-    g = 1 # number of species
+      nyr = length(year), # survey years
+      lnCount = log(mcounts), # log of annual counts
+      ln1 = log(mcounts[,1]), # log of initial count
+      g = 1 # number of species
     )
   
   # set parameters
@@ -123,19 +123,19 @@ for (i in seq_along(spp)) {
   # fit jags model
   jags_out <- 
     jagsUI(
-    bbs.data, # bundled JAGS data
-    inits = NULL, 
-    parameters, 
-    # save species-specific model in output by year
-    str_c(here::here('output'), '/', analysis_year, '/', 'fitted_models', '/', spp[i], "_", analysis_year, '.jags'), 
-    n.adapt = 1000, 
-    n.chains = 3, 
-    n.thin = 10, 
-    n.iter = 15000, 
-    n.burnin = 5000, 
-    parallel = TRUE
-  )
-
+      bbs.data, # bundled JAGS data
+      inits = NULL, 
+      parameters, 
+      # save species-specific model in output by year
+      str_c(here::here('output'), '/', analysis_year, '/', 'fitted_models', '/', spp[i], "_", analysis_year, '.jags'), 
+      n.adapt = 1000, 
+      n.chains = 3, 
+      n.thin = 10, 
+      n.iter = 15000, 
+      n.burnin = 5000, 
+      parallel = TRUE
+    )
+  
   # now, pull out parameters of interest (estimated count each year)
   jags_out <- 
     MCMCsummary(jags_out, params = 'N.est') %>%
@@ -148,7 +148,7 @@ for (i in seq_along(spp)) {
       lcl = `2.5%`, 
       ucl = `97.5%`, 
       median = `50%`
-      ) %>%
+    ) %>%
     add_column(year = year)
   
   # save output for each species

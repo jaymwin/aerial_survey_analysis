@@ -534,18 +534,18 @@ air_ground_overlap <-
 # table of survey timing to report later
 survey_timing <- 
   tibble(
-  aerial_start_survey_date = aerial_start_survey_date,
-  aerial_end_survey_date = aerial_end_survey_date,
-  aerial_total_survey_days = aerial_total_survey_days,
-  ground_start_survey_date = ground_start_survey_date,
-  ground_end_survey_date = ground_end_survey_date,
-  ground_total_survey_days = ground_total_survey_days,
-  air_ground_overlap = max(abs(air_ground_overlap$diff)), # sometimes done before aerial survey so abs
-  min_air_ground_survey_date = min_air_ground_survey_date %>% format(., format = "%B %d") %>%
-    str_replace(., ' 0', ' '),
-  max_air_ground_survey_date = max_air_ground_survey_date %>% format(., format = "%B %d") %>%
-    str_replace(., ' 0', ' ')
-)
+    aerial_start_survey_date = aerial_start_survey_date,
+    aerial_end_survey_date = aerial_end_survey_date,
+    aerial_total_survey_days = aerial_total_survey_days,
+    ground_start_survey_date = ground_start_survey_date,
+    ground_end_survey_date = ground_end_survey_date,
+    ground_total_survey_days = ground_total_survey_days,
+    air_ground_overlap = max(abs(air_ground_overlap$diff)), # sometimes done before aerial survey so abs
+    min_air_ground_survey_date = min_air_ground_survey_date %>% format(., format = "%B %d") %>%
+      str_replace(., ' 0', ' '),
+    max_air_ground_survey_date = max_air_ground_survey_date %>% format(., format = "%B %d") %>%
+      str_replace(., ' 0', ' ')
+  )
 
 # save for reporting
 survey_timing %>%

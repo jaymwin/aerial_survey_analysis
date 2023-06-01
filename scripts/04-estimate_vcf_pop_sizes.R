@@ -56,7 +56,7 @@ df_r %>%
 # calculate, combine vcfs for all species
 all_ducks_vcf <- 
   tibble(
-  spp = seq(1, 5, 1) # priority species codes
+    spp = seq(1, 5, 1) # priority species codes
   ) %>%
   mutate(vcf = map(spp, ~calculate_vcf(df = df_r, spp = .x))) %>% # calculate VCF for each species
   unnest(vcf)
@@ -64,7 +64,7 @@ all_ducks_vcf <-
 # save vcf information
 all_ducks_vcf %>%
   write_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_vcf_estimates', '.csv'))
-  
+
 
 # population estimates ----------------------------------------------------
 
@@ -140,16 +140,16 @@ swans2 <-
   group_by(region, transect) %>% 
   summarize(ind_birds_Pop = sum(ind_birds_Pop)) %>%
   ungroup()
-  
+
 
 # ducks and geese - by region
-  
+
 # create a data frame of duck/geese species by region to iterate over
 df_pop <- 
   tibble(
-  species_code = rep(seq(1, 5, 1), times = 4),
-  region_num = rep(seq(1, 4, 1), each = 5)
-)
+    species_code = rep(seq(1, 5, 1), times = 4),
+    region_num = rep(seq(1, 4, 1), each = 5)
+  )
 
 # estimate duck/geese species populations by region
 df_summary <- 
@@ -199,10 +199,10 @@ df_summary <-
 # tally total ducks
 total_ducks <- 
   tibble(
-  year = analysis_year,
-  species = 'total ducks',
-  n = sum(df_summary %>% filter(species != 'canada goose') %>% pull(n)) # add everything except geese together
-)
+    year = analysis_year,
+    species = 'total ducks',
+    n = sum(df_summary %>% filter(species != 'canada goose') %>% pull(n)) # add everything except geese together
+  )
 
 df_summary <- 
   df_summary %>%
@@ -218,9 +218,9 @@ update_database(db = hist_db, table = "vcf_corrected_pop_estimates", data_to_app
 # create a data frame of swans by region to iterate over
 df_swan_pop <- 
   tibble(
-  species_code = rep(9, times = 4), # tundra swan code
-  region_num = seq(1, 4, 1)
-)
+    species_code = rep(9, times = 4), # tundra swan code
+    region_num = seq(1, 4, 1)
+  )
 
 # estimate swan populations by region
 df_swan_summary <- 
@@ -270,8 +270,8 @@ tbl(hist_db, 'swan_pop_estimates') %>%
 # create a data frame of duck/geese species by region to iterate over
 df_pop_statewide <- 
   tibble(
-  species_code = seq(1, 5, 1)
-)
+    species_code = seq(1, 5, 1)
+  )
 
 # estimate duck/geese species populations by region
 df_summary_statewide <- 
