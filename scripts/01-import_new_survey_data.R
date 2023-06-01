@@ -106,21 +106,21 @@ if (analysis_year == 2023) {
     clean_names() %>%
     mutate(across(-c(direct, side), as.numeric))
   
-  ### NOT SURE YET THAT THIS PART IS EVEN NECESSARY
-  # ground waterfowl counts
-  ground_waterfowl <-
-    excel_files %>%
-    filter(type == 'ground' & year == analysis_year) %>%
-    pull(value) %>%
-    read_excel() %>%
-    clean_names() %>%
-    mutate(across(-c(direct, side), as.numeric)) %>%
-    # needs to be character not logical
-    mutate(across(c(direct, side), as.character))
+  # ### NOT SURE YET THAT THIS PART IS EVEN NECESSARY
+  # # ground waterfowl counts
+  # ground_waterfowl <-
+  #   excel_files %>%
+  #   filter(type == 'ground' & year == analysis_year) %>%
+  #   pull(value) %>%
+  #   read_excel() %>%
+  #   clean_names() %>%
+  #   mutate(across(-c(direct, side), as.numeric)) %>%
+  #   # needs to be character not logical
+  #   mutate(across(c(direct, side), as.character))
   
-  # combine and save as 2023_waterfowl.csv
+  # save as 2023_waterfowl.csv
   air_waterfowl %>%
-    bind_rows(., ground_waterfowl) %>%
+    # bind_rows(., ground_waterfowl) %>%
     write_csv(str_c(here::here('raw_data/annual_survey_data'), '/', analysis_year, '_waterfowl.csv'))
   
 }
