@@ -35,15 +35,11 @@ occ_wet <-
   )
 
 # read in aerial wetland counts from database
+# here, ground = 1 is aerial over ground, 0 = air
 air_wet <- 
   tbl(hist_db, 'raw_wetland_counts') %>%
   collect() %>%
   mutate(across(everything(), ~replace_na(.x, 0))) # replace na counts with 0s
-
-# get rid of ground wetland counts here
-air_wet <-
-  air_wet %>%
-  filter(ground != 1)
 
 # disconnect
 dbDisconnect(hist_db)

@@ -13,4 +13,5 @@ Data, analysis, and automated reporting for the Wisconsin Waterfowl Breeding Pop
 
 - For whatever reason, the report will render on my Desktop but not when the project is run from the OAS drive...
 
-- grd code: 1 = air over ground, 2 = ground, 4 = air only
+- `grd` code: 1 = air over ground, 2 = ground, 4 = air only (duck count data)
+- `ground` code: 1 = air over ground, 0 = air only (airwet data - this is unoccupied wetlands only)

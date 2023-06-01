@@ -164,7 +164,7 @@ ws_structured_air <-
   ws_structured %>%
   filter(grd %in% c(1, 4))
 
-#Calculate the number of "indicated birds" per transect for calculating total population # "ind_birds_Pop"
+# calculate the number of "indicated birds" per transect for calculating total population # "ind_birds_Pop"
 ws_structured_air <- 
   ws_structured_air %>%
   mutate(
@@ -174,7 +174,7 @@ ws_structured_air <-
     )
   )
 
-#Calculate the number of "seen birds" per transect for calculating total population # "seen_birds_Pop" - Basically all counted the same (<- (pairs*2) + lonedrake + Flockdrake+Groups); just kept the format for different species though
+# calculate the number of "seen birds" per transect for calculating total population # "seen_birds_Pop" - Basically all counted the same (<- (pairs*2) + lonedrake + Flockdrake+Groups); just kept the format for different species though
 ws_structured_air <- 
   ws_structured_air %>%
   mutate(
@@ -184,7 +184,7 @@ ws_structured_air <-
     )
   )
 
-#Calculate the number of "indicated birds without the groups" per transect for calculating total population # "oldind_birds_Pop"
+# calculate the number of "indicated birds without the groups" per transect for calculating total population # "oldind_birds_Pop"
 ws_structured_air <- 
   ws_structured_air %>%
   mutate(
@@ -204,7 +204,7 @@ ws_structured_air_ground <-
     numbirds_Pop = (pairs * 2) + flockdrake + lonedrake + groups
   )
 
-#Calculate the number of "indicated birds" per transect for calculating total population # "ind_birds_Pop"
+# calculate the number of "indicated birds" per transect for calculating total population # "ind_birds_Pop"
 ws_structured_air_ground <- 
   ws_structured_air_ground %>%
   mutate(
@@ -457,7 +457,7 @@ ground_dates <-
   mutate(date = make_date(year, month, day)) %>%
   filter(year == analysis_year) %>%
   # ground counts = 2
-  filter(grd %in% c(2)) %>% 
+  filter(grd == 2) %>% 
   distinct(date) %>%
   arrange(date)
 
