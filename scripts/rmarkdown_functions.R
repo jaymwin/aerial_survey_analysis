@@ -1083,7 +1083,7 @@ extract_wetland_statistics <- function(region_code) {
 }
 
 # percentage of mallards by region
-mall_percentage <- function(){
+mall_percentage <- function() {
   
   highest_region <- 
     read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'df_summary', '.csv'), show_col_types = FALSE) %>%
