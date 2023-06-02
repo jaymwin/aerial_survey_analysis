@@ -51,4 +51,3 @@ create_survey_state_space_estimates_table()
 options(knitr.kable.NA = '')
 create_trumpeter_table(start_year = 2010)
 ```
-
