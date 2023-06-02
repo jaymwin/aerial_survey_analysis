@@ -98,6 +98,8 @@ ws_structured <-
   ws_structured %>%
   left_join(., transect_metadata)
 
+ws_structured %>% filter(year == 2022)
+
 # create priority species codes from species codes
 ws_structured <- 
   ws_structured %>%

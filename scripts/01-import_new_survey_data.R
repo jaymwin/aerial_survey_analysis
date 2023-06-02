@@ -67,6 +67,8 @@ if (analysis_year == 2022) {
 # also in excel format
 if (analysis_year == 2023) {
   
+  print('handling 2023 data...')
+  
   excel_files <- 
     dir_ls(here::here('raw_data/annual_survey_data'), glob = '*xlsx') %>%
     as_tibble() %>%
@@ -102,7 +104,8 @@ if (analysis_year == 2023) {
     excel_files %>%
     filter(type == 'waterfowl' & year == analysis_year) %>%
     pull(value) %>%
-    read_excel() %>%
+    # just get 2023, first sheet is for 2021
+    read_excel(., sheet = 2) %>%
     clean_names() %>%
     mutate(across(-c(direct, side), as.numeric))
   
