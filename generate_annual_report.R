@@ -12,7 +12,7 @@ source(here::here('scripts/waterfowl_survey_functions.R')) # functions for summa
 
 # run current year analysis -----------------------------------------------
 
-# what is the current urvey year?
+# what is the current survey year?
 analysis_year <- 
   today() %>%
   year()
