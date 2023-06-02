@@ -376,7 +376,7 @@ create_current_breeding_estimate_table <- function() {
   # calculate subtotals; not sure if actually necessary or what the subtotal is here
   subtotals <- 
     df %>%
-    mutate(Stratum = 'Subtotal') %>%
+    mutate(Stratum = 'Statewide total') %>%
     group_by(Species, Stratum) %>%
     summarize(
       `Survey estimate` = sum(`Survey estimate`)
@@ -390,7 +390,7 @@ create_current_breeding_estimate_table <- function() {
     bind_rows(., subtotals) %>%
     mutate(
       Species = fct_relevel(Species, 'Mallard', 'Blue-winged teal', 'Wood duck', 'Other duck species', 'Canada goose'),
-      Stratum = fct_relevel(Stratum, 'SEC', 'NHI', 'NLO', 'SWD', 'Subtotal')
+      Stratum = fct_relevel(Stratum, 'SEC', 'NHI', 'NLO', 'SWD', 'Statewide total')
     ) %>%
     arrange(Species, Stratum) %>%
     select(-Species) %>%
@@ -448,7 +448,7 @@ create_current_breeding_estimate_table <- function() {
     ) %>%
     column_spec(1, width = '10em', latex_valign = "m") %>%
     column_spec(2:6, width = '6em', latex_valign = "m") %>%
-    add_indent(c(5, 10, 15, 20, 25), level_of_indent = -7) %>% # subtotal 'indents'
+    add_indent(c(5, 10, 15, 20, 25), level_of_indent = -4) %>% # subtotal 'indents'
     # add footnote
     footnote(
       footnote_order = c("symbol", "alphabet"),

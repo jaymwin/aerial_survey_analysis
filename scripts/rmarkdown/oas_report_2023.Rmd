@@ -258,7 +258,7 @@ In `r params$year`, observers counted a total of `r air_coot_count` coots, one p
 # Acknowledgments
 
 ```{r acknowledgments, echo = FALSE, warning = FALSE, message = FALSE}
-# automate some parts of report text with previous year, number of study years
+# acknowledge surveyors
 surveyors <- 
   read_csv(here::here('raw_data/archived_survey_data/WSDSobserverCodesMaster.csv')) %>%
   filter(Year == analysis_year) %>%
@@ -275,11 +275,43 @@ surveyors <-
   separate(., col = 'name', c("first", "last"), remove = FALSE, sep = ' ') %>%
   arrange(last)
 
+surveyors <- 
+  read_excel(here::here('raw_data/archived_survey_data/Copy of WSDSobserverCodesMaster.xls'), sheet = 1) %>%
+  separate(., col = 'Last Name, First Name', c("last_name","first_name"), sep = ',')
+
+surveyors <- 
+  read_csv(
+    str_c(here::here('raw_data/annual_survey_data'), '/', analysis_year, '_waterfowl.csv'), 
+    col_select = c(grd, observer1, observer2), 
+    col_types = 'c'
+  ) %>%
+  filter(grd == '2') %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = 'observer',
+    values_to = 'code'
+  ) %>%
+  distinct(code) %>%
+  drop_na()
+
+surveyor_names <- 
+  read_excel(here::here('raw_data/archived_survey_data/Copy of WSDSobserverCodesMaster.xls'), sheet = 1) %>%
+  separate(., col = 'Last Name, First Name', c("last_name","first_name"), sep = ',') %>%
+  mutate(name = str_c(first_name, last_name, sep = ' ')) %>%
+  mutate(name = str_remove(name, ' '))
+
+surveyors <- 
+  surveyors %>%
+  rename(Code = code) %>%
+  left_join(., surveyor_names) %>%
+  arrange(last_name)
+
 surveyors_start <- surveyors %>% slice(c(1:n() - 1)) %>% pull(name) %>% str_flatten(., ', ')
 surveyors_end <- surveyors %>% slice(c(n())) %>% pull(name)
+
 ```
 
-We thank Larry Waskow for piloting the aircraft, and Patrice Eyers and ... for serving as additional aerial observers. For ground surveys, we thank `r surveyors_start`, and `r surveyors_end`. 
+We thank Larry Waskow for piloting the aircraft, and Patrice Eyers and Steve Burns for serving as additional aerial observers. For ground surveys, we thank `r surveyors_start`, and `r surveyors_end`. 
 
 \newpage
 
