@@ -272,7 +272,7 @@ create_wetland_summary_table <- function(region_code) {
     footnote(
       general = "",
       general_title = "Notes: Wetland classification system from March et al. (1973). 
-      I, II, VI = temporary, wet meadow, and and shrub swamps; III = seasonal wetlands, IV, V = semi-permanent 
+      I, II, VI = temporary, wet meadow, and shrub swamps; III = seasonal wetlands, IV, V = semi-permanent 
       and permanent/open water wetlands; VII, VIII = wooded swamp and bog wetlands. Non-linear wetlands include
       type I-VIII wetlands, and linear wetlands include streams and ditches.",
       title_format = c("italic"),
