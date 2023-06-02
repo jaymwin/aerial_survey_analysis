@@ -54,7 +54,8 @@ create_new_databases <- function(...) {
   swans <- read_csv(here::here('raw_data/archived_survey_data/State_TSwan_AnnualEst.csv'))
   
   # priority waterfowl species
-  ducks_geese <- State_DuckSum %>%
+  ducks_geese <- 
+    State_DuckSum %>%
     janitor::clean_names() %>%
     # put in long format
     pivot_longer(
@@ -78,7 +79,8 @@ create_new_databases <- function(...) {
   # glimpse(ducks_geese)
   
   # trumpeter swans
-  swans <- swans %>%
+  swans <- 
+    swans %>%
     janitor::clean_names() %>%
     rename(n = tswans_survey_est) %>% # for swans, n is not VCF-corrected
     mutate(
@@ -146,11 +148,13 @@ create_new_databases <- function(...) {
 update_database <- function(db, table, data_to_append) {
   
   # collect data from db
-  df <- tbl(db, table) %>%
+  df <- 
+    tbl(db, table) %>%
     collect()
   
   # add some flexibility here if year is in 2-digit format
-  year_length <- df %>%
+  year_length <- 
+    df %>%
     slice(1) %>%
     select(year) %>%
     mutate(year_length = str_count(year)) %>%
@@ -171,7 +175,8 @@ update_database <- function(db, table, data_to_append) {
   }
   
   # pull last year of data from sqlite database
-  most_recent_db_year <- df %>%
+  most_recent_db_year <- 
+    df %>%
     filter(year == max(year)) %>%
     distinct(year) %>%
     pull(year)
@@ -179,7 +184,7 @@ update_database <- function(db, table, data_to_append) {
   # now determine if analysis year data is already in the database
   if (most_recent_db_year == analysis_year) {
     
-    # don'ta append data
+    # don't append data
     message(str_glue("data not appended, database already updated for {analysis_year}!"))
     
   } else {
