@@ -46,7 +46,8 @@ linkcolor: blue
 
 ```{r year_data, echo = FALSE, warning = FALSE, message = FALSE}
 # automate some parts of report text with previous year, number of study years
-previous_year <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'ws_structured.csv'), show_col_types = FALSE) %>%
+previous_year <- 
+  read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'ws_structured.csv'), show_col_types = FALSE) %>%
   distinct(year) %>%
   slice_tail(n = 2) %>%
   slice(1) %>%
@@ -67,10 +68,29 @@ extract_wetland_statistics(region_code = 2)
 extract_wetland_statistics(region_code = 3)
 extract_wetland_statistics(region_code = 4)
 
-sec_results <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_1.csv'), show_col_types = FALSE)
-nhi_results <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_2.csv'), show_col_types = FALSE)
-nlo_results <-read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_3.csv'), show_col_types = FALSE)
-swd_results <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_4.csv'), show_col_types = FALSE)
+sec_results <- 
+  read_csv(
+    str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_1.csv'), 
+    show_col_types = FALSE
+  )
+
+nhi_results <- 
+  read_csv(
+    str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_2.csv'), 
+    show_col_types = FALSE
+  )
+
+nlo_results <- 
+  read_csv(
+    str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_3.csv'), 
+    show_col_types = FALSE
+  )
+
+swd_results <- 
+  read_csv(
+    str_c(here::here('output'), '/', analysis_year, '/', 'wetland_summary_region_4.csv'), 
+    show_col_types = FALSE
+  )
 ```
 
 <!-- load population estimates -->
@@ -87,18 +107,34 @@ cago_results <- extract_state_space_statistics(spp = 'canada goose')
 swan_results <- extract_state_space_statistics(spp = 'trumpeter swan')
 
 # get frequency of species compromising 'other' ducks
-comp_other_ducks <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'comp_oducks_state', "_", analysis_year, '.csv'), show_col_types = FALSE)
+comp_other_ducks <- 
+  read_csv(
+    str_c(here::here('output'), '/', analysis_year, '/', 'comp_oducks_state', "_", analysis_year, '.csv'),
+    show_col_types = FALSE
+  )
 
 # get region and percentage with most mallards
 mall_percent <- mall_percentage()
 
 # get coot, crane, swan info
-air_coot_count <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'coots', "_", analysis_year, '.csv'), show_col_types = FALSE) %>% 
+air_coot_count <- 
+  read_csv(
+    str_c(here::here('output'), '/', analysis_year, '/', 'coots', "_", analysis_year, '.csv'), 
+    show_col_types = FALSE
+  ) %>% 
   slice_tail(n= 1) %>% 
   pull(coots)
-air_crane_count <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'cranes', "_", analysis_year, '.csv'), show_col_types = FALSE) %>% 
+
+air_crane_count <- 
+  read_csv(
+    str_c(here::here('output'), '/', analysis_year, '/', 'cranes', "_", analysis_year, '.csv'), 
+    show_col_types = FALSE
+  ) %>% 
   slice_tail(n = 1)
-air_swan_count <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'trumpeter_swans', "_", analysis_year, '.csv'), show_col_types = FALSE) %>% 
+
+air_swan_count <- read_csv(
+  str_c(here::here('output'), '/', analysis_year, '/', 'trumpeter_swans', "_", analysis_year, '.csv'), show_col_types = FALSE
+) %>% 
   slice_tail(n = 1) %>% 
   pull(seen_birds_Pop)
 ```
@@ -106,7 +142,11 @@ air_swan_count <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 
 <!-- load survey timing -->
 
 ```{r survey_timing, echo = FALSE, warning = FALSE, message = FALSE}
-survey_timing <- read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'survey_timing', "_", analysis_year, '.csv'), show_col_types = FALSE)
+survey_timing <- 
+  read_csv(
+    str_c(here::here('output'), '/', analysis_year, '/', 'survey_timing', "_", analysis_year, '.csv'), 
+    show_col_types = FALSE
+  )
 ```
 
 <!-- \fontspec{Fira Sans} -->
@@ -219,22 +259,27 @@ In `r params$year`, observers counted a total of `r air_coot_count` coots, one p
 
 ```{r acknowledgments, echo = FALSE, warning = FALSE, message = FALSE}
 # automate some parts of report text with previous year, number of study years
-surveyors <- read_csv(here::here('raw_data/archived_survey_data/WSDSobserverCodesMaster.csv')) %>%
+surveyors <- 
+  read_csv(here::here('raw_data/archived_survey_data/WSDSobserverCodesMaster.csv')) %>%
   filter(Year == analysis_year) %>%
   separate(., col = 'Last Name, First Name', c("last_name","first_name"), sep = ',') %>%
   arrange(last_name) %>%
   transmute(name = str_c(first_name, last_name, sep = ' ')) %>%
   mutate(name = str_remove(name, ' '))
+
 add_surveyors <- read_csv(here::here('raw_data/archived_survey_data/additional_observers.csv'))
-surveyors <- bind_rows(surveyors, add_surveyors) %>% 
+
+surveyors <- 
+  bind_rows(surveyors, add_surveyors) %>% 
   distinct(name) %>% 
   separate(., col = 'name', c("first", "last"), remove = FALSE, sep = ' ') %>%
   arrange(last)
+
 surveyors_start <- surveyors %>% slice(c(1:n() - 1)) %>% pull(name) %>% str_flatten(., ', ')
 surveyors_end <- surveyors %>% slice(c(n())) %>% pull(name)
 ```
 
-We thank Larry Waskow for piloting the Cessna, and Patrice Eyers for serving as the second aerial observer. For ground surveys, we thank `r surveyors_start`, and `r surveyors_end`. We would also like to thank Jes Rees Lohr for entering and proofing the survey data.
+We thank Larry Waskow for piloting the aircraft, and Patrice Eyers and ... for serving as additional aerial observers. For ground surveys, we thank `r surveyors_start`, and `r surveyors_end`. 
 
 \newpage
 
