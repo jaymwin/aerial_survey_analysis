@@ -433,7 +433,7 @@ create_current_breeding_estimate_table <- function() {
   # create table
   df %>%
     kbl(
-      caption = str_glue("Statewide and stratum-specific population estimates for the {analysis_year} Waterfowl Breeding Population Survey population estimates."),
+      caption = str_glue("Statewide and stratum-specific population estimates for the {analysis_year} Waterfowl Breeding Population Survey population estimates. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic."),
       # align = 'cccccc', # center cell values
       align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
       escape = FALSE, # needed for latex expressions
