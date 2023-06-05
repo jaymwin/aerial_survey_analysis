@@ -223,7 +223,7 @@ In the SEC region, total non-linear basins were `r sec_results$direction_previou
 
 ## Waterfowl population estimates
 
-`r params$year` VCF and population estimate summary statistics for mallards, blue-winged teal, wood ducks, "other ducks", and Canada geese are provided in Table \ref{tab:current_breeding_estimate_table}.
+`r params$year` VCF and population estimate summary statistics for mallards, blue-winged teal, wood ducks, "other ducks", and Canada geese are provided in Table \ref{tab:current_breeding_estimate_table}. Unless otherwise noted, population estimates provided below are derived from state-space models.
 
 ### Mallards
 
