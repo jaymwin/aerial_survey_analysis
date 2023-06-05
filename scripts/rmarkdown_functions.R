@@ -6,6 +6,7 @@ library(sf)
 library(rnaturalearth)
 library(ggsflabel)
 library(ggokabeito)
+library(readxl)
 options(knitr.table.format = "latex")
 options(tidyverse.quiet = TRUE)
 

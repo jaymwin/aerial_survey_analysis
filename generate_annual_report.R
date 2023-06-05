@@ -13,9 +13,7 @@ source(here::here('scripts/waterfowl_survey_functions.R')) # functions for summa
 # run current year analysis -----------------------------------------------
 
 # what is the current survey year?
-analysis_year <- 
-  today() %>%
-  year()
+analysis_year <- year(today())
 
 # append new data to database, summarize count data, and run state-space analyses
 analyze_survey_data(analysis_year)
