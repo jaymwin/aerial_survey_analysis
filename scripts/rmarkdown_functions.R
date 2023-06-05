@@ -676,8 +676,8 @@ plot_wetland_abundance <- function() {
     gather(wetland_type, wpsqm, -Year, -name) %>%
     bind_rows(., missing_covid_wpsqm) %>%
     ggplot() +
-    geom_line(aes(Year, wpsqm, color = wetland_type)) +
-    geom_point(aes(Year, wpsqm, color = wetland_type)) +
+    geom_line(aes(Year, wpsqm, color = wetland_type), alpha = 8/10) +
+    geom_point(aes(Year, wpsqm, color = wetland_type), alpha = 6/10) +
     # scale_color_brewer(palette = 'Dark2') +
     scale_color_viridis_d(option = 'D', end = 0.8) +
     labs(
@@ -708,7 +708,7 @@ plot_state_space_abundance <- function(spp) {
     geom_ribbon(aes(x = year, ymin = lcl, ymax = ucl, group = species), alpha = 5/10, fill = 'grey40') +
     geom_line(aes(x = year, y = mean, group = species), size = 1) +
     geom_line(aes(x = year, y = n, group = species), linetype = 2, color = palette_okabe_ito(order = 5)) +
-    geom_point(aes(x = year, y = n, group = species), color = palette_okabe_ito(order = 5)) +
+    geom_point(aes(x = year, y = n, group = species), color = palette_okabe_ito(order = 5), alpha = 8/10) +
     #geom_hline(aes(yintercept=), linetype="dashed")+
     theme_classic()+
     ylab("Estimated  breeding abundance") +
