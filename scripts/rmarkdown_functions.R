@@ -9,6 +9,7 @@ library(ggokabeito)
 library(readxl)
 library(fs)
 library(arcpullr)
+library(ggspatial)
 options(knitr.table.format = "latex")
 options(tidyverse.quiet = TRUE)
 
@@ -751,6 +752,20 @@ plot_transect_map <- function() {
   ggplot() +
     geom_sf(data = wi) +
     geom_sf(data = air_rts, aes(color = region), size = 1, show.legend = "line") +
+    annotation_scale(
+      location = "bl", 
+      bar_cols = c('grey30', 'white'), 
+      unit_category = 'imperial', 
+      pad_y = unit(0.5, 'cm'), 
+      width_hint = 0.18
+    ) +
+    # annotation_north_arrow(
+    #   location = "bl", 
+    #   which_north = "true", 
+    #   pad_x = unit(0.0, "cm"), 
+    #   pad_y = unit(0.7, "cm"),
+    #   style = north_arrow_fancy_orienteering
+    # ) +
     # geom_sf_text(data = air_rts, aes(label = transect), colour = "black") +
     # geom_sf_text_repel(
     #   data = air_rts,
