@@ -149,6 +149,17 @@ survey_timing <-
   )
 ```
 
+```{r whooper count, echo = FALSE, warning = FALSE, message = FALSE}
+whcr_count <- 
+  read_csv(str_c(here::here('output'), '/', analysis_year, '/', 'ws_structured', '.csv')) %>% 
+  filter(species == 84 & year == analysis_year) %>%
+  mutate(
+    count = (pairs * 2) + lonedrake + flockdrake + groups
+  ) %>%
+  summarise(count = sum(count)) %>%
+  pull(count)
+```
+
 <!-- \fontspec{Fira Sans} -->
 
 # Abstract
@@ -209,7 +220,7 @@ Because these abundance estimates are imperfect counts (i.e., some combination o
 
 ## Implementation
 
-Data processing and visualization were implemented using R software [@rstudio]. We compiled the survey report in R Markdown [@rmarkdown].
+Data processing, analysis, and visualization were implemented using R software [@rstudio]. We compiled the survey report in R Markdown [@rmarkdown].
 
 # Results
 
@@ -255,7 +266,7 @@ Based on the most recent harvest derivations, the proportion of the Wisconsin Ca
 
 ### American coots, cranes, and trumpeter swans
 
-In `r params$year`, observers counted a total of `r air_coot_count` coots, one pair of whooping cranes, and `r air_crane_count$cranes_no_groups` sandhill cranes (Figure \ref{fig:annual_crane_counts}). Excluding groups of five or more, `r air_swan_count` trumpeter swans were recorded and the `r params$year` population estimate for swans (accounting for bird density and survey region area, but lacking VCF-correction) was **`r swan_results$mean` (95% CI = `r swan_results$lower`--`r swan_results$upper` individuals)**; Table \ref{tab:trump_tab}; Figure \ref{fig:ssm_trsw}).
+In `r params$year`, observers counted a total of `r air_coot_count` coots, `r whcr_count` whooping cranes, and `r air_crane_count$cranes_no_groups` sandhill cranes (Figure \ref{fig:annual_crane_counts}). Excluding groups of five or more, `r air_swan_count` trumpeter swans were recorded and the `r params$year` population estimate for swans (accounting for bird density and survey region area, but lacking VCF-correction) was **`r swan_results$mean` (95% CI = `r swan_results$lower`--`r swan_results$upper` individuals)**; Table \ref{tab:trump_tab}; Figure \ref{fig:ssm_trsw}).
 
 \newpage
 

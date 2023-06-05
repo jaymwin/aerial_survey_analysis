@@ -6,7 +6,7 @@
 library(tidyverse)
 library(janitor)
 library(lubridate)
-
+library(DBI)
 
 # load data ---------------------------------------------------------------
 
