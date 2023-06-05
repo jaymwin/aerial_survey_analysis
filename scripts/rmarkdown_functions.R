@@ -1023,14 +1023,14 @@ extract_wetland_statistics <- function(region_code) {
     select(Year, `I, II, VI`, III, `IV, V`, `VII, VIII`, `Non-linear`, Stream, Ditch, Linear) %>%
     mutate(across(everything(), as.character))
   
-  # calculate long-term mean (across every year of data)
+  # calculate long-term mean (across every year of data except current year)
   long_term_mean <- 
     df_wetlands %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
     ungroup() %>%
     drop_na() %>% # get rid of any no-survey years like 2020
-    filter(region == region_code) %>%
+    filter(region == region_code & Year < analysis_year) %>%
     summarise(across(`I, II, VI`:Linear, ~ mean(.x, na.rm = TRUE))) %>%
     mutate(across(everything(), ~format(round(.x, 1), nsmall = 1))) %>%
     mutate(Year = 'Long-term mean') %>%
@@ -1056,7 +1056,7 @@ extract_wetland_statistics <- function(region_code) {
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
     ungroup() %>%
     drop_na() %>% # get rid of any no-survey years like 2020
-    filter(region == region_code) %>%
+    filter(region == region_code & Year < analysis_year) %>%
     summarise(across(`I, II, VI`:Linear, ~mean(.x, na.rm = TRUE))) %>%
     mutate(Year = 'Long-term mean') %>%
     select(Year, `I, II, VI`, III, `IV, V`, `VII, VIII`, `Non-linear`, Stream, Ditch, Linear)
