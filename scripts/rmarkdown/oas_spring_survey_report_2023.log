@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.3)  5 JUN 2023 10:58
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.3)  5 JUN 2023 11:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1083,35 +1083,35 @@ Package fontspec Info: Anton scale = 0.7249905074925519.
 Package fontspec Info: Anton scale = 0.7249905074925519.
 
 LaTeX Font Info:    Font shape `TU/FiraSans(0)/m/n' will be
-(Font)              scaled to size 10.95pt on input line 589.
+(Font)              scaled to size 10.95pt on input line 591.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 13.38892pt on input line 589.
+(Font)              scaled to size 13.38892pt on input line 591.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.78186pt on input line 589.
+(Font)              scaled to size 9.78186pt on input line 591.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 13.39024pt on input line 589.
+(Font)              scaled to size 13.39024pt on input line 591.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.78284pt on input line 589.
+(Font)              scaled to size 9.78284pt on input line 591.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 13.38757pt on input line 589.
+(Font)              scaled to size 13.38757pt on input line 591.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.78088pt on input line 589.
+(Font)              scaled to size 9.78088pt on input line 591.
 LaTeX Font Info:    Font shape `TU/FiraSans(0)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 589.
+(Font)              scaled to size 8.0pt on input line 591.
 LaTeX Font Info:    Font shape `TU/FiraSans(0)/m/it' will be
-(Font)              scaled to size 10.95pt on input line 589.
+(Font)              scaled to size 10.95pt on input line 591.
 [11] [12] [13] [14]
 LaTeX Font Info:    Font shape `TU/FiraSans(0)/b/n' will be
-(Font)              scaled to size 8.4pt on input line 779.
+(Font)              scaled to size 8.4pt on input line 781.
 [15]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.11366pt on input line 850.
+(Font)              scaled to size 6.11366pt on input line 852.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.11427pt on input line 850.
+(Font)              scaled to size 6.11427pt on input line 852.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.11305pt on input line 850.
+(Font)              scaled to size 6.11305pt on input line 852.
 LaTeX Font Info:    Font shape `TU/FiraSans(0)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 850.
+(Font)              scaled to size 10.0pt on input line 852.
 [16] [17]
 
 Package fontspec Info: Anton scale = 0.7249905074925519.

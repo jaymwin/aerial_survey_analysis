@@ -195,21 +195,22 @@ create_wetland_summary_table <- function(region_code) {
     ten_year_mean %>%
     summarise(across(`I, II, VI`:Linear, ~ mean(.x, na.rm = TRUE))) %>%
     mutate(across(everything(), ~format(round(.x, 1), nsmall = 1))) %>%
-    mutate(Year = str_glue('10-Year mean ({min_year}-{max_year})')) %>%
+    mutate(Year = str_glue('10-year mean ({min_year}-{max_year})')) %>%
     select(Year, `I, II, VI`, III, `IV, V`, `VII, VIII`, `Non-linear`, Stream, Ditch, Linear) %>%
     mutate(across(everything(), as.character))
   
-  # calculate long-term mean (across every year of data)
+  # calculate long-term mean;
+  # USFWS goes with current year vs a long-term average not including current year
   long_term_mean <- 
     df_wetlands %>%
     rename(`I, II, VI` = i_ii_vi, `III` = iii, `IV, V` = iv_v, `VII, VIII` = vii_viii,
            Year = year, `Non-linear` = non_linear, Stream = stream, Ditch = ditch, Linear = linear) %>%
     ungroup() %>%
     drop_na() %>% # get rid of any no-survey years like 2020
-    filter(region == region_code & Year < analysis_year) %>% # all years included in long-term mean
+    filter(region == region_code & Year < analysis_year) %>% # all years included in long-term mean EXCEPT current year
     summarise(across(`I, II, VI`:Linear, ~ mean(.x, na.rm = TRUE))) %>%
     mutate(across(everything(), ~format(round(.x, 1), nsmall = 1))) %>%
-    mutate(Year = 'Long-term mean') %>%
+    mutate(Year = str_glue('Long-term mean (1973--{analysis_year - 1})')) %>%
     select(Year, `I, II, VI`, III, `IV, V`, `VII, VIII`, `Non-linear`, Stream, Ditch, Linear) %>%
     mutate(across(everything(), as.character))
   
@@ -495,7 +496,7 @@ create_survey_state_space_estimates_table <- function() {
     # select(1:13) %>%
     filter(year < analysis_year) %>%
     summarize(across(2:13, ~mean(.x, na.rm = TRUE))) %>% # average all years in each column
-    mutate(Year = str_glue('Mean (1973--{analysis_year - 1})')) %>%
+    mutate(Year = str_glue('Long-term mean (1973--{analysis_year - 1})')) %>%
     select(Year, survey_n_mallard:`ssm_n_canada goose`) %>% # re-order with year first
     mutate(across(c(2:13), ~scales::number(.x, big.mark = ",", accuracy = 1))) # round, format with ,
   
@@ -504,7 +505,7 @@ create_survey_state_space_estimates_table <- function() {
     df %>%
     slice_tail(n = 10) %>%
     select(year) %>%
-    min()
+    min() - 1 # since there are state-space estimates (and no survey estimates) want to subtract 1
   
   # mean: last 10 years (including current year)
   mean_last_ten_years <- 
@@ -512,7 +513,7 @@ create_survey_state_space_estimates_table <- function() {
     filter(year >= min_ten_year) %>% # grab most recent 10-year period
     # select(1:13) %>%
     summarize(across(2:13, ~mean(.x, na.rm = TRUE))) %>% # average in each column
-    mutate(Year = str_glue('Mean ({min_ten_year}--{analysis_year})')) %>%
+    mutate(Year = str_glue('10-year mean ({min_ten_year}--{analysis_year})')) %>%
     select(Year, survey_n_mallard:`ssm_n_canada goose`) %>% # reorder with year first
     mutate(across(c(2:13), ~scales::number(.x, big.mark = ",", accuracy = 1))) # round, format with ,
   
