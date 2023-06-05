@@ -235,7 +235,7 @@ The `r params$year` modeled population estimate for blue-winged teal was **`r bw
 
 ### Wood ducks
 
-The `r params$year` population estimate for wood ducks was **`r wodu_results$mean` (95% CI = `r wodu_results$lower`--`r wodu_results$upper` individuals)**. This estimate was `r wodu_results$deviation_previous_year` `r wodu_results$direction_previous_year` compared to the previous year and was `r wodu_results$deviation_long_term_mean` `r wodu_results$direction_long_term_mean` than the long-term mean (Table \ref{tab:annual_state_space_estimates_table}; Figure \ref{fig:ssm_wodu}). The breeding wood duck population showed significant gains in the 1980s and early 1990s and appears to be leveling off around 100,000 after peaking about 10 years ago but has shown an increasing trend over the past five years.
+The `r params$year` population estimate for wood ducks was **`r wodu_results$mean` (95% CI = `r wodu_results$lower`--`r wodu_results$upper` individuals)**. This estimate was `r wodu_results$deviation_previous_year` `r wodu_results$direction_previous_year` compared to the previous year and was `r wodu_results$deviation_long_term_mean` `r wodu_results$direction_long_term_mean` than the long-term mean (Table \ref{tab:annual_state_space_estimates_table}; Figure \ref{fig:ssm_wodu}). 
 
 ### Other ducks
 
@@ -249,9 +249,9 @@ The `r params$year` population estimate for all breeding ducks was **`r all_resu
 
 Based on the most recent harvest derivations, the proportion of the Wisconsin Canada goose harvest that consists of temperate breeding (formerly 'giant') Canada geese is about 60%, with most of those birds representing Canada geese that breed in Wisconsin [@dooley2017canada]. This proportion indicates the continued importance of in-state breeding Canada geese in our overall fall harvest. The `r params$year` population estimate for Canada geese was **`r cago_results$mean` (95% CI = `r cago_results$lower`--`r cago_results$upper` individuals)**. This estimate was `r cago_results$deviation_previous_year` `r cago_results$direction_previous_year` than the previous year's modeled estimate and was `r cago_results$deviation_long_term_mean` `r cago_results$direction_long_term_mean` than the long-term, `r goose_years`-year mean (Table \ref{tab:annual_state_space_estimates_table}; Figure \ref{fig:ssm_cago}). The long-term trend in goose numbers suggests a continued, gradual increase in their population.
 
-### American coots, sandhill cranes, and trumpeter swans
+### American coots, cranes, and trumpeter swans
 
-In `r params$year`, observers counted a total of `r air_coot_count` coots, one pair of whooping cranes, and `r air_crane_count$cranes_no_groups` sandhill cranes (Figure \ref{fig:annual_crane_counts}). Excluding groups of five or more, `r air_swan_count` trumpeter swans were recorded and the `r params$year` population estimate (accounting for bird density and survey region area, but lacking VCF-correction) was **`r swan_results$mean` (95% CI = `r swan_results$lower`--`r swan_results$upper` individuals)**; Table \ref{tab:trump_tab}; Figure \ref{fig:ssm_trsw}).
+In `r params$year`, observers counted a total of `r air_coot_count` coots, one pair of whooping cranes, and `r air_crane_count$cranes_no_groups` sandhill cranes (Figure \ref{fig:annual_crane_counts}). Excluding groups of five or more, `r air_swan_count` trumpeter swans were recorded and the `r params$year` population estimate for swans (accounting for bird density and survey region area, but lacking VCF-correction) was **`r swan_results$mean` (95% CI = `r swan_results$lower`--`r swan_results$upper` individuals)**; Table \ref{tab:trump_tab}; Figure \ref{fig:ssm_trsw}).
 
 \newpage
 

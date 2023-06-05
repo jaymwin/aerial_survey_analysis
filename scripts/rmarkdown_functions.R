@@ -264,7 +264,7 @@ create_wetland_summary_table <- function(region_code) {
   # create table
   annual_wetlands %>%
     kbl(
-      caption = str_glue('Type and number of wetlands per square mile observed during the last 10-year period, {summary_start_year}--{analysis_year}, {region_name} region.'),
+      caption = str_glue('Type and number of wetlands per square mile observed during the last 10-year period ({summary_start_year}--{analysis_year}; surveys were not conducted in 2020 due to the COVID-19 pandemic), {region_name} region.'),
       align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
       booktabs = TRUE, # table formatting
       linesep = "" # prevent spaces every 5th row
