@@ -894,6 +894,7 @@ extract_state_space_statistics <- function(spp) {
   long_term_mean <- 
     jags_output_all_species %>%
     filter(species == spp) %>%
+    filter(year < analysis_year) %>%
     summarise(mean = mean(mean)) %>%
     bind_rows(., df %>% slice_tail(n = 1))
   
