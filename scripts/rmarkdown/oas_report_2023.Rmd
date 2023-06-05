@@ -207,6 +207,10 @@ where *B* is the bird density per mi^2^, *A* is the area of the survey region, a
 
 Because these abundance estimates are imperfect counts (i.e., some combination of true population size and detection error), we elected to model annual trends using a Bayesian state-space modeling approach [@kery2012bayesian]. State-space models are hierarchical models that simultaneously account for process error (true population size change) and measurement error (survey biases), and are increasingly used to model ecological time series [@auger2021guide]. State-space models offer at least two important advantages. First, modeled survey estimates smooth out drastic annual changes in population estimates that are biologically unrealistic (e.g., mallard abundance changing from roughly 250,000 in 1999, 450,000 in 2000, and then 180,000 in 2001). Second, a Bayesian state-space model allows for prediction, even when counts are unavailable (e.g., when surveys were canceled in 2020 due to the COVID-19 pandemic). Therefore, in the following waterfowl summaries we reference abundance and percent changes in state-space estimates rather than the raw population estimates. However, for comparison and continuity with previous reports, we provide both estimate types in the associated tables and figures (state-space modeling was first implemented for the 2021 report). We report the mean population estimate and 95% credible interval (CI), which can be interpreted as saying '*the true population size has a 95% probability of falling within this range, given the observed data*.'
 
+## Implementation
+
+Data processing and visualization were implemented using R software [@rstudio]. We compiled the survey report in R Markdown [@rmarkdown].
+
 # Results
 
 ## Survey timing

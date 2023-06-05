@@ -757,7 +757,8 @@ plot_transect_map <- function() {
       location = "bl", 
       bar_cols = c('grey30', 'white'), 
       unit_category = 'imperial', 
-      pad_y = unit(0.5, 'cm'), 
+      pad_y = unit(0.5, 'cm'),
+      pad_x = unit(0.3, 'cm'),
       width_hint = 0.18
     ) +
     # annotation_north_arrow(
@@ -804,7 +805,7 @@ plot_crane_counts <- function() {
     gather(count_type, count, -year) %>%
     ggplot() +
     geom_line(aes(year, count, color = count_type)) +
-    geom_point(aes(year, count, color = count_type)) +
+    geom_point(aes(year, count, color = count_type), alpha = 8/10) +
     # scale_color_brewer(palette = 'Set1', direction = -1) +
     scale_color_viridis_d(option = 'F', end = 0.8) +
     labs(
