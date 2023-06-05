@@ -8,6 +8,7 @@ library(ggsflabel)
 library(ggokabeito)
 library(readxl)
 library(fs)
+library(arcpullr)
 options(knitr.table.format = "latex")
 options(tidyverse.quiet = TRUE)
 
@@ -730,7 +731,8 @@ plot_transect_map <- function() {
     summarise() # union transects to help clean up plotting later
   
   # pull in WI boundary
-  wi <- read_sf(here::here('databases/survey_gis.gpkg'), layer = 'wi_border')
+  # wi <- read_sf(here::here('databases/survey_gis.gpkg'), layer = 'wi_border')
+  wi <- get_spatial_layer('https://dnrmaps.wi.gov/arcgis/rest/services/DW_Map_Dynamic/EN_Basic_Basemap_WTM_Ext_Dynamic_L16/MapServer/6')
   
   # create region variable based off transect number
   air_rts <- 
