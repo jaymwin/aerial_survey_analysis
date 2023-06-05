@@ -433,7 +433,7 @@ create_current_breeding_estimate_table <- function() {
   # create table
   df %>%
     kbl(
-      caption = str_glue("Statewide and stratum-specific population estimates for the {analysis_year} Waterfowl Breeding Population Survey population estimates. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic."),
+      caption = str_glue("Statewide and stratum-specific population estimates for the {analysis_year} Waterfowl Breeding Population Survey population estimates."),
       # align = 'cccccc', # center cell values
       align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
       escape = FALSE, # needed for latex expressions
@@ -563,7 +563,7 @@ create_survey_state_space_estimates_table <- function() {
   # create full table from these
   df %>%
     kbl(
-      caption = str_glue("Statewide breeding waterfowl population survey estimates and corresponding Bayesian state-space modeled estimates (highlighted in bold) in Wisconsin, 1973--{analysis_year}."),
+      caption = str_glue("Statewide breeding waterfowl population survey estimates and corresponding Bayesian state-space modeled estimates (highlighted in bold) in Wisconsin, 1973--{analysis_year}. Note that surveys were not conducted in 2020 due to the COVID-19 pandemic."),
       # align = 'ccccccccccccc',
       align = str_flatten(rep('c', length(colnames(.)))), # have to center 'c' each column
       # escape = FALSE, # needed for latex expressions
